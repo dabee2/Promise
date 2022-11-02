@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- BotoomNavigationView 는 최대 5개까지만 메뉴아이템이 가능함   -->
+    <!-- 권장 3~5개    -->
+    <item android:id="@+id/menu_bnv_group"
+        android:title="GROUP"
+        android:icon="@drawable/noun_promise_3918667"
+        android:fontFamily="@font/binggrae"
+        android:iconTint="@color/black"/>
+
+
+    <item android:id="@+id/menu_bnv_my"
+        android:title=""
+        android:checked="false"/>
+
+    <item android:id="@+id/menu_bnv_membership"
+        android:title="MEMBERSHIP"
+        android:fontFamily="@font/binggrae"
+        android:icon="@drawable/noun_agenda_4716106"
+        android:iconTint="@color/black"/>
+
+</menu>

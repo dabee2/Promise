@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_trees"
+
+    tools:context=".Login">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_profile"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/tv_nickname"
+            android:src="@drawable/images"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/my_color"
+            android:layout_marginBottom="30dp"/>
+
+        <EditText
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/iv_kakao"
+            android:layout_alignRight="@id/iv_kakao"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_et"
+            android:fontFamily="@font/binggrae"
+            android:gravity="center"
+            android:hint="닉네임"
+            android:inputType="text"
+            android:padding="8dp"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iv_kakao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/kakao_login_medium_narrow"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tv_nickname"
+            android:layout_marginTop="60dp"/>
+
+        <Button
+            android:id="@+id/btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="login"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="@color/my_color3"
+            android:fontFamily="@font/binggrae"
+            android:stateListAnimator="@null"
+            android:layout_margin="12dp"/>
+
+
+
+    </RelativeLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
