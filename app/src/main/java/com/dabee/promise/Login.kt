@@ -130,6 +130,7 @@ class Login : AppCompatActivity() {
                 val editor = pref.edit()
                 editor.putString("nickName", userName)
                 editor.putString("profileUrl", imgUrl)
+                editor.putString("userId", userId)
 //                editor.putString("userId", imgUrl)
                 editor.commit()
 
