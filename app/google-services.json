@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "142677311034",
+    "project_id": "promise-c6321",
+    "storage_bucket": "promise-c6321.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142677311034:android:512fcc15a863bdf68bff03",
+        "android_client_info": {
+          "package_name": "com.dabee.promise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142677311034-ovof1b2k2sgiqqmte1t7h4epfgntjn0o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbZg-vQSOQR0hInYzDV7VcJsATQJ8AyiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142677311034-ovof1b2k2sgiqqmte1t7h4epfgntjn0o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
