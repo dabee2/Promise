@@ -2,6 +2,7 @@ package com.dabee.promise
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.Target
 import com.dabee.promise.databinding.ActivityLoginBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -31,9 +33,15 @@ class Login : AppCompatActivity() {
 //    val binding by lazy { ActivityLoginBinding.inflate(layoutInflater)}
     lateinit var binding: ActivityLoginBinding
 
-    var islogin:Boolean= false
+    var isData:Boolean= false
+    var isKaKaologin:Boolean= false
+    var isImgChange:Boolean= false
+
+
     lateinit var imgUri:Uri
+    lateinit var imgUrl:String
     lateinit var userId:String
+    lateinit var userName:String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +51,18 @@ class Login : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 로그인버튼 비활성
-        binding.btn.visibility =View.INVISIBLE
+        loadData()
+
+        if (isData) {
+            binding.tvNickname.setText(userName)
+            Glide.with(this).load(imgUrl).error(R.drawable.images).into(binding.civProfile)
+        }else{
+            // 로그인버튼 비활성
+            binding.btn.visibility =View.INVISIBLE
+        }
+
+
+
 
 
 //        Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
@@ -54,10 +72,10 @@ class Login : AppCompatActivity() {
         binding.btn.setOnClickListener {
 
             saveData()
-//
-//            val intent = Intent(this,MainActivity::class.java)
-//            startActivity(intent)
-//            finish()
+
+            val intent = Intent(this,MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         // 카카오 로그인 리스너
@@ -65,12 +83,14 @@ class Login : AppCompatActivity() {
 
         // 프로필이미지 클릭리스너
         binding.civProfile.setOnClickListener{
-            if (islogin==true){
+            if (isKaKaologin or isData){
                 //갤러리 or 사진 앱을 실행
                 val intent = Intent(Intent.ACTION_PICK)
                 intent.type = "image/*"
                 resultLauncher.launch(intent)
             }
+
+
 
         }
 
@@ -78,8 +98,18 @@ class Login : AppCompatActivity() {
 
     }// onCreate
 
+    //SharedPreference에 저장되어 있는 닉네임과 프로필url 읽어오는 기능
+    private fun loadData() {
+        val pref = getSharedPreferences("account", MODE_PRIVATE)
+        userName= pref.getString("userName", null).toString()
+        imgUrl = pref.getString("userImgUrl", null).toString()
+        userId = pref.getString("userId", null).toString()
+        isData= pref.getBoolean("isData",false)
+    }
+
+
     private fun saveData(){
-        var userName:String=binding.tvNickname.text.toString()
+        userName = binding.tvNickname.text.toString()
 
         //우선 이미지 파일 Firebase Storage(저장소)에 업로드부터 해야함.
         //서버에 저장될 파일명이 중복되지 않도록 날짜를 이용하기
@@ -89,56 +119,71 @@ class Login : AppCompatActivity() {
         val sdf = SimpleDateFormat("yyyyMMddhhmmss")
         val fileName = sdf.format(Date()) + ".png"
 
-        //Firebase Cloud Storage에 파일 업로드
+
 
         //Firebase Cloud Storage에 파일 업로드
         val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
-        val imgRef: StorageReference = firebaseStorage.getReference("profile/IMG_$fileName")
+        val imgRef: StorageReference = firebaseStorage.getReference("profile/$userId/IMG_$fileName")
 
-        //이미지파일 업로드
+        //1. 서버 Firebase Firestore Database 에 닉네임과 프로필 url을 저장
+        val firebaseFirestore = FirebaseFirestore.getInstance()
+        // 'profiles' 라는 이름의 Collection 참조객체 (없으면 생성, 있으면 참조)
+        val userRef = firebaseFirestore.collection("users")
 
-        //이미지파일 업로드
-        imgRef.putFile(imgUri).addOnSuccessListener {
-            //업로드에 성공하였으니
-            Toast.makeText(this, "s", Toast.LENGTH_SHORT).show()
-            //업로드된 파일의 [다운로드 URL]을 얻어오기(서버에 있는 이미지의 인터넷경로 URL)
-            imgRef.downloadUrl.addOnSuccessListener { uri -> //파라미터 uri : 다운로드 URL
-                // 다운로드 URL을 문자열로 변환하여 얻어오기
-                val imgUrl= uri.toString()
-                Toast.makeText(this, "프로필 이미지 저장 완료${imgUrl}", Toast.LENGTH_SHORT).show()
+        // 유저 고유 ID 생성
+        if(!isData) userId = userRef.document().id
 
-                //1. 서버 Firebase Firestore Database 에 닉네임과 프로필 url을 저장
-                val firebaseFirestore = FirebaseFirestore.getInstance()
-                // 'profiles' 라는 이름의 Collection 참조객체 (없으면 생성, 있으면 참조)
-                val userRef = firebaseFirestore.collection("users")
 
-                userId = userRef.document().id
+        fun saveUserData(){
 
-                //유저 정보 DB저장
-                val profile: MutableMap<String, String> = HashMap()
-                profile["userName"] = userName
-                profile["userimgUrl"] = imgUrl
-                profile["userimgUri"] = imgUri.toString()
-                profile["userid"] = userId
+
+            //유저 정보 DB저장
+            var profile: MutableMap<String, String> = HashMap()
+            profile["userName"] = userName
+            profile["userImgUrl"] = imgUrl
+            profile["userId"] = userId
 //                profile["userEmail"] =
 
-                userRef.document(userId).set(profile)
+            userRef.document(userId).set(profile)
 
-                // 앱을 처음 실행할때 한번만 닉네임과 사진을 입력하도록 phone 에 닉네임과 프로필 url을 저장
-                //2. SharedPreferences 에 저장
-                val pref = getSharedPreferences("account", MODE_PRIVATE)
-                val editor = pref.edit()
-                editor.putString("nickName", userName)
-                editor.putString("profileUrl", imgUrl)
-                editor.putString("userId", userId)
-//                editor.putString("userId", imgUrl)
-                editor.commit()
+            // 앱을 처음 실행할때 한번만 닉네임과 사진을 입력하도록 phone 에 닉네임과 프로필 url을 저장
+            //2. SharedPreferences 에 저장
+            val pref = getSharedPreferences("account", MODE_PRIVATE)
+            val editor = pref.edit()
+            editor.putString("userName", userName)
+            editor.putString("userImgUrl", imgUrl)
+            editor.putString("userId", userId)
+            editor.putBoolean("isData",true)
+            editor.commit()
 
-            }
         }
 
 
+
+        //이미지파일이 변경되었으면 파이어 Storage 업로드
+        if(isImgChange){
+           imgRef.putFile(imgUri).addOnSuccessListener {
+
+                //업로드된 파일의 [다운로드 URL]을 얻어오기(서버에 있는 이미지의 인터넷경로 URL)
+                imgRef.downloadUrl.addOnSuccessListener { uri -> //파라미터 uri : 다운로드 URL
+                    // 다운로드 URL을 문자열로 변환하여 얻어오기
+                    imgUrl= uri.toString()
+//                Toast.makeText(this, "프로필 이미지 저장 완료${imgUrl}", Toast.LENGTH_SHORT).show()
+
+                  saveUserData()
+                }
+            }
+
+        }else{ // 이미지 변경 안되었으면 바로 저장
+            saveUserData()
+        }
+
+
+
     }
+
+
+
 
 
 
@@ -147,6 +192,7 @@ class Login : AppCompatActivity() {
             if (result.resultCode != RESULT_CANCELED) {
 
                 imgUri = result.data!!.data!!
+                isImgChange=true
 
                 Glide.with(this).load(imgUri).error(R.drawable.images).into(binding.civProfile)
             }
@@ -207,7 +253,8 @@ class Login : AppCompatActivity() {
                 binding.tvNickname.setText(user.kakaoAccount?.profile?.nickname)
                 Glide.with(this).load(user.kakaoAccount?.profile?.profileImageUrl).error(R.drawable.images).into(binding.civProfile)
 
-                islogin=true
+                imgUrl = user.kakaoAccount?.profile?.profileImageUrl.toString()
+                isKaKaologin=true
                 binding.btn.visibility =View.VISIBLE
             }
         }
