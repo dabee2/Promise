@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.dabee.promise.databinding.FragmentGroupBinding
+import com.dabee.promise.databinding.FragmentMembershipBinding
 import net.daum.mf.map.api.MapView
 
 // TODO: Rename parameter arguments, choose names that match
@@ -45,10 +46,8 @@ class GroupFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val v:View = inflater.inflate(R.layout.fragment_group, container, false)
 
-
-        return v
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

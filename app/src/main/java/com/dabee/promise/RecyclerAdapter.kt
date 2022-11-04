@@ -13,11 +13,6 @@ import com.dabee.promise.databinding.RecyclerItemBinding
 class RecyclerAdapter constructor(val context:Context, var items:MutableList<Item>): RecyclerView.Adapter<RecyclerAdapter.VH>(){
 
     inner class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
-        // itemView의 자식뷰들의 참조
-//        val tvTitle:TextView by lazy { itemView.findViewById(R.id.tv_title) }
-//        val tvPlace:TextView by lazy { itemView.findViewById(R.id.tv_place2) }
-//        val tvGroup:TextView by lazy { itemView.findViewById(R.id.tv_group) }
-//        val tvTime:TextView by lazy { itemView.findViewById(R.id.tv_time) }
         val binding:RecyclerItemBinding = RecyclerItemBinding.bind(itemView)
     }
 

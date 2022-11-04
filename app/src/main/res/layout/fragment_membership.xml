@@ -17,59 +17,87 @@
         android:background="@drawable/bg_et">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_marginTop="16dp"
             android:id="@+id/civ_profile"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
             android:src="@drawable/images"
-            app:civ_border_width="2dp"
             app:civ_border_color="@color/my_color4"
-            android:layout_marginRight="16dp"/>
+            app:civ_border_width="2dp" />
 
         <Button
+            android:id="@+id/btn"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:text="수정"
-            android:textSize="12sp"
-            android:layout_marginTop="4dp"
+            android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_marginTop="4dp"
+            android:text="수정"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="4dp"
+            android:backgroundTint="@color/my_color3"
+            android:text="저장"
+            android:textSize="12sp"
+            android:visibility="invisible" />
 
         <TextView
             android:id="@+id/tv_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:layout_toRightOf="@id/civ_profile"
             android:fontFamily="@font/binggrae_bold"
             android:text="이름 : "
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tv_nickname2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/tv_nickname"
-            android:text="000"
-            android:fontFamily="@font/binggrae_bold"
             android:layout_alignTop="@id/tv_nickname"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/btn"
+            android:layout_toRightOf="@id/tv_nickname"
+            android:fontFamily="@font/binggrae_bold"
+            android:text=""
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_addr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/civ_profile"
-            android:text="주소 : "
-            android:fontFamily="@font/binggrae_bold"
-            android:layout_marginTop="16dp"
-            android:textSize="16sp"
             android:layout_below="@id/tv_nickname"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@id/civ_profile"
+            android:fontFamily="@font/binggrae_bold"
+            android:text="주소 : "
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_addr2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/tv_addr"
+            android:layout_toRightOf="@id/tv_nickname"
+            android:lines="2"
+            android:fontFamily="@font/binggrae_bold"
+            android:textSize="14sp"
             android:textStyle="bold"/>
 
+
         <EditText
-            android:id="@+id/tv_addr2"
+            android:id="@+id/et_addr2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/tv_addr"
@@ -82,7 +110,8 @@
             android:lines="2"
             android:padding="8dp"
             android:textSize="12sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
     </RelativeLayout>
 
@@ -99,7 +128,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/binggrae_bold"
             android:text="친구목록"
-            android:textColor="@color/black"/>
+            android:textStyle="bold"
+            android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/iv_add"
@@ -118,9 +148,14 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/iv1"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            android:layout_below="@id/iv1"
+            android:paddingBottom="50dp"
+            android:clipToPadding="false" />
 
 
     </RelativeLayout>

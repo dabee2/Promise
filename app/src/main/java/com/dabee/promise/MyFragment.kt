@@ -65,6 +65,8 @@ class MyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         val pager:ViewPager2 = view.findViewById(R.id.pager)
         val tabLayout:TabLayout = view.findViewById(R.id.tab_layout)
 

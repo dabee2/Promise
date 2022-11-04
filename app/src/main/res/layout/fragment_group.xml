@@ -7,7 +7,6 @@
     tools:context=".MyFragment">
 
 
-
     <LinearLayout
         android:id="@+id/linear"
         android:layout_width="match_parent"
@@ -29,7 +28,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"/>x
 
             <ImageView
                 android:id="@+id/iv"
@@ -41,22 +40,18 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/map_vieww"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/linear"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
         android:layout_below="@id/linear"
-        android:paddingBottom="50dp"
         android:clipToPadding="false"
-        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"/>
+        android:orientation="vertical"
+        android:paddingBottom="50dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
 
 

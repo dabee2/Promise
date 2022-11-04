@@ -10,9 +10,9 @@ class MainActivity2 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
 
-        val map = findViewById<ViewGroup>(R.id.map_vieww)
-        val mapView = MapView(this)
-        map.addView(mapView)
+//        val map = findViewById<ViewGroup>(R.id.map_vieww)
+//        val mapView = MapView(this)
+//        map.addView(mapView)
 
 
     }

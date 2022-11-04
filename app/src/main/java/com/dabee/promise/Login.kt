@@ -25,6 +25,7 @@ import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
+import com.kakao.util.maps.helper.Utility
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,6 +43,8 @@ class Login : AppCompatActivity() {
     lateinit var imgUrl:String
     lateinit var userId:String
     lateinit var userName:String
+    lateinit var userEmail:String
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +53,11 @@ class Login : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+//        Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
+        KakaoSdk.init(this, "a885b205f3f68ff7b70039992bb3ba34")
+
 
         loadData()
 
@@ -65,14 +73,13 @@ class Login : AppCompatActivity() {
 
 
 
-//        Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
-        KakaoSdk.init(this, "a885b205f3f68ff7b70039992bb3ba34")
+
 
         // 최종 로그인 버튼 리스너
         binding.btn.setOnClickListener {
 
             saveData()
-
+            friendLoad()
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -104,6 +111,7 @@ class Login : AppCompatActivity() {
         userName= pref.getString("userName", null).toString()
         imgUrl = pref.getString("userImgUrl", null).toString()
         userId = pref.getString("userId", null).toString()
+        userEmail = pref.getString("userEmail", null).toString()
         isData= pref.getBoolean("isData",false)
     }
 
@@ -142,7 +150,7 @@ class Login : AppCompatActivity() {
             profile["userName"] = userName
             profile["userImgUrl"] = imgUrl
             profile["userId"] = userId
-//                profile["userEmail"] =
+            profile["userEmail"] =userEmail
 
             userRef.document(userId).set(profile)
 
@@ -153,6 +161,7 @@ class Login : AppCompatActivity() {
             editor.putString("userName", userName)
             editor.putString("userImgUrl", imgUrl)
             editor.putString("userId", userId)
+            editor.putString("userEmail", userEmail)
             editor.putBoolean("isData",true)
             editor.commit()
 
@@ -200,6 +209,18 @@ class Login : AppCompatActivity() {
 
 
     fun login(){
+
+        // 이메일 로그인 콜백
+        val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if (error != null) {
+                Log.e(TAG, "로그인 실패 $error")
+            } else if (token != null) {
+                Log.e(TAG, "로그인 성공 ${token.accessToken}")
+            }
+        }
+
+
+
         // 카카오톡 설치 확인
         if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
             // 카카오톡 로그인
@@ -215,8 +236,7 @@ class Login : AppCompatActivity() {
                     else {
                         UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
                     }
-                }
-                // 로그인 성공 부분
+                }// 로그인 성공 부분
                 else if (token != null) {
                     Log.e(TAG, "로그인 성공 ${token.accessToken}")
                 }
@@ -224,8 +244,6 @@ class Login : AppCompatActivity() {
         } else {
             UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
         }
-
-
         if (AuthApiClient.instance.hasToken()) {
             UserApiClient.instance.accessTokenInfo { _, error ->
                 if (error != null) {
@@ -243,8 +261,8 @@ class Login : AppCompatActivity() {
         }
         else {
             //로그인 필요
-        }
 
+        }
         UserApiClient.instance.me { user, error ->
             if (error != null) {
                 Log.e(TAG, "사용자 정보 요청 실패 $error")
@@ -252,6 +270,8 @@ class Login : AppCompatActivity() {
                 Log.e(TAG, "사용자 정보 요청 성공 : $user")
                 binding.tvNickname.setText(user.kakaoAccount?.profile?.nickname)
                 Glide.with(this).load(user.kakaoAccount?.profile?.profileImageUrl).error(R.drawable.images).into(binding.civProfile)
+                userEmail = user.kakaoAccount?.email.toString()
+
 
                 imgUrl = user.kakaoAccount?.profile?.profileImageUrl.toString()
                 isKaKaologin=true
@@ -260,15 +280,33 @@ class Login : AppCompatActivity() {
         }
     }
 
+    private fun friendLoad(){
+        // 데이터베이스에서 내정보 불러오기
+        val firebaseFirestore = FirebaseFirestore.getInstance()
+        val userRef = firebaseFirestore.collection("users")
+        val pref = this.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        val userId:String= pref.getString("userId", null).toString()
 
-    // 이메일 로그인 콜백
-    private val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        if (error != null) {
-            Log.e(TAG, "로그인 실패 $error")
-        } else if (token != null) {
-            Log.e(TAG, "로그인 성공 ${token.accessToken}")
+
+        userRef.document(userId).collection("friends").get().addOnSuccessListener { result ->
+
+            for (document in result){
+
+                // 데이터가 바뀐 친구 갱신신
+                var code = document["id"]as String
+                userRef.document(code).get().addOnSuccessListener {
+                    userRef.document(userId).collection("friends").document(it.get("userId") as String).set(it)
+                }
+
+
+            }
+
         }
+
+
     }
+
+
 
 
 

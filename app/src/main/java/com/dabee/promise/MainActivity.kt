@@ -69,6 +69,8 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+
+
         binding.fab.setOnClickListener { item ->
 
             binding.fab.supportBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color))
@@ -91,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun changeFragment(fragment: Fragment) {
         supportFragmentManager
-            .beginTransaction()
+            .beginTransaction().detach(fragment).attach(fragment)
             .replace(R.id.fragment, fragment)
             .commit()
     }

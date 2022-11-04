@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    android:background="@drawable/bg_et2"
+    android:layout_marginVertical="5dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_et"
+        android:padding="5dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/my_color4"
+            android:layout_marginLeft="4dp"
+            android:src="@drawable/images"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:fontFamily="@font/binggrae_bold"
+            android:layout_marginLeft="4dp"
+            android:text="name"
+            android:layout_toRightOf="@id/civ_img"
+            android:textColor="@color/black"
+            android:paddingRight="8dp"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>
