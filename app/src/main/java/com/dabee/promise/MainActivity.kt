@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        var vv:Boolean? = null
+        var isMembtn:Boolean = false
         val bnv_main = binding.bnv
         val myAnim :Animation = AnimationUtils.loadAnimation(this, R.anim.rotate_open);
         supportFragmentManager.beginTransaction().add(R.id.fragment, MyFragment()).commit()
@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
                         bnv_main.itemIconTintList = ContextCompat.getColorStateList(this, R.color.nav_item2)
                         bnv_main.itemTextColor = ContextCompat.getColorStateList(this, R.color.nav_item2)
                         GroupFragment()
+
 
                     }
                     R.id.menu_bnv_my -> {
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                         bnv_main.itemIconTintList = ContextCompat.getColorStateList(this, R.color.nav_item3)
                         bnv_main.itemTextColor = ContextCompat.getColorStateList(this, R.color.nav_item3)
                         MembershipFragment()
+
                     }
                     else -> {
 //                        bnv_main.itemIconTintList = ContextCompat.getColorStateList(this, R.color.nav_item)
@@ -96,6 +98,7 @@ class MainActivity : AppCompatActivity() {
             .beginTransaction().detach(fragment).attach(fragment)
             .replace(R.id.fragment, fragment)
             .commit()
+
     }
 
 

@@ -151,11 +151,11 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="vertical"
             android:layout_below="@id/iv1"
+            android:clipToPadding="false"
+            android:orientation="vertical"
             android:paddingBottom="50dp"
-            android:clipToPadding="false" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
     </RelativeLayout>

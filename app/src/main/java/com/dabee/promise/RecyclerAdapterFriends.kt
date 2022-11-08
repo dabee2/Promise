@@ -17,12 +17,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 class RecyclerAdapterFriends constructor(val context:Context, var items:MutableList<FriendsItem>): RecyclerView.Adapter<RecyclerAdapterFriends.VH>(){
 
     inner class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
+
         val binding:RecyclerItemMembershipBinding = RecyclerItemMembershipBinding.bind(itemView)
     }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val layoutInflater:LayoutInflater = LayoutInflater.from(context)
+
         val itemView:View = layoutInflater.inflate(R.layout.recycler_item_membership,parent,false)
 
         return VH(itemView)

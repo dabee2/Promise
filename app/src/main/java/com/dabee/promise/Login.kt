@@ -119,6 +119,16 @@ class Login : AppCompatActivity() {
     private fun saveData(){
         userName = binding.tvNickname.text.toString()
 
+
+        //1. 서버 Firebase Firestore Database 에 닉네임과 프로필 url을 저장
+        val firebaseFirestore = FirebaseFirestore.getInstance()
+        // 'profiles' 라는 이름의 Collection 참조객체 (없으면 생성, 있으면 참조)
+        val userRef = firebaseFirestore.collection("users")
+
+        // 유저 고유 ID 생성
+        if(!isData) userId = userRef.document().id
+
+
         //우선 이미지 파일 Firebase Storage(저장소)에 업로드부터 해야함.
         //서버에 저장될 파일명이 중복되지 않도록 날짜를 이용하기
 
@@ -128,18 +138,11 @@ class Login : AppCompatActivity() {
         val fileName = sdf.format(Date()) + ".png"
 
 
-
         //Firebase Cloud Storage에 파일 업로드
         val firebaseStorage: FirebaseStorage = FirebaseStorage.getInstance()
-        val imgRef: StorageReference = firebaseStorage.getReference("profile/$userId/IMG_$fileName")
+        val imgRef: StorageReference = firebaseStorage.getReference("profile/$userId/${userId}.png")
 
-        //1. 서버 Firebase Firestore Database 에 닉네임과 프로필 url을 저장
-        val firebaseFirestore = FirebaseFirestore.getInstance()
-        // 'profiles' 라는 이름의 Collection 참조객체 (없으면 생성, 있으면 참조)
-        val userRef = firebaseFirestore.collection("users")
 
-        // 유저 고유 ID 생성
-        if(!isData) userId = userRef.document().id
 
 
         fun saveUserData(){

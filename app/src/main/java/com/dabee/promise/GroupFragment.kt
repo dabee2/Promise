@@ -1,6 +1,5 @@
 package com.dabee.promise
 
-import android.app.ActionBar
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
@@ -8,8 +7,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.dabee.promise.databinding.FragmentGroupBinding
-import com.dabee.promise.databinding.FragmentMembershipBinding
-import net.daum.mf.map.api.MapView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,10 +31,6 @@ class GroupFragment : Fragment() {
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
-
-
-
-
         }
     }
 
@@ -56,9 +49,10 @@ class GroupFragment : Fragment() {
 
 
 
+
         iv.setOnClickListener {
             Toast.makeText(context, "s", Toast.LENGTH_SHORT).show()
-            val intent = Intent(context,MainActivity2::class.java)
+            val intent = Intent(context,GroupAddActivity::class.java)
             startActivity(intent)
 
 
