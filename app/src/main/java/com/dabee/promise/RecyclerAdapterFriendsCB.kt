@@ -16,7 +16,7 @@ import com.dabee.promise.databinding.RecyclerItemMembershipBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-class RecyclerAdapterFriendsRadio : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class RecyclerAdapterFriendsCB : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     private val userItems = arrayListOf<FriendsItem>()
     private val userCheckBoxStatus = arrayListOf<UserCheckStatus>()
@@ -33,6 +33,18 @@ class RecyclerAdapterFriendsRadio : RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     override fun getItemCount(): Int = if (userItems.isNullOrEmpty()) 0 else userItems.size
+
+    fun resultChecked(): MutableList<FriendsItem> {
+        var friends:MutableList<FriendsItem> = mutableListOf()
+        for (check in userCheckBoxStatus){
+            if(check.isChecked){
+                friends.add(userItems[check.position])
+            }
+
+        }
+        return friends
+    }
+
 
     fun addUserItems(friens: FriendsItem){
         userItems.add(friens)
@@ -53,9 +65,7 @@ class RecyclerAdapterFriendsRadio : RecyclerView.Adapter<RecyclerView.ViewHolder
                 userStatus.isChecked = checkBtn.isChecked
                 notifyItemChanged(adapterPosition)
             }
-            if(checkBtn.isChecked){
 
-            }
 
 
         }

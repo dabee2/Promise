@@ -6,8 +6,10 @@
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1365" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/bg_et.xml" value="0.1885" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/bg_et2.xml" value="0.1885" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.2085" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_baseline_subdirectory_arrow_left_24.xml" value="0.2085" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1365" />
-        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_add_group.xml" value="0.365625" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_add_group.xml" value="0.31244444444444447" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_gruop.xml" value="0.1" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_login.xml" value="0.3564102564102564" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_main.xml" value="0.33" />
@@ -19,7 +21,9 @@
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/fragment_my_child1.xml" value="0.33" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/fragment_my_child2.xml" value="0.34205128205128205" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item.xml" value="0.30648148148148147" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group.xml" value="0.31666666666666665" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group_add.xml" value="0.35038363171355497" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group_child.xml" value="0.31666666666666665" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_membership.xml" value="0.3619791666666667" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/menu/bnv.xml" value="0.3564102564102564" />
       </map>

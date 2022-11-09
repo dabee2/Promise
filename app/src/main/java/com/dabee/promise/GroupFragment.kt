@@ -1,10 +1,13 @@
 package com.dabee.promise
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.dabee.promise.databinding.FragmentGroupBinding
 
@@ -51,10 +54,9 @@ class GroupFragment : Fragment() {
 
 
         iv.setOnClickListener {
-            Toast.makeText(context, "s", Toast.LENGTH_SHORT).show()
-            val intent = Intent(context,GroupAddActivity::class.java)
-            startActivity(intent)
 
+            val intent = Intent(context,GroupAddActivity::class.java)
+            intentActivityResultLauncher.launch(intent)
 
         }
 
@@ -62,8 +64,23 @@ class GroupFragment : Fragment() {
 
     }
 
+    // 액티비티를 실행시켜주는 객체 생성- 멤버변수 위치.
+    var intentActivityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()) { result ->
+        // 결과주는 Activity가 종료되면 실행되는 메소드
 
-  
+
+        // 돌려보낸 결과가 OK인지 .. 확인
+        if (result.resultCode == Activity.RESULT_OK) {
+            // 돌려보낸 택배기사(Intent)로 부터 Extra 데이터를 얻어오기
+            val intent = result.data
+            val title = intent!!.getStringExtra("title")
+            val price = intent.getDoubleExtra("price", 0.0)
+        } else {
+            Toast.makeText(context, "글작성을 취소하셨습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     companion object {
         /**

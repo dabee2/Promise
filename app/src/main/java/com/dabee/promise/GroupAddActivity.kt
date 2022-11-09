@@ -1,7 +1,8 @@
 package com.dabee.promise
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dabee.promise.databinding.ActivityAddGroupBinding
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,9 +10,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 class GroupAddActivity : AppCompatActivity() {
 
     val binding by lazy { ActivityAddGroupBinding.inflate(layoutInflater)}
-    private var recyclerViewAdapter: RecyclerAdapterFriendsRadio? = null
+    private var recyclerViewAdapter: RecyclerAdapterFriendsCB? = null
 
-    var friedns:MutableList<FriendsItem> = mutableListOf()
+    var friends:MutableList<FriendsItem> = mutableListOf()
+    // 데이터베이스에서 내정보 불러오기
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,33 +24,65 @@ class GroupAddActivity : AppCompatActivity() {
 
         friendLoad()
 
-        binding.btnSave.setOnClickListener { groupSave() }
+        binding.btnSave.setOnClickListener {
 
+            groupSave()
+
+            val intent = intent
+//            intent.putExtra("title", friends)
+
+//            intent.putExtra("da", friends)
+//            intent.putExtra("price", price) // Double
+
+
+            // 결과를 주었다고 명시[이게 결과!]
+//            setResult(RESULT_OK, intent)
+
+
+            //작성완료 했으니 EditActivity를 종료
+//            finish()
+
+
+        }
+        binding.ivBack.setOnClickListener { finish() }
 
 
 
     }
 
+
+
     private fun groupSave(){
-        recyclerViewAdapter
+
+        friends = recyclerViewAdapter?.resultChecked()!!
+        if(friends.size==0) return
+//        userRef.document(userId).collection("Group").get().addOnCompleteListener {
+//
+//        }
+
+
+        val str:StringBuffer = StringBuffer()
+        for (i in friends){
+            str.append(i.name)
+        }
+
+        AlertDialog.Builder(this).setMessage(str).show()
+
     }
 
     private fun friendLoad(){
 
+
+
         binding.rycycler.apply {
-            recyclerViewAdapter = RecyclerAdapterFriendsRadio()
+            recyclerViewAdapter = RecyclerAdapterFriendsCB()
             adapter = recyclerViewAdapter
             layoutManager = LinearLayoutManager(this@GroupAddActivity)
         }
-
-
-
-        // 데이터베이스에서 내정보 불러오기
         val firebaseFirestore = FirebaseFirestore.getInstance()
         val userRef = firebaseFirestore.collection("users")
-        val pref = this.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        val pref = this@GroupAddActivity.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
         val userId:String= pref.getString("userId", null).toString()
-
 
         userRef.document(userId).collection("friends").get().addOnSuccessListener { result ->
 

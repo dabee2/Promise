@@ -15,7 +15,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cv"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="100dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="5dp"
             app:cardBackgroundColor="@color/my_color">
@@ -23,21 +23,29 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="30dp"
+                    android:layout_margin="8dp"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/linear"
+                    android:src="@drawable/ic_baseline_arrow_back_24" />
+
 
                 <TextView
-
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginBottom="5dp"
+                    android:layout_toLeftOf="@id/btn_save"
+                    android:layout_alignLeft="@+id/linear"
                     android:fontFamily="@font/binggrae"
                     android:gravity="center"
-                    android:layout_toLeftOf="@id/btn_save"
                     android:text="그룹 만들기"
-                    android:textSize="18sp"
                     android:textColor="@color/white"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
 
                 <Button
@@ -49,47 +57,71 @@
                     android:backgroundTint="@color/my_color3"
                     android:text="save" />
 
-                <TextView
-                    android:id="@+id/tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="8dp"
-                    android:fontFamily="@font/binggrae"
-                    android:text="그룹 이름 :"
-                    android:textSize="18sp"
-                    android:textColor="@color/white"
-                    android:textStyle="bold" />
 
-                <EditText
+                <LinearLayout
+                    android:id="@+id/linear"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_toRightOf="@id/tv"
-                    android:background="@drawable/bg_et"
-                    android:fontFamily="@font/binggrae"
-                    android:inputType="text"
-                    android:padding="6dp"
-                    android:textSize="12sp" />
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true">
+                    <TextView
+                        android:id="@+id/tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="8dp"
+                        android:gravity="center"
+                        android:layout_marginEnd="5dp"
+                        android:fontFamily="@font/binggrae"
+                        android:text="그룹 이름 :"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
 
+                    <EditText
+                        android:id="@+id/et_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:layout_toRightOf="@id/tv"
+                        android:background="@drawable/bg_et"
+                        android:fontFamily="@font/binggrae"
+                        android:inputType="text"
+                        android:padding="10dp"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
 
             </RelativeLayout>
 
 
         </androidx.cardview.widget.CardView>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/cv"
             android:background="@drawable/bg_et2"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="5dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="친구 목록"
+                android:gravity="center"
+                android:fontFamily="@font/binggrae_bold"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:padding="8dp"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/my_color4"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rycycler"
@@ -100,7 +132,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
 
 
