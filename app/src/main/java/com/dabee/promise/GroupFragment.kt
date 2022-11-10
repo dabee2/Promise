@@ -8,8 +8,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.dabee.promise.databinding.FragmentGroupBinding
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,6 +29,9 @@ class GroupFragment : Fragment() {
     private var param2: String? = null
 
     val binding by lazy { FragmentGroupBinding.inflate(layoutInflater) }
+
+
+    var groups:MutableList<GroupsItem> = mutableListOf()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +56,7 @@ class GroupFragment : Fragment() {
         val iv:ImageView = view.findViewById(R.id.iv)
 
 
-
+        groupLoad()
 
         iv.setOnClickListener {
 
@@ -64,20 +69,49 @@ class GroupFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        binding.recycler.adapter?.notifyDataSetChanged()
+    }
+
+    private fun groupLoad(){
+        binding.recycler.adapter = RecyclerAdapterGroups(requireContext(),groups)
+        // 데이터베이스에서 내정보 불러오기
+        val firebaseFirestore = FirebaseFirestore.getInstance()
+        val userRef = firebaseFirestore.collection("users")
+        val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        val userId:String= pref.getString("userId", null).toString()
+
+
+        userRef.document(userId).collection("groups").get().addOnSuccessListener { result ->
+            groups.clear()
+            //그룹 불러오기
+            for (doc in result){
+
+                val item = GroupsItem(doc.id)
+
+                groups.add(item)
+            }
+            binding.recycler.adapter?.notifyDataSetChanged()
+        }
+    }
+
+
+
+
+
+
+
     // 액티비티를 실행시켜주는 객체 생성- 멤버변수 위치.
     var intentActivityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()) { result ->
         // 결과주는 Activity가 종료되면 실행되는 메소드
 
-
         // 돌려보낸 결과가 OK인지 .. 확인
         if (result.resultCode == Activity.RESULT_OK) {
-            // 돌려보낸 택배기사(Intent)로 부터 Extra 데이터를 얻어오기
-            val intent = result.data
-            val title = intent!!.getStringExtra("title")
-            val price = intent.getDoubleExtra("price", 0.0)
+            binding.recycler.adapter?.notifyDataSetChanged()
         } else {
-            Toast.makeText(context, "글작성을 취소하셨습니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "그룹 만들기 취소", Toast.LENGTH_SHORT).show()
         }
     }
 

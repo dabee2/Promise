@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="8dp"
@@ -25,17 +25,28 @@
 
         <TextView
             android:id="@+id/tv_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:fontFamily="@font/binggrae_bold"
             android:layout_marginLeft="4dp"
-            android:text="name"
+            android:layout_toLeftOf="@id/tv_status"
             android:layout_toRightOf="@id/civ_img"
-            android:layout_toLeftOf="@id/check_btn"
-            android:textColor="@color/black"
-            android:paddingRight="8dp"
-            android:textSize="16sp"
+            android:fontFamily="@font/binggrae_bold"
             android:gravity="center"
+            android:paddingRight="8dp"
+            android:text="name"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:fontFamily="@font/binggrae_bold"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="대기"
             android:textStyle="bold" />
 
 

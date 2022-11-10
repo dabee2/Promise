@@ -34,7 +34,7 @@ class RecyclerAdapterFriendsCB : RecyclerView.Adapter<RecyclerView.ViewHolder>()
 
     override fun getItemCount(): Int = if (userItems.isNullOrEmpty()) 0 else userItems.size
 
-    fun resultChecked(): MutableList<FriendsItem> {
+    fun checkedResult(): MutableList<FriendsItem> {
         var friends:MutableList<FriendsItem> = mutableListOf()
         for (check in userCheckBoxStatus){
             if(check.isChecked){

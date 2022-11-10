@@ -1,6 +1,12 @@
 package com.dabee.promise
 
+import android.app.Dialog
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View.TEXT_ALIGNMENT_CENTER
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,8 +17,13 @@ class GroupAddActivity : AppCompatActivity() {
 
     val binding by lazy { ActivityAddGroupBinding.inflate(layoutInflater)}
     private var recyclerViewAdapter: RecyclerAdapterFriendsCB? = null
+    val firebaseFirestore = FirebaseFirestore.getInstance()
+    val userRef = firebaseFirestore.collection("users")
+    lateinit var pref:SharedPreferences
+    lateinit var userId:String
 
     var friends:MutableList<FriendsItem> = mutableListOf()
+
     // 데이터베이스에서 내정보 불러오기
 
 
@@ -22,28 +33,13 @@ class GroupAddActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
+        pref = this@GroupAddActivity.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        userId= pref.getString("userId", null).toString()
+
         friendLoad()
 
-        binding.btnSave.setOnClickListener {
-
-            groupSave()
-
-            val intent = intent
-//            intent.putExtra("title", friends)
-
-//            intent.putExtra("da", friends)
-//            intent.putExtra("price", price) // Double
-
-
-            // 결과를 주었다고 명시[이게 결과!]
-//            setResult(RESULT_OK, intent)
-
-
-            //작성완료 했으니 EditActivity를 종료
-//            finish()
-
-
-        }
+        binding.btnSave.setOnClickListener { groupSave() }
         binding.ivBack.setOnClickListener { finish() }
 
 
@@ -54,19 +50,49 @@ class GroupAddActivity : AppCompatActivity() {
 
     private fun groupSave(){
 
-        friends = recyclerViewAdapter?.resultChecked()!!
-        if(friends.size==0) return
-//        userRef.document(userId).collection("Group").get().addOnCompleteListener {
-//
-//        }
+        friends = recyclerViewAdapter?.checkedResult()!!
+        var isJoin: MutableMap<String, Boolean> = java.util.HashMap()
+        var groupNameSet: MutableMap<String, String> = java.util.HashMap()
+        var str:StringBuffer = StringBuffer()
 
-
-        val str:StringBuffer = StringBuffer()
-        for (i in friends){
-            str.append(i.name)
+        if(friends.size==0){
+            Toast.makeText(this, "그룹원 지정 안됨", Toast.LENGTH_SHORT).show()
+            return
+        }
+        val groupName:String = binding.etGroupName.text.toString()
+        groupName.trim()
+        if (groupName.length < 1){
+            Toast.makeText(this, "그룹명 지정 안됨", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        AlertDialog.Builder(this).setMessage(str).show()
+        for (i in friends) str.append("${i.name}, ")
+        str.deleteCharAt(str.length-2)
+
+        AlertDialog.Builder(this).setTitle("Group : $groupName").setMessage("Members\n\n$str").setPositiveButton("저장") { d, w ->
+            groupNameSet["groupName"]=groupName
+            userRef.document(userId).collection("groups").document(groupName).set(groupNameSet)
+            for (i in friends){
+                // 내 groups 에 그룹원들 추가
+                userRef.document(i.id).get().addOnSuccessListener {
+                    isJoin["isJoin"] = false
+                    userRef.document(userId).collection("groups").document(groupName).collection("members").document(i.id).set(it)
+                    userRef.document(userId).collection("groups").document(groupName).collection("members").document(i.id).update(isJoin as Map<String, Any>)
+                    userRef.document(userId).get().addOnSuccessListener { it2 ->
+                        isJoin["isJoin"]=true
+                        userRef.document(i.id).collection("groups").document(groupName).collection("members").document(userId).set(it2)
+                        userRef.document(i.id).collection("groups").document(groupName).collection("members").document(userId).update(isJoin as Map<String, Any>)
+                    }
+                }.isComplete
+                val intent = intent
+                setResult(RESULT_OK, intent)
+
+                finish()
+
+            }
+        }.setNegativeButton("취소"){d,w-> return@setNegativeButton }.show()
+
+
 
     }
 
@@ -79,10 +105,8 @@ class GroupAddActivity : AppCompatActivity() {
             adapter = recyclerViewAdapter
             layoutManager = LinearLayoutManager(this@GroupAddActivity)
         }
-        val firebaseFirestore = FirebaseFirestore.getInstance()
-        val userRef = firebaseFirestore.collection("users")
-        val pref = this@GroupAddActivity.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
-        val userId:String= pref.getString("userId", null).toString()
+
+
 
         userRef.document(userId).collection("friends").get().addOnSuccessListener { result ->
 

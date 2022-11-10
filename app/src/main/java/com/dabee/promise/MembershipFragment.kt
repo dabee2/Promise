@@ -44,7 +44,7 @@ class MembershipFragment : Fragment() {
 
     lateinit var binding: FragmentMembershipBinding
     lateinit var userAddr:String
-    var friedns:MutableList<FriendsItem> = mutableListOf()
+    var friends:MutableList<FriendsItem> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +82,6 @@ class MembershipFragment : Fragment() {
             editor.commit()
             view.clearFocus()
             hideKeyBoard()
-
         }
 
         // 데이터베이스에서 내정보 불러오기
@@ -95,7 +94,6 @@ class MembershipFragment : Fragment() {
             val userImg =it.get("userImgUrl")
             binding.tvNickname2.text = userName.toString()
             Glide.with(this).load(userImg).error(R.drawable.images).into(binding.civProfile)
-
         }
 
         friendLoad()
@@ -134,8 +132,8 @@ class MembershipFragment : Fragment() {
 
                     var id:String? = it.get("userId") as String?
                     if(id == code ){
-                        val frname = it.get("userName")as String?
-                        Toast.makeText(context, "$frname 님이 친구 추가 되었습니다", Toast.LENGTH_SHORT).show()
+                        val frName = it.get("userName")as String?
+                        Toast.makeText(context, "$frName 님이 친구 추가 되었습니다", Toast.LENGTH_SHORT).show()
                         // DB 친구 저장
                         userRef.document(userId).collection("friends").document(it.get("userId") as String).set(it)
                         userRef.document(userId).get().addOnSuccessListener {
@@ -170,7 +168,7 @@ class MembershipFragment : Fragment() {
     }
 
     private fun friendLoad(){
-        binding.recycler.adapter = RecyclerAdapterFriends(requireContext(),friedns)
+        binding.recycler.adapter = RecyclerAdapterFriends(requireContext(),friends)
         // 데이터베이스에서 내정보 불러오기
         val firebaseFirestore = FirebaseFirestore.getInstance()
         val userRef = firebaseFirestore.collection("users")
@@ -179,7 +177,7 @@ class MembershipFragment : Fragment() {
 
 
         userRef.document(userId).collection("friends").get().addOnSuccessListener { result ->
-            friedns.clear()
+            friends.clear()
             for (document in result){
 
                 // 데이터가 바뀐 친구 갱신
@@ -194,13 +192,10 @@ class MembershipFragment : Fragment() {
 
 
                 val item = FriendsItem(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String)
-                friedns.add(item)
+                friends.add(item)
             }
             binding.recycler.adapter?.notifyDataSetChanged()
-
         }
-
-
     }
 
 
