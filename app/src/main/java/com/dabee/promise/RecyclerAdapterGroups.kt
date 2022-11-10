@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -58,7 +60,7 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
                     // 데이터가 바뀐 친구 갱신
                     userRef.document(doc.id).get().addOnSuccessListener {
                         var isJoin:Boolean = doc.get("isJoin")as Boolean
-                        if(isJoin!=false) userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).set(it)
+                        if(isJoin) userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).set(it)
 
                     }
 
@@ -70,6 +72,9 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
                 }
                 holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
             }
+
+
+
         }
         friendLoad()
 
@@ -77,29 +82,35 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
 
 
-//        holder.itemView.setOnLongClickListener {
-//
-//            AlertDialog.Builder(context).setTitle("친구삭제").setMessage("\n${item.name} 님을 삭제하시겠습니까?").setNegativeButton("취소"){dialog,v->}.setPositiveButton("삭제"){dialog,d->
-//
-//                val firebaseFirestore = FirebaseFirestore.getInstance()
-//                val userRef = firebaseFirestore.collection("users")
-//                val pref = context.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
-//                val userId:String= pref.getString("userId", null).toString()
-//
-//                userRef.document(userId).collection("friends").document(item.id).delete().addOnCompleteListener{
-//
-//                    if (it.isSuccessful) Toast.makeText(context,"삭제완료",Toast.LENGTH_SHORT).show()
-//                    userRef.document(item.id).collection("friends").document(userId).delete().addOnSuccessListener { }
-//
-//                }
-//
-//                items.remove(FriendsItem(item.name,item.img,item.id))
-////                notifyItemChanged(position)
-//                notifyDataSetChanged()
-//            }.show()
-//
-//            return@setOnLongClickListener true
-//        }
+        holder.itemView.setOnLongClickListener {
+
+            AlertDialog.Builder(context).setTitle("그룹 나가기").setMessage("\n${item.groupName} 에서 나가시겠습니까?").setNegativeButton("취소"){ dialog, v->}.setPositiveButton("나가기"){ dialog, d->
+
+                val firebaseFirestore = FirebaseFirestore.getInstance()
+                val userRef = firebaseFirestore.collection("users")
+                val pref = context.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+                val userId:String= pref.getString("userId", null).toString()
+
+                // 친구 group에서  내 정보 지우기
+                userRef.document(userId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
+                    for (doc in result){
+                        userRef.document(doc.id).collection("groups").document(item.groupName).collection("members").document(userId).delete().addOnSuccessListener {  }
+                        userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).delete().addOnSuccessListener {  }
+                    }
+                }
+
+                // 내 group 지우기
+                userRef.document(userId).collection("groups").document(item.groupName).delete().addOnSuccessListener{
+                    Toast.makeText(context,"${item.groupName} 나가기 완료",Toast.LENGTH_SHORT).show()
+
+                }
+                items.remove(item)
+                notifyDataSetChanged()
+
+            }.show()
+
+            return@setOnLongClickListener true
+        }
 
 
     }

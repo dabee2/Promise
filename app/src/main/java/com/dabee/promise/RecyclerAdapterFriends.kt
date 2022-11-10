@@ -54,7 +54,6 @@ class RecyclerAdapterFriends constructor(val context:Context, var items:MutableL
                 }
 
                 items.remove(FriendsItem(item.name,item.img,item.id))
-//                notifyItemChanged(position)
                 notifyDataSetChanged() 
             }.show()
 

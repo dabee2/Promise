@@ -38,31 +38,6 @@ class RecyclerAdapterGroupChild constructor(val context:Context, var items:Mutab
         Glide.with(context).load(item.img).error(R.drawable.images).into(holder.binding.civImg)
 
 
-//        holder.itemView.setOnLongClickListener {
-//
-//            AlertDialog.Builder(context).setTitle("친구삭제").setMessage("\n${item.name} 님을 삭제하시겠습니까?").setNegativeButton("취소"){dialog,v->}.setPositiveButton("삭제"){dialog,d->
-//
-//                val firebaseFirestore = FirebaseFirestore.getInstance()
-//                val userRef = firebaseFirestore.collection("users")
-//                val pref = context.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
-//                val userId:String= pref.getString("userId", null).toString()
-//
-//                userRef.document(userId).collection("friends").document(item.id).delete().addOnCompleteListener{
-//
-//                    if (it.isSuccessful) Toast.makeText(context,"삭제완료",Toast.LENGTH_SHORT).show()
-//                    userRef.document(item.id).collection("friends").document(userId).delete().addOnSuccessListener { }
-//
-//                }
-//
-//                items.remove(FriendsItem(item.name,item.img,item.id))
-////                notifyItemChanged(position)
-//                notifyDataSetChanged()
-//            }.show()
-//
-//            return@setOnLongClickListener true
-//        }
-
-
     }
 
     //함수의 return 코드 단순화 [ 할당 연산자 = ]
