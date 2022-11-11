@@ -41,8 +41,7 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
         val item:GroupsItem = items.get(position)
         holder.binding.tvGroupName.text = item.groupName
-        holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,item.friendsItem)
-        holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
+
 
 
         fun friendLoad(){
@@ -56,7 +55,7 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
 
             userRef.document(userId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
-                friends.clear()
+                item.friendsItem.clear()
                 for (doc in result){
 
                     // 데이터가 바뀐 친구 갱신
@@ -78,7 +77,7 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
 
         }
-//        friendLoad()
+        friendLoad()
 
 
 
