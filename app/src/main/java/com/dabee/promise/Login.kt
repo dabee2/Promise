@@ -126,7 +126,7 @@ class Login : AppCompatActivity() {
         val userRef = firebaseFirestore.collection("users")
 
         // 유저 고유 ID 생성
-        if(!isData) userId = userRef.document().id
+//        if(!isData) userId = userRef.document().id
 
 
         //우선 이미지 파일 Firebase Storage(저장소)에 업로드부터 해야함.
@@ -196,9 +196,6 @@ class Login : AppCompatActivity() {
 
 
 
-
-
-
     var resultLauncher =
         registerForActivityResult<Intent, ActivityResult>(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode != RESULT_CANCELED) {
@@ -213,75 +210,54 @@ class Login : AppCompatActivity() {
 
     fun login(){
 
-        // 이메일 로그인 콜백
-        val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-            if (error != null) {
-                Log.e(TAG, "로그인 실패 $error")
-            } else if (token != null) {
-                Log.e(TAG, "로그인 성공 ${token.accessToken}")
+        // 권장 : 카카오톡 로그인을 먼저 시도하고 불가능할 경우 카카오계정 로그인을 시도.
+
+        // 로그인 요청결과에 반응하는 콜백함수
+        val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+            if(token != null){
+                Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+                loadUserInfo() //사용자 정보 읽어오기
             }
         }
 
+        // 디바이스에 카톡이 설치되어 있는지 확인..
+        if( UserApiClient.instance.isKakaoTalkLoginAvailable(this) ){
 
+            //카카오톡 로그인요청
+            UserApiClient.instance.loginWithKakaoTalk(this, callback = callback)
 
-        // 카카오톡 설치 확인
-        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-            // 카카오톡 로그인
-            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
-                // 로그인 실패 부분
-                if (error != null) {
-                    Log.e(TAG, "로그인 실패 $error")
-                    // 사용자가 취소
-                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled ) {
-                        return@loginWithKakaoTalk
-                    }
-                    // 다른 오류
-                    else {
-                        UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
-                    }
-                }// 로그인 성공 부분
-                else if (token != null) {
-                    Log.e(TAG, "로그인 성공 ${token.accessToken}")
-                }
-            }
-        } else {
-            UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
-        }
-        if (AuthApiClient.instance.hasToken()) {
-            UserApiClient.instance.accessTokenInfo { _, error ->
-                if (error != null) {
-                    if (error is KakaoSdkError && error.isInvalidTokenError() == true) {
-                        //로그인 필요
-                    }
-                    else {
-                        //기타 에러
-                    }
-                }
-                else {
-                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
-                }
-            }
-        }
-        else {
-            //로그인 필요
+        }else{
+
+            //카카오계정 로그인요청
+            UserApiClient.instance.loginWithKakaoAccount(this, callback= callback)
 
         }
+
+    }
+
+    // 로그인 성공했을때 사용자 정보 얻어오기는 기능메소드
+    fun loadUserInfo(){
+
         UserApiClient.instance.me { user, error ->
-            if (error != null) {
-                Log.e(TAG, "사용자 정보 요청 실패 $error")
-            } else if (user != null) {
+            if( user != null ){
                 Log.e(TAG, "사용자 정보 요청 성공 : $user")
                 binding.tvNickname.setText(user.kakaoAccount?.profile?.nickname)
                 Glide.with(this).load(user.kakaoAccount?.profile?.profileImageUrl).error(R.drawable.images).into(binding.civProfile)
                 userEmail = user.kakaoAccount?.email.toString()
 
+                userId= user.id.toString()
 
                 imgUrl = user.kakaoAccount?.profile?.profileImageUrl.toString()
                 isKaKaologin=true
                 binding.btn.visibility =View.VISIBLE
-            }
+
+            }else if(error != null) Log.e(TAG, "사용자 정보 요청 실패 $error")
         }
+
     }
+
+
+
 
     private fun friendLoad(){
         // 데이터베이스에서 내정보 불러오기
@@ -309,8 +285,78 @@ class Login : AppCompatActivity() {
 
     }
 
-
-
+//    fun login(){
+//
+//        // 이메일 로그인 콜백
+//        val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+//            if (error != null) {
+//                Log.e(TAG, "로그인 실패 $error")
+//            } else if (token != null) {
+//                Log.e(TAG, "로그인 성공 ${token.accessToken}")
+//            }
+//        }
+//
+//
+//
+//        // 카카오톡 설치 확인
+//        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
+//            // 카카오톡 로그인
+//            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
+//                // 로그인 실패 부분
+//                if (error != null) {
+//                    Log.e(TAG, "로그인 실패 $error")
+//                    // 사용자가 취소
+//                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled ) {
+//                        return@loginWithKakaoTalk
+//                    }
+//                    // 다른 오류
+//                    else {
+//                        UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
+//                    }
+//                }// 로그인 성공 부분
+//                else if (token != null) {
+//                    Log.e(TAG, "로그인 성공 ${token.accessToken}")
+//                }
+//            }
+//        } else {
+//            UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
+//        }
+//        if (AuthApiClient.instance.hasToken()) {
+//            UserApiClient.instance.accessTokenInfo { _, error ->
+//                if (error != null) {
+//                    if (error is KakaoSdkError && error.isInvalidTokenError() == true) {
+//                        //로그인 필요
+//                    }
+//                    else {
+//                        //기타 에러
+//                    }
+//                }
+//                else {
+//                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
+//                }
+//            }
+//        }
+//        else {
+//            //로그인 필요
+//
+//        }
+//        UserApiClient.instance.me { user, error ->
+//            if (error != null) {
+//                Log.e(TAG, "사용자 정보 요청 실패 $error")
+//            } else if (user != null) {
+//                Log.e(TAG, "사용자 정보 요청 성공 : $user")
+//                binding.tvNickname.setText(user.kakaoAccount?.profile?.nickname)
+//                Glide.with(this).load(user.kakaoAccount?.profile?.profileImageUrl).error(R.drawable.images).into(binding.civProfile)
+//                userEmail = user.kakaoAccount?.email.toString()
+//
+//
+//                imgUrl = user.kakaoAccount?.profile?.profileImageUrl.toString()
+//                isKaKaologin=true
+//                binding.btn.visibility =View.VISIBLE
+//            }
+//        }
+//    }
+//
 
 
 

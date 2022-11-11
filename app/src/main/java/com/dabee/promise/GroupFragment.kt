@@ -35,6 +35,7 @@ class GroupFragment : Fragment() {
 
 
     var groups:MutableList<GroupsItem> = mutableListOf()
+    var friendsItem:MutableList<FriendsItem> = mutableListOf()
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private val userRef = firebaseFirestore.collection("users")
 
@@ -59,7 +60,7 @@ class GroupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val iv:ImageView = view.findViewById(R.id.iv)
         binding.recycler.adapter?.notifyDataSetChanged()
-        binding.ivAgree.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.my_color5))
+
         groupLoad()
 
         iv.setOnClickListener {
@@ -78,6 +79,16 @@ class GroupFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.recycler.adapter?.notifyDataSetChanged()
+        joinNotice()
+        groupLoad()
+    }
+
+    private fun joinNotice(){
+        val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        val userId:String= pref.getString("userId", null).toString()
+                userRef.document(userId).collection("join").get().addOnSuccessListener { result ->
+                    if( result.size() > 1) binding.ivAgree.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.my_color5))
+            }
     }
 
     private fun joinLoad(){
@@ -110,9 +121,32 @@ class GroupFragment : Fragment() {
             groups.clear()
             //그룹 불러오기
             for (doc in result){
-                val item = GroupsItem(doc.id)
-                groups.add(item)
+
+                userRef.document(userId).collection("groups").document(doc.id).collection("members").get().addOnSuccessListener { member ->
+                    friendsItem.clear()
+                    for (m in member){
+
+                        // 데이터가 바뀐 친구 갱신
+                        userRef.document(m.id).get().addOnSuccessListener {
+                            var isJoin:Boolean = m.get("isJoin")as Boolean
+                            if(isJoin) userRef.document(userId).collection("groups").document(doc.id).collection("members").document(m.id).set(it)
+                        }
+
+                        var datas: MutableMap<String, String> = m["data"] as MutableMap<String, String> // 해시맵
+                        val item = FriendsItem(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String)
+                        friendsItem.add(item)
+                    }
+
+                }
+                val item2 = GroupsItem(doc.id,friendsItem)
+                groups.add(item2)
+
+
+
+
             }
+
+
             binding.recycler.adapter?.notifyDataSetChanged()
         }
 

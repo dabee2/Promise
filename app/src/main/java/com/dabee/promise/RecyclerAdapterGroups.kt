@@ -41,11 +41,13 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
         val item:GroupsItem = items.get(position)
         holder.binding.tvGroupName.text = item.groupName
+        holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,item.friendsItem)
+        holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
 
 
         fun friendLoad(){
 
-            holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,friends)
+            holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,item.friendsItem)
             // 데이터베이스에서 내정보 불러오기
             val firebaseFirestore = FirebaseFirestore.getInstance()
             val userRef = firebaseFirestore.collection("users")
@@ -76,7 +78,7 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
 
         }
-        friendLoad()
+//        friendLoad()
 
 
 
