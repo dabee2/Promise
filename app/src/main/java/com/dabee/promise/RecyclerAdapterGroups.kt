@@ -7,30 +7,25 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.dabee.promise.databinding.RecyclerItemGroupBinding
-import com.dabee.promise.databinding.RecyclerItemMembershipBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
 
 class RecyclerAdapterGroups constructor(val context:Context, var items:MutableList<GroupsItem>): RecyclerView.Adapter<RecyclerAdapterGroups.VH>(){
-
     var friends:MutableList<FriendsItem> = mutableListOf()
 
     inner class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         val binding:RecyclerItemGroupBinding = RecyclerItemGroupBinding.bind(itemView)
+
     }
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val layoutInflater:LayoutInflater = LayoutInflater.from(context)
-
         val itemView:View = layoutInflater.inflate(R.layout.recycler_item_group,parent,false)
-
         return VH(itemView)
     }
 
@@ -38,49 +33,50 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
     override fun onBindViewHolder(holder: VH, position: Int) {
 
+        // 데이터베이스에서 내정보 불러오기
+        val firebaseFirestore = FirebaseFirestore.getInstance()
+        val userRef = firebaseFirestore.collection("users")
+        val pref = context.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        val userId:String= pref.getString("userId", null).toString()
+
 
         val item:GroupsItem = items.get(position)
         holder.binding.tvGroupName.text = item.groupName
+        holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,friends)
+        for (i in 0..items.size){
+            holder.binding.ivBg.callOnClick()
+        }
 
-
-
-        fun friendLoad(){
-
-            holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,item.friendsItem)
-            // 데이터베이스에서 내정보 불러오기
-            val firebaseFirestore = FirebaseFirestore.getInstance()
-            val userRef = firebaseFirestore.collection("users")
-            val pref = context.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
-            val userId:String= pref.getString("userId", null).toString()
-
-
+        holder.binding.ivBg.setOnClickListener{
             userRef.document(userId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
-                item.friendsItem.clear()
+                friends.clear()
                 for (doc in result){
 
-                    // 데이터가 바뀐 친구 갱신
                     userRef.document(doc.id).get().addOnSuccessListener {
-                        var isJoin:Boolean = doc.get("isJoin")as Boolean
-                        if(isJoin) userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).set(it)
+                        var isJoin: Boolean = doc.get("isJoin") as Boolean
+                        if (isJoin) {
+                            var isJoin: MutableMap<String, Boolean> = HashMap()
+                            isJoin["isJoin"] = true
+                            userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).set(it)
+                            userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).update(isJoin as Map<String, Any>)
+                        }
 
                     }
-
                     var datas: MutableMap<String, String> = doc["data"] as MutableMap<String, String> // 해시맵
                     val item = FriendsItem(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String)
+
                     friends.add(item)
 
 
+
                 }
+
                 holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
+
             }
 
 
-
         }
-        friendLoad()
-
-
-
 
 
         holder.itemView.setOnLongClickListener {
@@ -106,7 +102,7 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
                 }
                 items.remove(item)
-                notifyDataSetChanged()
+                notifyItemRemoved(position)
 
             }.show()
 
@@ -114,6 +110,20 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
         }
 
 
+    }
+
+    override fun onViewRecycled(holder: VH) {
+        super.onViewRecycled(holder)
+        holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,friends)
+        friends.clear()
+        holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
+
+    }
+
+    override fun getItemViewType(position: Int): Int {
+
+
+        return position
     }
 
 

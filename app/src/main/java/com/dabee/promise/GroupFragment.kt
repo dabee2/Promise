@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dabee.promise.databinding.FragmentGroupBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -32,10 +33,14 @@ class GroupFragment : Fragment() {
     private var param2: String? = null
 
     val binding by lazy { FragmentGroupBinding.inflate(layoutInflater) }
+    var datas: MutableMap<String,String> = mutableMapOf()
 
 
     var groups:MutableList<GroupsItem> = mutableListOf()
+    var groups1:MutableList<GroupsItem> = mutableListOf()
     var friendsItem:MutableList<FriendsItem> = mutableListOf()
+    var friends:MutableList<FriendsItem> = mutableListOf()
+
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private val userRef = firebaseFirestore.collection("users")
 
@@ -59,9 +64,9 @@ class GroupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val iv:ImageView = view.findViewById(R.id.iv)
-        binding.recycler.adapter?.notifyDataSetChanged()
 
-        groupLoad()
+
+
 
         iv.setOnClickListener {
             val intent = Intent(context,GroupAddActivity::class.java)
@@ -78,9 +83,11 @@ class GroupFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        binding.recycler.adapter?.notifyDataSetChanged()
+
+
         joinNotice()
         groupLoad()
+
     }
 
     private fun joinNotice(){
@@ -89,6 +96,13 @@ class GroupFragment : Fragment() {
                 userRef.document(userId).collection("join").get().addOnSuccessListener { result ->
                     if( result.size() > 1) binding.ivAgree.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.my_color5))
             }
+        userRef.document("ㄱ1").collection("join").get().addOnSuccessListener { result ->
+            for (doc in result){
+//                Toast.makeText(binding.root.context, "${doc.get("id")}", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
     }
 
     private fun joinLoad(){
@@ -106,53 +120,38 @@ class GroupFragment : Fragment() {
 //        }
 
 
-
     }
 
-    private fun groupLoad(){
-        binding.recycler.adapter = RecyclerAdapterGroups(requireContext(),groups)
+    private fun groupLoad() {
+
+        binding.recycler.adapter = RecyclerAdapterGroups(requireContext(), groups)
+
+
         // 데이터베이스에서 내정보 불러오기
 
         val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
-        val userId:String= pref.getString("userId", null).toString()
+        val userId: String = pref.getString("userId", null).toString()
 
 
         userRef.document(userId).collection("groups").get().addOnSuccessListener { result ->
+
             groups.clear()
             //그룹 불러오기
-            for (doc in result){
+            for (group in result) {
 
-                userRef.document(userId).collection("groups").document(doc.id).collection("members").get().addOnSuccessListener { member ->
-                    friendsItem.clear()
-                    for (m in member){
-
-                        // 데이터가 바뀐 친구 갱신
-                        userRef.document(m.id).get().addOnSuccessListener {
-                            var isJoin:Boolean = m.get("isJoin")as Boolean
-                            if(isJoin) userRef.document(userId).collection("groups").document(doc.id).collection("members").document(m.id).set(it)
-                        }
-
-                        var datas: MutableMap<String, String> = m["data"] as MutableMap<String, String> // 해시맵
-                        val item = FriendsItem(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String)
-                        friendsItem.add(item)
-                    }
-
-                }
-                val item2 = GroupsItem(doc.id,friendsItem)
+                val item2 = GroupsItem(group.id)
                 groups.add(item2)
 
+                }
 
+            binding.recycler.adapter?.notifyDataSetChanged()
 
 
             }
 
-
-            binding.recycler.adapter?.notifyDataSetChanged()
-        }
+}
 
 
-
-    }
 
 
 
@@ -167,30 +166,30 @@ class GroupFragment : Fragment() {
 
         // 돌려보낸 결과가 OK인지 .. 확인
         if (result.resultCode == Activity.RESULT_OK) {
-            groupLoad()
+
         } else {
             Toast.makeText(context, "그룹 만들기 취소", Toast.LENGTH_SHORT).show()
         }
     }
 
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MyFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MyFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        companion object {
+            /**
+             * Use this factory method to create a new instance of
+             * this fragment using the provided parameters.
+             *
+             * @param param1 Parameter 1.
+             * @param param2 Parameter 2.
+             * @return A new instance of fragment MyFragment.
+             */
+            // TODO: Rename and change types and number of parameters
+            @JvmStatic
+            fun newInstance(param1: String, param2: String) =
+                MyFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PARAM1, param1)
+                        putString(ARG_PARAM2, param2)
+                    }
                 }
-            }
-    }
+        }
 }

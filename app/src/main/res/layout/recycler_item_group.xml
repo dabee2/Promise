@@ -3,52 +3,130 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:cardCornerRadius="8dp"
     app:cardElevation="8dp"
     android:layout_marginHorizontal="2dp"
     android:layout_marginVertical="2dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp"
+        android:layout_height="150dp"
+
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/iv1"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="205dp"
+            android:background="@drawable/notebook_left" />
 
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginVertical="8dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/paperclip1"
+            android:layout_toLeftOf="@+id/Rlativlay2"/>
+
+
+        <TextView
+            android:id="@+id/tv_group_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fontFamily="@font/binggrae_bold"
+            android:layout_toLeftOf="@+id/Rlativlay2"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_group_name"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="150dp"
+            android:layout_below="@id/tv_group_title"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toLeftOf="@+id/Rlativlay2"
             android:fontFamily="@font/binggrae_bold"
+            android:gravity="center"
             android:text="name"
             android:textColor="@color/black"
             android:textSize="16sp"
-            android:gravity="center"
             android:textStyle="bold" />
-        <TextView
-            android:id="@+id/tv_members"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:fontFamily="@font/binggrae_bold"
-            android:text="members"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:gravity="center"
-            android:textStyle="bold"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rycycler_rycycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:orientation="horizontal"/>
 
 
 
+        <RelativeLayout
+            android:id="@+id/Rlativlay2"
+            android:layout_width="220dp"
+            android:layout_height="150dp"
+            android:layout_alignParentRight="true">
+            <ImageView
+                android:id="@+id/iv_bg"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/notebook">
 
 
-    </LinearLayout>
+
+            </ImageView>
+
+            <TextView
+                android:id="@+id/tv_members"
+                android:layout_width="wrap_content"
+                android:layout_height="150dp"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/Rlativlay"
+
+                android:fontFamily="@font/binggrae_bold"
+                android:gravity="center"
+                android:paddingLeft="12dp"
+                android:text="M\nE\nM\nB\nE\nR\nS"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+            <RelativeLayout
+                android:id="@+id/Rlativlay"
+                android:layout_width="180dp"
+                android:layout_height="150dp"
+                android:layout_alignParentRight="true"
+                android:paddingRight="12dp"
+
+                android:paddingVertical="10dp">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rycycler_rycycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal"
+                    android:padding="2dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="2" />
+
+
+
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
 
 
 </androidx.cardview.widget.CardView>

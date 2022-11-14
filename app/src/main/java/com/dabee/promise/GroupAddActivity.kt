@@ -42,8 +42,6 @@ class GroupAddActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener { groupSave() }
         binding.ivBack.setOnClickListener { finish() }
 
-
-
     }
 
 
@@ -72,18 +70,26 @@ class GroupAddActivity : AppCompatActivity() {
         AlertDialog.Builder(this).setTitle("Group : $groupName").setMessage("Members\n\n$str").setPositiveButton("저장") { d, w ->
             groupNameSet["groupName"]=groupName
             userRef.document(userId).collection("groups").document(groupName).set(groupNameSet)
+            userRef.document(userId).get().addOnSuccessListener {
+                isJoin["isJoin"]=true
+                userRef.document(userId).collection("groups").document(groupName).collection("members").document(userId).set(it)
+                userRef.document(userId).collection("groups").document(groupName).collection("members").document(userId).update(isJoin as Map<String, Any>)
+            }
             for (i in friends){
                 // 내 groups 에 그룹원들 추가
                 userRef.document(i.id).get().addOnSuccessListener {
                     isJoin["isJoin"] = false
                     userRef.document(userId).collection("groups").document(groupName).collection("members").document(i.id).set(it)
                     userRef.document(userId).collection("groups").document(groupName).collection("members").document(i.id).update(isJoin as Map<String, Any>)
+
                     userRef.document(userId).get().addOnSuccessListener { it2 ->
                         isJoin["isJoin"]=true
                         userRef.document(i.id).collection("join").document(groupName).set(it2)
                         userRef.document(i.id).collection("groups").document(groupName).collection("members").document(userId).set(it2)
                         userRef.document(i.id).collection("groups").document(groupName).collection("members").document(userId).update(isJoin as Map<String, Any>)
+
                     }
+
                 }
                 val intent = intent
                 setResult(RESULT_OK, intent)

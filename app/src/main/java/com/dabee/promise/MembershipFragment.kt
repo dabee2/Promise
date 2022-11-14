@@ -193,6 +193,7 @@ class MembershipFragment : Fragment() {
 
                 val item = FriendsItem(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String)
                 friends.add(item)
+
             }
             binding.recycler.adapter?.notifyDataSetChanged()
         }
