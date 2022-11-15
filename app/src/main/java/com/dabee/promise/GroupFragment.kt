@@ -66,7 +66,6 @@ class GroupFragment : Fragment() {
         binding.iv.setOnClickListener {
             val intent = Intent(context,GroupAddActivity::class.java)
             intentActivityResultLauncher.launch(intent)
-
         }
         binding.ivNotification.setOnClickListener {
             val intent = Intent(context,GroupJoinActivity::class.java)

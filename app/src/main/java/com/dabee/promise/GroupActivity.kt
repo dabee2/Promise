@@ -1,8 +1,9 @@
 package com.dabee.promise
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.dabee.promise.databinding.ActivityGroupBinding
+import net.daum.mf.map.api.MapView
 
 class GroupActivity : AppCompatActivity() {
 
@@ -12,6 +13,16 @@ class GroupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        intent = intent
+        val groupName: String = intent.getStringExtra("groupName").toString()
+        binding.tvTitle.text =groupName
+        binding.iv.setOnClickListener { finish() }
+
+        val mapView = MapView(this)
+
+        val mapViewContainer = binding.mapView
+//        val mapViewContainer = findViewById<View>(R.id.map_view) as ViewGroup
+        mapViewContainer.addView(mapView)
 
     }
 }

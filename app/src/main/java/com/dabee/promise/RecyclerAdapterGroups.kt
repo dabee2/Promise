@@ -81,7 +81,6 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
         holder.itemView.setOnClickListener{
             val intent = Intent(context,GroupActivity::class.java)
-//            intent.putExtra("addr",)
             intent.putExtra("groupName", item.groupName)
             context.startActivity(intent)
 

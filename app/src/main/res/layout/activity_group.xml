@@ -17,7 +17,7 @@
 
 
         <TextView
-            android:id="@+id/tv"
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -44,14 +44,67 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_margin="10dp"
-        android:layout_below="@id/linear"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linear"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/bg_et"
+            android:padding="5dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/rv_promis"
+            android:layout_below="@id/map_view"
+            android:background="@drawable/bg_et"
+            android:layout_above="@id/rv_members"
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/tv_tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="그룹원들 중간위치"/>
+
+        </RelativeLayout>
 
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_promis"
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/map_view"
+            android:layout_alignParentRight="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:padding="5dp"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/bg_et"
+            android:orientation="vertical"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_members"
+            android:layout_width="190dp"
+            android:layout_height="120dp"
+            android:layout_toLeftOf="@id/rv_promis"
+            android:layout_alignParentBottom="true"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:background="@drawable/bg_et"
+            android:orientation="horizontal"/>
+
+
+
+
+
+    </RelativeLayout>
 
 
 
 </RelativeLayout>
+
