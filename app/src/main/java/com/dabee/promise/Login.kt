@@ -146,16 +146,17 @@ class Login : AppCompatActivity() {
 
 
         fun saveUserData(){
-
-
             //유저 정보 DB저장
             var profile: MutableMap<String, String> = HashMap()
             profile["userName"] = userName
             profile["userImgUrl"] = imgUrl
             profile["userId"] = userId
             profile["userEmail"] =userEmail
+            userRef.document(userId).update(profile as MutableMap<String, Any>)
+//            if(!isData){
+//                userRef.document(userId).set(profile)
+//            }else
 
-            userRef.document(userId).set(profile)
 
             // 앱을 처음 실행할때 한번만 닉네임과 사진을 입력하도록 phone 에 닉네임과 프로필 url을 저장
             //2. SharedPreferences 에 저장

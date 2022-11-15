@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MyFragment">
+    tools:context=".GroupActivity">
 
 
     <LinearLayout
@@ -15,12 +15,13 @@
         android:orientation="horizontal">
 
 
+
         <TextView
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:text="My Group"
+            android:text="GroupName"
             android:layout_gravity="center"
             android:textSize="32sp"
             android:textStyle="bold"
@@ -31,35 +32,24 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
+
         <ImageView
-            android:id="@+id/iv_notification"
+            android:id="@+id/iv"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginRight="16dp"
-            android:src="@drawable/ic_baseline_notifications_24"/>
-
-
-            <ImageView
-                android:id="@+id/iv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/ic_baseline_person_add_alt_1_24" />
+            android:src="@drawable/ic_baseline_subdirectory_arrow_left_24" />
 
     </LinearLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler"
+    <RelativeLayout
+        android:id="@+id/map_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/linear"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"
-        android:clipToPadding="false"
-        android:paddingBottom="80dp"/>
+        android:layout_height="300dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/linear"/>
+
 
 
 

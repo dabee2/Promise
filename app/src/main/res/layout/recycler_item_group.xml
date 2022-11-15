@@ -48,6 +48,15 @@
             android:textStyle="bold" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Touch!"
+            android:textColor="@color/black"
+            android:layout_toLeftOf="@id/Rlativlay2"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="8dp"/>
+
+        <TextView
             android:id="@+id/tv_group_name"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -83,12 +92,13 @@
                 android:id="@+id/tv_members"
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
-                android:layout_alignParentLeft="true"
                 android:layout_toLeftOf="@id/Rlativlay"
-
                 android:fontFamily="@font/binggrae_bold"
                 android:gravity="center"
-                android:paddingLeft="12dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="3dp"
+                android:padding="6dp"
+                android:background="@drawable/bg_et3"
                 android:text="M\nE\nM\nB\nE\nR\nS"
                 android:textColor="@color/black"
                 android:textSize="14sp"
@@ -97,7 +107,7 @@
 
             <RelativeLayout
                 android:id="@+id/Rlativlay"
-                android:layout_width="180dp"
+                android:layout_width="175dp"
                 android:layout_height="150dp"
                 android:layout_alignParentRight="true"
                 android:paddingRight="12dp"

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dabee.promise.databinding.ActivityAddGroupBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.properties.Delegates
 
 class GroupAddActivity : AppCompatActivity() {
 
@@ -21,6 +22,8 @@ class GroupAddActivity : AppCompatActivity() {
     val userRef = firebaseFirestore.collection("users")
     lateinit var pref:SharedPreferences
     lateinit var userId:String
+
+
 
     var friends:MutableList<FriendsItem> = mutableListOf()
 
@@ -50,8 +53,11 @@ class GroupAddActivity : AppCompatActivity() {
 
         friends = recyclerViewAdapter?.checkedResult()!!
         var isJoin: MutableMap<String, Boolean> = java.util.HashMap()
+
         var groupNameSet: MutableMap<String, String> = java.util.HashMap()
         var str:StringBuffer = StringBuffer()
+        var isturn:String? = null
+
 
         if(friends.size==0){
             Toast.makeText(this, "그룹원 지정 안됨", Toast.LENGTH_SHORT).show()
@@ -67,7 +73,28 @@ class GroupAddActivity : AppCompatActivity() {
         for (i in friends) str.append("${i.name}, ")
         str.deleteCharAt(str.length-2)
 
+        fun isRturn1(){
+            isturn = "중복"
+        }
+
+        userRef.document(userId).collection("groups").get().addOnSuccessListener { result ->
+            for (doc in result){
+                if (doc.id == groupName){
+                    isRturn1()
+                    return@addOnSuccessListener
+                }
+            }
+        }
+////////////////요기
+        Toast.makeText(binding.root.context, "$isturn", Toast.LENGTH_SHORT).show()
+        if (isturn == "중복") {
+            Toast.makeText(binding.root.context, "그룹명 중복", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
         AlertDialog.Builder(this).setTitle("Group : $groupName").setMessage("Members\n\n$str").setPositiveButton("저장") { d, w ->
+
             groupNameSet["groupName"]=groupName
             userRef.document(userId).collection("groups").document(groupName).set(groupNameSet)
             userRef.document(userId).get().addOnSuccessListener {
@@ -83,10 +110,10 @@ class GroupAddActivity : AppCompatActivity() {
                     userRef.document(userId).collection("groups").document(groupName).collection("members").document(i.id).update(isJoin as Map<String, Any>)
 
                     userRef.document(userId).get().addOnSuccessListener { it2 ->
-                        isJoin["isJoin"]=true
+//                        isJoin["isJoin"]=true
                         userRef.document(i.id).collection("join").document(groupName).set(it2)
-                        userRef.document(i.id).collection("groups").document(groupName).collection("members").document(userId).set(it2)
-                        userRef.document(i.id).collection("groups").document(groupName).collection("members").document(userId).update(isJoin as Map<String, Any>)
+//                        userRef.document(i.id).collection("groups").document(groupName).collection("members").document(userId).set(it2)
+//                        userRef.document(i.id).collection("groups").document(groupName).collection("members").document(userId).update(isJoin as Map<String, Any>)
 
                     }
 
@@ -97,6 +124,7 @@ class GroupAddActivity : AppCompatActivity() {
                 finish()
 
             }
+
         }.setNegativeButton("취소"){d,w-> return@setNegativeButton }.show()
 
 

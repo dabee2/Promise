@@ -15,7 +15,7 @@ import com.dabee.promise.databinding.RecyclerItemGroupChildBinding
 import com.dabee.promise.databinding.RecyclerItemMembershipBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
-class RecyclerAdapterGroupChild constructor(val context:Context, var items:MutableList<FriendsItem>): RecyclerView.Adapter<RecyclerAdapterGroupChild.VH>(){
+class RecyclerAdapterGroupChild constructor(val context:Context, var items:MutableList<FriendsItem2>): RecyclerView.Adapter<RecyclerAdapterGroupChild.VH>(){
 
     inner class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
@@ -33,9 +33,11 @@ class RecyclerAdapterGroupChild constructor(val context:Context, var items:Mutab
 
     override fun onBindViewHolder(holder: VH, position: Int) {
 
-        val item:FriendsItem = items.get(position)
+        val item:FriendsItem2 = items.get(position)
         holder.binding.tvName.text = item.name
         Glide.with(context).load(item.img).error(R.drawable.images).into(holder.binding.civImg)
+        if (!item.isJoin) holder.binding.tvStatus.visibility = View.VISIBLE
+
 
 
     }

@@ -40,7 +40,8 @@ class MembershipFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    val firebaseFirestore = FirebaseFirestore.getInstance()
+    val userRef = firebaseFirestore.collection("users")
 
     lateinit var binding: FragmentMembershipBinding
     lateinit var userAddr:String
@@ -67,19 +68,32 @@ class MembershipFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         //SharedPreference에 저장되어 있는 userId 얻어오기
         val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
         val userId:String= pref.getString("userId", null).toString()
-        userAddr= pref.getString("userAddr", "").toString()
-        binding.tvAddr2.text=userAddr
-        val editor = pref.edit()
+        userRef.document(userId).get().addOnSuccessListener {
+            userAddr = it.get("userAddress").toString()
+            if(userAddr.equals("null")){
+                var addr: MutableMap<String, String> = HashMap()
+                addr["userAddress"] = ""
+                userAddr = userAddr.replace("null","")
+                userRef.document(userId).update(addr as MutableMap<String, Any>)
+            }
+            binding.tvAddr2.text=userAddr
+        }
+
+
+
+
 
 
         binding.btn.setOnClickListener { clickBtnChange() }
         binding.btnSave.setOnClickListener {
             clickBtnSave()
-            editor.putString("userAddr",userAddr)
-            editor.commit()
+            var userAddrSet: MutableMap<String, String> = java.util.HashMap()
+            userAddrSet["userAddress"]= userAddr
+            userRef.document(userId).update(userAddrSet as Map<String, Any>)
             view.clearFocus()
             hideKeyBoard()
         }

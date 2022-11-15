@@ -1,7 +1,6 @@
 package com.dabee.promise
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.dabee.promise.databinding.RecyclerItemGroupBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
 
-class RecyclerAdapterGroups constructor(val context:Context, var items:MutableList<GroupsItem>): RecyclerView.Adapter<RecyclerAdapterGroups.VH>(){
+class RecyclerAdapterJoinGroups constructor(val context:Context, var items:MutableList<GroupsItem2>): RecyclerView.Adapter<RecyclerAdapterJoinGroups.VH>(){
     var friends:MutableList<FriendsItem2> = mutableListOf()
 
     inner class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -41,14 +40,14 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
         val userId:String= pref.getString("userId", null).toString()
 
 
-        val item:GroupsItem = items.get(position)
+        val item:GroupsItem2 = items.get(position)
         holder.binding.tvGroupName.text = item.groupName
         holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,friends)
         friends.clear()
         holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
 
         holder.binding.ivBg.setOnClickListener{
-            userRef.document(userId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
+            userRef.document(item.groupId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
                 friends.clear()
                 for (doc in result){
 
@@ -59,12 +58,10 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
                             isJoin["isJoin"] = true
                             userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).set(it)
                             userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).update(isJoin as Map<String, Any>)
-
                         }
 
                     }
                     var datas: MutableMap<String, String> = doc["data"] as MutableMap<String, String> // 해시맵
-
                     val item = FriendsItem2(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String,doc.get("isJoin") as Boolean)
 
                     friends.add(item)
@@ -77,41 +74,58 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
             }
 
-        }
-
-        holder.itemView.setOnClickListener{
-            val intent = Intent(context,GroupActivity::class.java)
-//            intent.putExtra("addr",)
-            intent.putExtra("groupName", item.groupName)
-            context.startActivity(intent)
-
 
         }
 
 
-        holder.itemView.setOnLongClickListener {
 
-            AlertDialog.Builder(context).setTitle("그룹 나가기").setMessage("\n${item.groupName} 에서 나가시겠습니까?").setNegativeButton("취소"){ dialog, v->}.setPositiveButton("나가기"){ dialog, d->
 
-                // 친구 group에서  내 정보 지우기
-                userRef.document(userId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
-                    for (doc in result){
-                        userRef.document(doc.id).collection("groups").document(item.groupName).collection("members").document(userId).delete().addOnSuccessListener {  }
-                        userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).delete().addOnSuccessListener {  }
-                    }
-                }
 
-                // 내 group 지우기
-                userRef.document(userId).collection("groups").document(item.groupName).delete().addOnSuccessListener{
-                    Toast.makeText(context,"${item.groupName} 나가기 완료",Toast.LENGTH_SHORT).show()
+        holder.itemView.setOnClickListener {
 
+            AlertDialog.Builder(context).setTitle("그룹 초대").setMessage("\n${item.groupName} 초대를 받으시겠습니까?").setNegativeButton("거절"){ dialog, v->
+
+                userRef.document(item.groupId).collection("groups").document(item.groupName).collection("members").document(userId).delete().addOnSuccessListener {
+                    userRef.document(userId).collection("join").document(item.groupName).delete().addOnSuccessListener {  }
                 }
                 items.remove(item)
                 notifyItemRemoved(position)
 
+            }.setPositiveButton("수락"){ dialog, d->
+                var groupNameSet: MutableMap<String, String> = java.util.HashMap()
+                groupNameSet["groupName"]= item.groupName
+                userRef.document(userId).collection("groups").document(item.groupName).set(groupNameSet)
+                userRef.document(item.groupId).collection("groups").document(item.groupName).collection("members").document(userId).get().addOnSuccessListener {
+                    var isJoin: MutableMap<String, Boolean> = HashMap()
+                    isJoin["isJoin"] = true
+                    userRef.document(item.groupId).collection("groups").document(item.groupName).collection("members").document(userId).update(isJoin as Map<String, Any>)
+                    userRef.document(item.groupId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
+                        for (doc in result){
+                            userRef.document(doc.id).get().addOnSuccessListener {
+                                var isJoin: Boolean = doc.get("isJoin") as Boolean
+                                if (isJoin) {
+                                    var isJoin: MutableMap<String, Boolean> = HashMap()
+                                    isJoin["isJoin"] = true
+                                    userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).set(it)
+                                    userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).update(isJoin as Map<String, Any>)
+                                }else if(!isJoin){
+                                    var isJoin: MutableMap<String, Boolean> = HashMap()
+                                    isJoin["isJoin"] = false
+                                    userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).set(it)
+                                    userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).update(isJoin as Map<String, Any>)
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                userRef.document(userId).collection("join").document(item.groupName).delete().addOnSuccessListener {  }
+                items.remove(item)
+                notifyItemRemoved(position)
             }.show()
 
-            return@setOnLongClickListener true
+//            return@setOnClickListener
         }
 
 

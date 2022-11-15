@@ -6,6 +6,8 @@ package com.dabee.promise
 //              객체간에 주소값을 비교하지 않고 멤버값을 비교해주도록 설계되는 특별한 class
 data class Item constructor(var title:String, var place:String, var time:String, var group:String)
 data class FriendsItem constructor(var name:String, var img:String, var id:String)
+data class FriendsItem2 constructor(var name:String, var img:String, var id:String, var isJoin:Boolean)
 data class GroupsItem constructor(var groupName:String)
+data class GroupsItem2 constructor(var groupName:String, var groupId:String)
 
 data class UserCheckStatus(val position: Int, var isChecked: Boolean)

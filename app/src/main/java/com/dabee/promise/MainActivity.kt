@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity() {
 
                     }
                     R.id.menu_bnv_my -> {
-                        binding.fab.supportBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color2))
-                        binding.fab.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color2))
+                        binding.fab.supportBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color3))
+                        binding.fab.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color3))
 //                        bnv_main.itemIconTintList = ContextCompat.getColorStateList(this, R.color.nav_item)
 //                        bnv_main.itemTextColor = ContextCompat.getColorStateList(this, R.color.nav_item)
                         MyFragment()
@@ -55,8 +55,8 @@ class MainActivity : AppCompatActivity() {
                     R.id.menu_bnv_membership -> {
                         binding.fab.supportBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color))
                         binding.fab.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color))
-                        bnv_main.itemIconTintList = ContextCompat.getColorStateList(this, R.color.nav_item3)
-                        bnv_main.itemTextColor = ContextCompat.getColorStateList(this, R.color.nav_item3)
+                        bnv_main.itemIconTintList = ContextCompat.getColorStateList(this, R.color.nav_item2)
+                        bnv_main.itemTextColor = ContextCompat.getColorStateList(this, R.color.nav_item2)
                         MembershipFragment()
 
                     }
@@ -75,8 +75,8 @@ class MainActivity : AppCompatActivity() {
 
         binding.fab.setOnClickListener { item ->
 
-            binding.fab.supportBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color))
-            binding.fab.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color2))
+            binding.fab.supportBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color3))
+            binding.fab.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this,R.color.my_color3))
             bnv_main.selectedItemId = R.id.menu_bnv_my
 
             changeFragment(

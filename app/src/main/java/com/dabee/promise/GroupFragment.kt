@@ -33,13 +33,9 @@ class GroupFragment : Fragment() {
     private var param2: String? = null
 
     val binding by lazy { FragmentGroupBinding.inflate(layoutInflater) }
-    var datas: MutableMap<String,String> = mutableMapOf()
-
 
     var groups:MutableList<GroupsItem> = mutableListOf()
-    var groups1:MutableList<GroupsItem> = mutableListOf()
-    var friendsItem:MutableList<FriendsItem> = mutableListOf()
-    var friends:MutableList<FriendsItem> = mutableListOf()
+
 
     private val firebaseFirestore = FirebaseFirestore.getInstance()
     private val userRef = firebaseFirestore.collection("users")
@@ -63,18 +59,19 @@ class GroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val iv:ImageView = view.findViewById(R.id.iv)
 
 
 
 
-        iv.setOnClickListener {
+        binding.iv.setOnClickListener {
             val intent = Intent(context,GroupAddActivity::class.java)
             intentActivityResultLauncher.launch(intent)
+
         }
-
-
-
+        binding.ivNotification.setOnClickListener {
+            val intent = Intent(context,GroupJoinActivity::class.java)
+            intentActivityResultLauncher.launch(intent)
+        }
 
 
     }
@@ -83,7 +80,6 @@ class GroupFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
 
         joinNotice()
         groupLoad()
@@ -94,14 +90,14 @@ class GroupFragment : Fragment() {
         val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
         val userId:String= pref.getString("userId", null).toString()
                 userRef.document(userId).collection("join").get().addOnSuccessListener { result ->
-                    if( result.size() > 1) binding.ivAgree.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.my_color5))
+                    if( result.size() > 0){
+                        binding.ivNotification.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.my_color5))
+                        binding.ivNotification.setImageResource(R.drawable.ic_baseline_notifications_active_24)
+                    } else{
+                        binding.ivNotification.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(binding.root.context,R.color.black))
+                        binding.ivNotification.setImageResource(R.drawable.ic_baseline_notifications_24)
+                    }
             }
-        userRef.document("ㄱ1").collection("join").get().addOnSuccessListener { result ->
-            for (doc in result){
-//                Toast.makeText(binding.root.context, "${doc.get("id")}", Toast.LENGTH_SHORT).show()
-            }
-        }
-
 
     }
 
@@ -135,6 +131,7 @@ class GroupFragment : Fragment() {
 
         userRef.document(userId).collection("groups").get().addOnSuccessListener { result ->
 
+
             groups.clear()
             //그룹 불러오기
             for (group in result) {
@@ -145,7 +142,6 @@ class GroupFragment : Fragment() {
                 }
 
             binding.recycler.adapter?.notifyDataSetChanged()
-
 
             }
 
@@ -167,8 +163,10 @@ class GroupFragment : Fragment() {
         // 돌려보낸 결과가 OK인지 .. 확인
         if (result.resultCode == Activity.RESULT_OK) {
 
+
         } else {
-            Toast.makeText(context, "그룹 만들기 취소", Toast.LENGTH_SHORT).show()
+
+//            Toast.makeText(context, "그룹 만들기 취소", Toast.LENGTH_SHORT).show()
         }
     }
 
