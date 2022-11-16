@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardBackgroundColor="#EDD9E2FF"
+    app:cardCornerRadius="8dp">
+
+
+
+    <RelativeLayout
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:padding="8dp">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/badge"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/images"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@id/badge"
+            android:layout_marginLeft="5dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:text="Name" />
+
+        <TextView
+            android:id="@+id/desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/title"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/badge"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:text="주소" />
+
+
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

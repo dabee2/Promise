@@ -14,6 +14,7 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
 
     inner class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
         val binding:RecyclerItemBinding = RecyclerItemBinding.bind(itemView)
+
     }
 
 

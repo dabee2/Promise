@@ -19,17 +19,18 @@
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="My Group"
             android:layout_gravity="center"
-            android:textSize="32sp"
-            android:textStyle="bold"
+            android:layout_marginLeft="20dp"
             android:fontFamily="@font/binggrae_bold"
-            android:textColor="@color/white"/>
+            android:text="My Group"
+            android:textColor="@color/white"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <ImageView
             android:id="@+id/iv_notification"
@@ -37,16 +38,16 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_marginRight="16dp"
-            android:src="@drawable/ic_baseline_notifications_24"/>
+            android:src="@drawable/ic_baseline_notifications_24" />
 
 
-            <ImageView
-                android:id="@+id/iv"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/ic_baseline_person_add_alt_1_24" />
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_baseline_person_add_alt_1_24" />
 
     </LinearLayout>
 

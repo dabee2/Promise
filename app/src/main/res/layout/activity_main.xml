@@ -7,14 +7,10 @@
     tools:context=".MainActivity">
 
 
-
-
         <FrameLayout
             android:id="@+id/fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
-
 
 
         <com.dabee.promise.CustomBottomNavigationView
@@ -62,9 +58,6 @@
             app:tint="@color/my_color"
             android:backgroundTint="@color/white"
             app:layout_anchor="@id/bottomAppBar" />
-
-
-
 
 
 

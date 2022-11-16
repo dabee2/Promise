@@ -23,28 +23,28 @@
             android:id="@+id/tv_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_place"
+            android:layout_alignLeft="@+id/tv_place"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
             android:fontFamily="@font/binggrae"
             android:text="Group"
-            android:layout_alignLeft="@+id/tv_place"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="000여행"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="5dp"
-            android:textColor="@color/black"
             android:layout_marginTop="15dp"
-            android:gravity="center"
             android:fontFamily="@font/binggrae"
-            android:textSize="28dp"
-            android:textStyle="bold"
-            />
+            android:gravity="center"
+            android:text="000여행"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_place"
@@ -57,8 +57,9 @@
             android:fontFamily="@font/binggrae"
             android:text="만나는장소 : "
             android:textColor="@color/black"
-            android:textSize="18dp"
+            android:textSize="12sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tv_place2"
             android:layout_width="wrap_content"
@@ -67,26 +68,26 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:fontFamily="@font/binggrae"
             android:layout_toRightOf="@+id/tv_place"
+            android:fontFamily="@font/binggrae"
             android:text="서울시 성북구 00대로 0길 00"
             android:textColor="@color/black"
-            android:textSize="18dp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2022-10-27 17:00시"
-            android:textColor="@color/black"
-            android:textSize="18dp"
-            android:fontFamily="@font/binggrae"
-            android:textStyle="bold"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginRight="24dp"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/binggrae"
+            android:text="2022-10-27 17:00시"
+            android:textColor="@color/black"
+            android:textSize="12dp"
+            android:textStyle="bold" />
 
 
 

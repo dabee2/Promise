@@ -78,12 +78,12 @@
             android:layout_width="220dp"
             android:layout_height="150dp"
             android:layout_alignParentRight="true">
+
             <ImageView
                 android:id="@+id/iv_bg"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/notebook">
-
 
 
             </ImageView>
@@ -92,15 +92,15 @@
                 android:id="@+id/tv_members"
                 android:layout_width="wrap_content"
                 android:layout_height="150dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="5dp"
                 android:layout_toLeftOf="@id/Rlativlay"
+                android:background="@drawable/bg_et3"
                 android:fontFamily="@font/binggrae_bold"
                 android:gravity="center"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="3dp"
                 android:padding="6dp"
-                android:background="@drawable/bg_et3"
                 android:text="M\nE\nM\nB\nE\nR\nS"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 

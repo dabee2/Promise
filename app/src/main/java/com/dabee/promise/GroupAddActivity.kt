@@ -1,18 +1,17 @@
 package com.dabee.promise
 
-import android.app.Dialog
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.Gravity
-import android.view.View.TEXT_ALIGNMENT_CENTER
-import android.widget.TextView
+import android.widget.CalendarView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dabee.promise.databinding.ActivityAddGroupBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlin.properties.Delegates
+import java.text.SimpleDateFormat
+import java.util.*
 
 class GroupAddActivity : AppCompatActivity() {
 
@@ -49,6 +48,8 @@ class GroupAddActivity : AppCompatActivity() {
 
 
 
+
+
     private fun groupSave(){
 
         friends = recyclerViewAdapter?.checkedResult()!!
@@ -72,6 +73,7 @@ class GroupAddActivity : AppCompatActivity() {
 
         for (i in friends) str.append("${i.name}, ")
         str.deleteCharAt(str.length-2)
+
 
         fun isRturn1(){
             isturn = "중복"

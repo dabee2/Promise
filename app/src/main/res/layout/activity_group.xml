@@ -14,19 +14,34 @@
         android:background="@color/my_color"
         android:orientation="horizontal">
 
-
-
-        <TextView
-            android:id="@+id/tv_title"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="GroupName"
-            android:layout_gravity="center"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/binggrae_bold"
-            android:textColor="@color/white"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Group"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="GroupName"
+                android:gravity="center_vertical"
+                android:layout_gravity="center"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/binggrae_bold"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,51 +75,120 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/rv_promis"
+            android:layout_toLeftOf="@id/linear2"
             android:layout_below="@id/map_view"
             android:background="@drawable/bg_et"
-            android:layout_above="@id/rv_members"
-            android:padding="5dp">
+            android:layout_above="@id/linear3">
+
             <TextView
                 android:id="@+id/tv_tv1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="그룹원들 중간위치"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/btnnnn"
+                android:layout_centerVertical="true"
+                android:background="@drawable/bg_et_second"
+                android:gravity="center_vertical"
+                android:padding="5dp"
+                android:text="그룹원들 중간위치"
+                android:textStyle="bold"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btnnnn"
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@null"
+                android:padding="0dp"
+                android:visibility="invisible"
+                android:textSize="12sp" />
 
         </RelativeLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_promis"
+        <LinearLayout
+            android:id="@+id/linear2"
             android:layout_width="190dp"
             android:layout_height="match_parent"
             android:layout_below="@+id/map_view"
             android:layout_alignParentRight="true"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:padding="5dp"
             android:layout_marginLeft="5dp"
             android:background="@drawable/bg_et"
-            android:orientation="vertical"/>
+            android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_members"
-            android:layout_width="190dp"
-            android:layout_height="120dp"
-            android:layout_toLeftOf="@id/rv_promis"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_et_second"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="Promise"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_promise_add"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:backgroundTint="@color/my_color3"
+                    android:padding="0dp"
+                    android:text="+"
+                    android:textSize="12sp" />
+
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_promis"
+                android:layout_width="190dp"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:orientation="vertical"
+                android:paddingHorizontal="4dp"
+                android:paddingBottom="4dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear3"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="vertical"
             android:layout_alignParentBottom="true"
-            android:padding="5dp"
             android:layout_marginTop="5dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:background="@drawable/bg_et"
-            android:orientation="horizontal"/>
+            android:layout_toLeftOf="@id/linear2"
+            android:background="@drawable/bg_et">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="그룹원"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_et_second"
+                android:textStyle="bold"
+                android:padding="5dp"/>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_members"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingHorizontal="4dp"
+                android:layout_marginBottom="2dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-
+        </LinearLayout>
 
     </RelativeLayout>
-
-
 
 </RelativeLayout>
 

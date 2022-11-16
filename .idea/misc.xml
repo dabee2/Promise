@@ -40,16 +40,30 @@
         <entry key="..\:/android/Promise2/app/src/main/res/drawable/bg_et.xml" value="0.3135" />
         <entry key="..\:/android/Promise2/app/src/main/res/drawable/bg_et2.xml" value="0.3135" />
         <entry key="..\:/android/Promise2/app/src/main/res/drawable/bg_et3.xml" value="0.3135" />
+        <entry key="..\:/android/Promise2/app/src/main/res/drawable/bg_et_second.xml" value="0.3135" />
+        <entry key="..\:/android/Promise2/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.3135" />
+        <entry key="..\:/android/Promise2/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.3135" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_add_group.xml" value="0.5453125" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_group.xml" value="0.47162162162162163" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_group_promise_add.xml" value="0.47162162162162163" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_join_group.xml" value="0.47477477477477475" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_login.xml" value="0.40370370370370373" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_main.xml" value="0.5453125" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/bs_calendar.xml" value="0.47162162162162163" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/bs_calendar2.xml" value="0.2662162162162162" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/bs_time.xml" value="0.47477477477477475" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/custom_callout_balloon.xml" value="0.47162162162162163" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/fragment_group.xml" value="0.40370370370370373" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/fragment_membership.xml" value="0.47162162162162163" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/fragment_my.xml" value="0.47162162162162163" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/fragment_my_child1.xml" value="0.47477477477477475" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/fragment_my_child2.xml" value="0.47162162162162163" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item.xml" value="0.4653333333333333" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_group.xml" value="0.4653333333333333" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_group_add.xml" value="0.47477477477477475" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_group_child.xml" value="0.5453125" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_membership.xml" value="0.47477477477477475" />
+        <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_mini.xml" value="0.47162162162162163" />
       </map>
     </option>
   </component>

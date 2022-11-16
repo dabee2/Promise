@@ -100,22 +100,6 @@ class GroupFragment : Fragment() {
 
     }
 
-    private fun joinLoad(){
-        val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
-        val userId:String= pref.getString("userId", null).toString()
-        //ing....
-//        userRef.document(userId).collection("join").get().addOnSuccessListener { result ->
-//            groups.clear()
-//            //그룹 불러오기
-//            for (doc in result){
-//                val item = GroupsItem(doc.id)
-//                groups.add(item)
-//            }
-//            binding.recycler.adapter?.notifyDataSetChanged()
-//        }
-
-
-    }
 
     private fun groupLoad() {
 
@@ -145,9 +129,6 @@ class GroupFragment : Fragment() {
             }
 
 }
-
-
-
 
 
 

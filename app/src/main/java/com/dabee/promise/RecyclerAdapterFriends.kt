@@ -19,6 +19,7 @@ class RecyclerAdapterFriends constructor(val context:Context, var items:MutableL
     inner class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         val binding:RecyclerItemMembershipBinding = RecyclerItemMembershipBinding.bind(itemView)
+
     }
 
 

@@ -47,6 +47,8 @@ class MembershipFragment : Fragment() {
     lateinit var userAddr:String
     var friends:MutableList<FriendsItem> = mutableListOf()
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
