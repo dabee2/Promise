@@ -33,6 +33,7 @@ class Login : AppCompatActivity() {
 
 //    val binding by lazy { ActivityLoginBinding.inflate(layoutInflater)}
     lateinit var binding: ActivityLoginBinding
+    var items:MutableList<Item> = mutableListOf()
 
     var isData:Boolean= false
     var isKaKaologin:Boolean= false
@@ -256,8 +257,6 @@ class Login : AppCompatActivity() {
         }
 
     }
-
-
 
 
     private fun friendLoad(){

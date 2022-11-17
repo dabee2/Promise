@@ -3,6 +3,7 @@ package com.dabee.promise
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -38,8 +39,7 @@ class GroupActivity : AppCompatActivity() {
         binding.iv.setOnClickListener { finish() }
 
         mapLoad()
-        friendLoad()
-        promiseLoad()
+
         binding.btnPromiseAdd.setOnClickListener {
             val intent2:Intent= Intent(this,GroupActivityPromiseAdd::class.java)
             intent2.putExtra("groupName",groupName)
@@ -55,6 +55,8 @@ class GroupActivity : AppCompatActivity() {
 
         friendLoad()
         promiseLoad()
+
+
     }
 
     private fun promiseLoad(){
@@ -67,11 +69,16 @@ class GroupActivity : AppCompatActivity() {
             promiseItems.clear()
             for (doc in result){
 
-                val item = PromiseItem(doc.get("title")as String,doc.get("place")as String,doc.get("date")as String,doc.get("time")as String,doc.get("note")as String,groupName)
+                val item = PromiseItem(doc.get("title")as String,doc.get("place")as String,doc.get("date")as String,doc.get("time")as String,doc.get("note")as String,groupName,doc.get("setLineup")as String)
                 promiseItems.add(item)
             }
 
-            binding.rvPromis.adapter?.notifyDataSetChanged()
+            Handler().postDelayed(Runnable {
+                //딜레이 후 시작할 코드 작성
+
+                binding.rvPromis.adapter?.notifyDataSetChanged()
+            }, 1000) //1초 후 시작
+
 
         }
 
@@ -84,7 +91,7 @@ class GroupActivity : AppCompatActivity() {
 
         // 돌려보낸 결과가 OK인지 .. 확인
         if (result.resultCode == Activity.RESULT_OK) {
-            promiseLoad()
+
 
         } else {
 

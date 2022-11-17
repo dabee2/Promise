@@ -2,6 +2,7 @@ package com.dabee.promise
 
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,12 +43,15 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
 
         val item:GroupsItem = items.get(position)
-        holder.binding.tvGroupName.text = item.groupName
+        holder.binding.tvGroupName2.text = item.groupName
         holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,friends)
         friends.clear()
         holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
 
-        holder.binding.ivBg.setOnClickListener{
+        holder.binding.tvMembers2.setOnClickListener{
+            holder.binding.rycyclerRycycler.visibility = View.VISIBLE
+            holder.binding.tvMembers2.visibility = View.GONE
+
             userRef.document(userId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
                 friends.clear()
                 for (doc in result){
@@ -72,14 +76,19 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
 
                 }
-
-                holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
+                 holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
 
             }
 
         }
+        holder.binding.tvMembers.setOnClickListener{
+            holder.binding.rycyclerRycycler.visibility = View.GONE
+            holder.binding.tvMembers2.visibility = View.VISIBLE
+            friends.clear()
+            holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
+        }
 
-        holder.itemView.setOnClickListener{
+        holder.binding.iv2.setOnClickListener{
             val intent = Intent(context,GroupActivity::class.java)
             intent.putExtra("groupName", item.groupName)
             context.startActivity(intent)
@@ -88,7 +97,7 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
         }
 
 
-        holder.itemView.setOnLongClickListener {
+        holder.binding.iv2.setOnLongClickListener {
 
             AlertDialog.Builder(context).setTitle("그룹 나가기").setMessage("\n${item.groupName} 에서 나가시겠습니까?").setNegativeButton("취소"){ dialog, v->}.setPositiveButton("나가기"){ dialog, d->
 

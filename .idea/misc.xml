@@ -17,6 +17,7 @@
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1365" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_add_group.xml" value="0.31244444444444447" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_group.xml" value="0.31261261261261264" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_group_promise_add.xml" value="0.3130630630630631" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_gruop.xml" value="0.1" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_join_group.xml" value="0.21203703703703702" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_login.xml" value="0.3564102564102564" />
@@ -29,7 +30,8 @@
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/fragment_my_child1.xml" value="0.33" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/fragment_my_child2.xml" value="0.34205128205128205" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item.xml" value="0.30648148148148147" />
-        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group.xml" value="0.31666666666666665" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group.xml" value="0.29814814814814816" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group2.xml" value="0.3162162162162162" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group_add.xml" value="0.35038363171355497" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group_child.xml" value="0.31666666666666665" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_membership.xml" value="0.3619791666666667" />

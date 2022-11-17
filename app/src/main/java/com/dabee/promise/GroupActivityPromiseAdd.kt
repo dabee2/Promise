@@ -5,11 +5,11 @@ package com.dabee.promise
 
 import android.os.Bundle
 import android.widget.CalendarView
+import android.widget.EditText
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.dabee.promise.GroupFragment.Companion.newInstance
 import com.dabee.promise.databinding.ActivityGroupPromiseAddBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.FirebaseFirestore
@@ -28,6 +28,7 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
     private var setDay:Int = 0
     private var setHour:Int = 0
     private var setMinute:Int = 0
+    lateinit var setLineup:String
 
     val firebaseFirestore = FirebaseFirestore.getInstance()
     val userRef = firebaseFirestore.collection("users")
@@ -47,9 +48,27 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
         binding.btnSave.setOnClickListener { saveData() }
 
 
+        binding.etNote.setOnFocusChangeListener { v, hasFocus ->
+
+            if(hasFocus){
+                binding.nsScroll.postDelayed(Runnable {
+                    kotlin.run {
+                        binding.nsScroll.smoothScrollBy(0,300)
+                    }
+                },100)
+            }
+        }
+        binding.etTitle.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus){
+                binding.nsScroll.postDelayed(Runnable {
+                    kotlin.run {
+                        binding.nsScroll.smoothScrollBy(0,-300)
+                    }
+                },100)
+            }
+        }
 
     }
-
 
     private fun saveData(){
         val pref = getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
@@ -62,6 +81,20 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
         val time = binding.tvTime.text
         val note = binding.etNote.text
         val groupName = intent.getStringExtra("groupName")
+        setLineup = "$date$time"
+        setLineup = setLineup.replace(" ", "")
+        setLineup =setLineup.replace("년", "")
+        setLineup =setLineup.replace("월","")
+        setLineup =setLineup.replace("일","")
+        setLineup =setLineup.replace("오전","")
+        setLineup =setLineup.replace("시","")
+        setLineup =setLineup.replace("분","")
+        if(setLineup.indexOf("오후")!=-1){
+            setLineup = setLineup.replace("오후","")
+             var ss:Long = setLineup.toLong()
+            setLineup = (ss+1200).toString()
+        }
+
 
         if(title.isBlank()){
             Toast.makeText(this, "일정 제목을 입력해 주세요.", Toast.LENGTH_SHORT).show()
@@ -80,7 +113,8 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
         promise["time"] = time.toString()
         promise["note"] = note.toString()
         promise["groupName"] = groupName!!
-        promise["docName"] = "$title,$date,$time"
+        promise["setLineup"] = setLineup
+        promise["docName"] = "$title,$setLineup"
 
 
 
@@ -89,7 +123,7 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
 
             userRef.document(userId).collection("groups").document(groupName!!).collection("members").get().addOnSuccessListener { result->
                 for (doc in result){
-                    userRef.document(doc.id).collection("groups").document(groupName!!).collection("promise").document("$title$date$time").set(promise)
+                    userRef.document(doc.id).collection("groups").document(groupName!!).collection("promise").document("$title$setLineup").set(promise)
                 }
             }
             val intent = intent
@@ -157,6 +191,7 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
                 hour -= 12
             }
             if (m<10) minute = "0$minute"
+            if (hour<10) hour = "0$hour" as Int
 
 
 

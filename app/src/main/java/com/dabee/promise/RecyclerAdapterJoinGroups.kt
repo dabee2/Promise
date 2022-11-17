@@ -1,6 +1,7 @@
 package com.dabee.promise
 
 import android.content.Context
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,12 +42,15 @@ class RecyclerAdapterJoinGroups constructor(val context:Context, var items:Mutab
 
 
         val item:GroupsItem2 = items.get(position)
-        holder.binding.tvGroupName.text = item.groupName
+        holder.binding.tvGroupName2.text = item.groupName
         holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,friends)
         friends.clear()
         holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
 
-        holder.binding.ivBg.setOnClickListener{
+        holder.binding.tvMembers2.setOnClickListener{
+            holder.binding.rycyclerRycycler.visibility = View.VISIBLE
+            holder.binding.tvMembers2.visibility = View.GONE
+
             userRef.document(item.groupId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
                 friends.clear()
                 for (doc in result){
@@ -76,12 +80,18 @@ class RecyclerAdapterJoinGroups constructor(val context:Context, var items:Mutab
 
 
         }
+        holder.binding.tvMembers.setOnClickListener{
+            holder.binding.rycyclerRycycler.visibility = View.GONE
+            holder.binding.tvMembers2.visibility = View.VISIBLE
+            friends.clear()
+            holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
+        }
 
 
 
 
 
-        holder.itemView.setOnClickListener {
+        holder.binding.iv2.setOnClickListener {
 
             AlertDialog.Builder(context).setTitle("그룹 초대").setMessage("\n${item.groupName} 초대를 받으시겠습니까?").setNegativeButton("거절"){ dialog, v->
 

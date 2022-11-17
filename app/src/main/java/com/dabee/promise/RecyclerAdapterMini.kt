@@ -48,7 +48,7 @@ class RecyclerAdapterMini constructor(val context:Context, var items:MutableList
 
             AlertDialog.Builder(context).setTitle("일정 삭제").setMessage("\n${item.title} 을(를) 삭제하시겠습니까?").setNegativeButton("취소"){ dialog, v->}.setPositiveButton("나가기"){ dialog, d->
 
-                userRef.document(userId).collection("groups").document(item.groupName).collection("promise").document("${item.title}${item.date}${item.time}").delete().addOnSuccessListener {
+                userRef.document(userId).collection("groups").document(item.groupName).collection("promise").document("${item.title}${item.setLineup}").delete().addOnSuccessListener {
 
 
 

@@ -1,199 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GroupActivityPromiseAdd">
 
-    <LinearLayout
-        android:id="@+id/linear"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/my_color"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
+
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="20dp">
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/my_color"
+            android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Promise"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:layout_marginTop="5dp"/>
-
-            <TextView
-                android:id="@+id/tv_group_name"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="GroupName"
-                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Promise"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:layout_marginTop="5dp"/>
+
+                <TextView
+                    android:id="@+id/tv_group_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="GroupName"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/binggrae_bold"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/binggrae_bold"
-                android:textColor="@color/white"/>
+                android:layout_marginRight="16dp"
+                android:src="@drawable/ic_baseline_subdirectory_arrow_left_24" />
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
 
-
-        <ImageView
-            android:id="@+id/iv"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_baseline_subdirectory_arrow_left_24" />
-
-    </LinearLayout>
-
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/linear">
-
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/ns_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_below="@+id/linear">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:padding="4dp"
-                android:text="일정 제목"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
 
-            <EditText
-                android:id="@+id/et_title"
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/my_color"
-                android:hint="일정 제목을 입력하세요"
-                android:inputType="text"
-                android:padding="18dp"
-                android:textSize="12sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:windowSoftInputMode="adjustResize"
+                android:padding="16dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:padding="4dp"
-                android:text="만나는 장소"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
-
-            <EditText
-                android:id="@+id/et_place"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/my_color"
-                android:hint="만나는 장소를 입력하세요"
-                android:inputType="text"
-                android:padding="18dp"
-                android:textSize="12sp" />
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tv_promise_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="4dp"
+                    android:text="일정 제목"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/my_color"
+                    android:hint="일정 제목을 입력하세요"
+                    android:inputType="text"
+                    android:padding="18dp"
+                    android:textSize="12sp"
+                    android:windowSoftInputMode="adjustResize" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:padding="4dp"
+                    android:text="만나는 장소"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/et_place"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/my_color"
+                    android:hint="만나는 장소를 입력하세요"
+                    android:inputType="text"
+                    android:padding="18dp"
+                    android:textSize="12sp"
+                    android:windowSoftInputMode="adjustResize" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_promise_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:padding="4dp"
+                        android:text="약속 날자"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_promise_date"
+                        android:background="@drawable/bg_et"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="2000년 00월 00일"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_promise_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignLeft="@id/tv_time"
+                        android:layout_marginTop="24dp"
+                        android:padding="4dp"
+                        android:text="약속 시간"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_promise_date"
+                        android:layout_marginLeft="50dp"
+                        android:layout_toRightOf="@id/tv_date"
+                        android:background="@drawable/bg_et"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="오전 00시 00분"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+
+                </RelativeLayout>
+
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:padding="4dp"
-                    android:text="약속 날자"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/tv_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_promise_date"
-                    android:background="@drawable/bg_et"
-                    android:gravity="center"
-                    android:padding="12dp"
-                    android:text="2000년 00월 00일"
+                    android:text="노트"
                     android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_promise_time"
-                    android:layout_width="wrap_content"
+                <EditText
+                    android:id="@+id/et_note"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@id/tv_time"
-                    android:layout_marginTop="24dp"
-                    android:padding="4dp"
-                    android:text="약속 시간"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_promise_date"
-                    android:layout_marginLeft="50dp"
-                    android:layout_toRightOf="@id/tv_date"
+                    android:layout_marginLeft="2dp"
                     android:background="@drawable/bg_et"
-                    android:gravity="center"
-                    android:padding="12dp"
-                    android:text="오전 00시 00분"
-                    android:textColor="@color/black"
-                    android:textSize="12sp" />
+                    android:gravity="top"
+                    android:hint="세부내용"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:padding="16dp"
+                    android:textSize="12sp"
+                    android:windowSoftInputMode="adjustResize" />
+
+                    <Button
+                        android:id="@+id/btn_save"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:backgroundTint="@color/my_color3"
+                        android:text="SAVE"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:windowSoftInputMode="adjustResize" />
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:padding="4dp"
-                android:text="노트"
-                android:textStyle="bold"
-                android:textColor="@color/black" />
+        </androidx.core.widget.NestedScrollView>
 
-            <EditText
-                android:id="@+id/et_note"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
-                android:background="@drawable/bg_et"
-                android:gravity="top"
-                android:hint="세부내용"
-                android:inputType="textMultiLine"
-                android:lines="3"
-                android:padding="16dp"
-                android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/my_color3"
-                android:text="SAVE"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-</RelativeLayout>
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
