@@ -1,6 +1,7 @@
 package com.dabee.promise
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,8 @@ import com.bumptech.glide.Glide
 import com.dabee.promise.databinding.RecyclerItemBinding
 import com.dabee.promise.databinding.RecyclerItemMiniBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import java.text.SimpleDateFormat
+import java.util.*
 
 class RecyclerAdapterMini constructor(val context:Context, var items:MutableList<PromiseItem>): RecyclerView.Adapter<RecyclerAdapterMini.VH>(){
 
@@ -38,15 +41,26 @@ class RecyclerAdapterMini constructor(val context:Context, var items:MutableList
 
 
         val item:PromiseItem = items.get(position)
+
+        var dday =  item.setLineup.substring(0,8)
+
+        var dday2 = SimpleDateFormat("yyyyMMdd").format(Date())
+        var dday3 = (dday2.toInt() - dday.toInt()).toString()
+        if (dday3.toInt() == 0) dday3 = "Today"
+        else if (dday3.toInt() > 0) dday3 = "D+$dday3"
+        else dday3 = "D$dday3"
+
+
+
         holder.binding.tvTitle2.text = item.title
         holder.binding.tvPlace2.text = item.place
         holder.binding.tvDateTime2.text = "${item.date} ${item.time}"
         holder.binding.tvMemo.text = item.note
-
+        holder.binding.tvDDay.text = dday3
 
         holder.itemView.setOnLongClickListener {
 
-            AlertDialog.Builder(context).setTitle("일정 삭제").setMessage("\n${item.title} 을(를) 삭제하시겠습니까?").setNegativeButton("취소"){ dialog, v->}.setPositiveButton("나가기"){ dialog, d->
+            AlertDialog.Builder(context).setTitle("일정 삭제").setMessage("\n${item.title} 을(를) 삭제하시겠습니까?").setNegativeButton("취소"){ dialog, v->}.setPositiveButton("삭제"){ dialog, d->
 
                 userRef.document(userId).collection("groups").document(item.groupName).collection("promise").document("${item.title}${item.setLineup}").delete().addOnSuccessListener {
 
@@ -59,6 +73,16 @@ class RecyclerAdapterMini constructor(val context:Context, var items:MutableList
             }.show()
 
             return@setOnLongClickListener true
+        }
+
+        holder.itemView.setOnClickListener {
+
+            var intent = Intent(context,GroupActivityPromise::class.java)
+            intent.putExtra("groupName",item.groupName)
+            intent.putExtra("promise","${item.title}${item.setLineup}")
+            context.startActivity(intent)
+
+
         }
 
 

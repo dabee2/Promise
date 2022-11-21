@@ -19,4 +19,20 @@
         android:orientation="vertical"
         android:paddingBottom="50dp"
         android:clipToPadding="false" />
+
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="20dp"
+        android:text="완료된 약속이 없습니다."
+        android:textStyle=""
+        android:gravity="center"
+        android:visibility="gone"/>
+
+
 </RelativeLayout>

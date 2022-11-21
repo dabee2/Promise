@@ -59,54 +59,24 @@ class MyFragmentChild1 constructor(var items:MutableList<Item>) : Fragment() {
 
 
 
-
-
-
-
     }
 
     override fun onResume() {
         super.onResume()
 
-
-
-        binding.recycler.adapter = RecyclerAdapter(binding.root.context,items)
-
-
-
-    }
-
-
-
-    private fun promiseLoad(){
-
-
-        binding.recycler.adapter = RecyclerAdapter(binding.root.context,items)
-
-
-        val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
-        val userId:String= pref.getString("userId", null).toString()
-
-
-        userRef.document(userId).collection("groups").get().addOnSuccessListener { result->
-            items.clear()
-            for (doc in result){
-                userRef.document(userId).collection("groups").document(doc.id).collection("promise").get().addOnCompleteListener { result2->
-                    for (doc2 in result2.result){
-
-                        val item= Item(doc2.get("title")as String,doc2.get("place")as String,"${doc2.get("date")as String} ${doc2.get("time")as String}",doc.id)
-                        items.add(item)
-
-                    }
-
-                }
-
-            }
-            binding.recycler.adapter?.notifyDataSetChanged()
-//            binding.recycler.adapter?.notifyItemRangeChanged(items.size-1,items.size)
+        if(items.size==0){
+            binding.tv.visibility = View.VISIBLE
+        }else{
+            items.sortWith(compareBy { it.setLineup.toLong()})
+            binding.recycler.adapter = RecyclerAdapter(binding.root.context,items)
         }
 
+
+
+
     }
+
+
 
 
 }

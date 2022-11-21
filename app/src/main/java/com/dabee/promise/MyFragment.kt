@@ -35,15 +35,15 @@ private const val ARG_PARAM2 = "param2"
 
 
 
-class MyFragment constructor(var items:MutableList<Item>) : Fragment() {
+class MyFragment constructor(var promiseItems:MutableList<Item>,var memoryItems:MutableList<Item>) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
 
 
-    var myFragmentChild1 = MyFragmentChild1(items)
-    var myFragmentChild2 = MyFragmentChild2()
+    var myFragmentChild1 = MyFragmentChild1(promiseItems)
+    var myFragmentChild2 = MyFragmentChild2(memoryItems)
     val binding by lazy {  FragmentMyBinding.inflate(layoutInflater)}
     val firebaseFirestore = FirebaseFirestore.getInstance()
     val userRef = firebaseFirestore.collection("users")
@@ -81,7 +81,7 @@ class MyFragment constructor(var items:MutableList<Item>) : Fragment() {
         val tabLayout:TabLayout = view.findViewById(R.id.tab_layout)
 
 
-        val fragmentList = listOf<Fragment>(MyFragmentChild1(items),MyFragmentChild2())
+        val fragmentList = listOf<Fragment>(MyFragmentChild1(promiseItems),MyFragmentChild2(memoryItems))
         val adapter = PagerAdapter(childFragmentManager,lifecycle)
         adapter.fragments = fragmentList
         pager.adapter=adapter

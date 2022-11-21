@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/paperclip1">
+        android:background="@drawable/paperclip2">
 
         <ImageView
             android:id="@+id/iv"
@@ -19,24 +19,17 @@
             android:layout_alignParentTop="true"
             android:scaleType="centerInside" />
 
-        <ImageView
-            android:id="@+id/iv_white"
-            android:layout_width="100dp"
-            android:layout_height="4.5dp"
-            android:background="@color/white"/>
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="2dp"
-            android:layout_below="@id/iv_white"
-            android:background="@color/black"/>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginRight="16dp"
-            android:background="@color/white" />
+        <TextView
+            android:id="@+id/tv_D_day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp"
+            android:text="Today"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:textStyle="bold" />
 
 
 

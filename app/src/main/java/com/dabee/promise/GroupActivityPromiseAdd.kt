@@ -22,6 +22,7 @@ import java.util.*
 
 class GroupActivityPromiseAdd : AppCompatActivity() {
 
+    //	Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D
     val binding by lazy { ActivityGroupPromiseAddBinding.inflate(layoutInflater) }
     private var setYear:Int = 0
     private var setMonth:Int = 0
@@ -68,7 +69,7 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
             }
         }
 
-    }
+    }////on create
 
     private fun saveData(){
         val pref = getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
@@ -81,19 +82,33 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
         val time = binding.tvTime.text
         val note = binding.etNote.text
         val groupName = intent.getStringExtra("groupName")
-        setLineup = "$date$time"
+
+        setLineup = "$time"
         setLineup = setLineup.replace(" ", "")
-        setLineup =setLineup.replace("년", "")
-        setLineup =setLineup.replace("월","")
-        setLineup =setLineup.replace("일","")
         setLineup =setLineup.replace("오전","")
         setLineup =setLineup.replace("시","")
         setLineup =setLineup.replace("분","")
         if(setLineup.indexOf("오후")!=-1){
             setLineup = setLineup.replace("오후","")
-             var ss:Long = setLineup.toLong()
+            var ss:Int = setLineup.toInt()
+            if (setLineup.length == 3){
+                var buf = StringBuffer(setLineup)
+                setLineup= buf.insert(0,"0").toString()
+            }
             setLineup = (ss+1200).toString()
+
+        }else if (setLineup.length == 3){
+            var buf = StringBuffer(setLineup)
+            setLineup= buf.insert(0,"0").toString()
         }
+
+        setLineup = "$date$setLineup"
+        setLineup = setLineup.replace(" ", "")
+        setLineup =setLineup.replace("년", "")
+        setLineup =setLineup.replace("월","")
+        setLineup =setLineup.replace("일","")
+
+
 
 
         if(title.isBlank()){
@@ -101,7 +116,7 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
             return
         }
         if(place.isBlank()){
-            Toast.makeText(this, "만나느 장소를 입력해 주세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "만나는 장소를 입력해 주세요.", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -191,7 +206,7 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
                 hour -= 12
             }
             if (m<10) minute = "0$minute"
-            if (hour<10) hour = "0$hour" as Int
+
 
 
 

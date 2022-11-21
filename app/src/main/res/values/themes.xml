@@ -16,6 +16,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/my_color3</item>
         <!-- Customize your theme here. -->
 <!--        <item name="android:timePickerStyle">@style/MyTimePickerTheme</item>-->
+        <item name="bottomSheetDialogTheme">@style/MyBottomSheetDialogTheme</item>
     </style>
 
 
@@ -23,6 +24,32 @@
         <item name="android:timePickerMode">spinner</item>
 
     </style>
+
+
+    <!--  bottom sheet dialog style [배경색, 둥근 코너]     -->
+
+    <style name="MyBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/MyBottomSheetStyle</item>
+
+
+    </style>
+
+    <style name="MyBottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet">
+        <!--  배경색      -->
+        <item name="backgroundTint">@color/my_color</item>
+
+        <item name="shapeAppearanceOverlay">@style/MyRoundCorneredBottomSheetShape</item>
+<!--        <item name="shapeAppearance">@style/MyRoundCorneredBottomSheetShape</item>-->
+    </style>
+
+    <style name="MyRoundCorneredBottomSheetShape">
+
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">16dp</item>
+        <item name="cornerSizeTopRight">16dp</item>
+    </style>
+
+
 
 
 

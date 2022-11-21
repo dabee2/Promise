@@ -20,6 +20,19 @@
             android:paddingBottom="50dp"
             android:clipToPadding="false" />
 
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="30dp"
+            android:text="계획된 약속이 없습니다."
+            android:textStyle=""
+            android:gravity="center"
+            android:visibility="gone"/>
+
 
 
 </RelativeLayout>

@@ -1,6 +1,8 @@
 package com.dabee.promise
 
 import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,15 +15,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginLeft
 import androidx.core.view.marginTop
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.bumptech.glide.Glide
 import com.dabee.promise.databinding.FragmentMembershipBinding
 import com.google.firebase.firestore.*
+import com.google.type.LatLng
+import java.io.IOException
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +47,10 @@ class MembershipFragment : Fragment() {
 
     lateinit var binding: FragmentMembershipBinding
     lateinit var userAddr:String
+    lateinit var lat:String
+    lateinit var lon:String
     var friends:MutableList<FriendsItem> = mutableListOf()
+
 
 
 
@@ -70,6 +75,7 @@ class MembershipFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val geocoder = Geocoder(binding.root.context,Locale.KOREA)
 
         //SharedPreference에 저장되어 있는 userId 얻어오기
         val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
@@ -94,11 +100,30 @@ class MembershipFragment : Fragment() {
         binding.btnSave.setOnClickListener {
             clickBtnSave()
             var userAddrSet: MutableMap<String, String> = java.util.HashMap()
-            userAddrSet["userAddress"]= userAddr
-            userRef.document(userId).update(userAddrSet as Map<String, Any>)
+
+
             view.clearFocus()
             hideKeyBoard()
+
+            var addressList: List<Address?>? = null
+            try {
+                // editText에 입력한 텍스트(주소, 지역, 장소 등)을 지오 코딩을 이용해 변환
+                addressList = geocoder.getFromLocationName(userAddr,1) // 최대 검색 결과 개수
+
+                lat = addressList[0]?.latitude.toString()
+                lon = addressList[0]?.longitude.toString()
+                userAddrSet["lat"]=lat
+                userAddrSet["lon"]=lon
+                userAddrSet["userAddress"]= userAddr
+                userRef.document(userId).update(userAddrSet as Map<String, Any>)
+
+
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
         }
+
+
 
         // 데이터베이스에서 내정보 불러오기
         val firebaseFirestore = FirebaseFirestore.getInstance()
@@ -166,7 +191,6 @@ class MembershipFragment : Fragment() {
 
             }
             builder.show()
-
         }
 
 
@@ -215,6 +239,40 @@ class MembershipFragment : Fragment() {
         }
     }
 
+
+//    //주소로 위도,경도 구하는 GeoCoding
+//    private fun getLatLng(address:String) : LatLng {
+//        val geoCoder = Geocoder(context, Locale.KOREA)   // Geocoder 로 자기 나라에 맞게 설정
+//        val list = geoCoder.getFromLocationName(address, 3)
+//
+//        var location:LatLng = LatLng(37.554891, 126.970814)     //임시 서울역
+//
+//        if(list != null){
+//            if (list.size ==0){
+//                Log.d("GeoCoding", "해당 주소로 찾는 위도 경도가 없습니다. 올바른 주소를 입력해주세요.")
+//            }else{
+//                val addressLatLng = list[0]
+//                location = LatLng(addressLatLng.latitude, addressLatLng.longitude)
+//                return location
+//            }
+//        }
+//
+//        return location
+//    }
+
+    //위도 경도로 주소 구하는 Reverse-GeoCoding
+    private fun getAddress(position: LatLng): String {
+        val geoCoder = Geocoder(context, Locale.KOREA)
+        var addr = "주소 오류"
+
+        //GRPC 오류? try catch 문으로 오류 대처
+        try {
+            addr = geoCoder.getFromLocation(position.latitude, position.longitude, 1).first().getAddressLine(0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return addr
+    }
 
 
     private fun clickBtnChange(){
