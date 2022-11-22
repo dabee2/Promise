@@ -43,7 +43,9 @@ class RecyclerAdapterMemo constructor(val context:Context, var items:MutableList
         val item:Memo = items.get(position)
         holder.binding.tvName.text = item.name
         holder.binding.tvMemo.text = item.memo
+        holder.binding.tvTime.text = item.time
         Glide.with(context).load(item.img).error(R.drawable.images).into(holder.binding.civ)
+
 
 
         holder.itemView.setOnLongClickListener {

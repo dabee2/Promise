@@ -2,15 +2,21 @@ package com.dabee.promise
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.dabee.promise.databinding.ActivityGroupBinding
+import com.dabee.promise.databinding.ActivityGroupBinding.inflate
+import com.dabee.promise.databinding.ActivityJoinGroupBinding.inflate
 import com.dabee.promise.databinding.CustomCalloutBalloonBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import de.hdodenhof.circleimageview.CircleImageView
 import net.daum.mf.map.api.CalloutBalloonAdapter
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
@@ -28,6 +34,7 @@ class GroupActivity : AppCompatActivity() {
     lateinit var groupName:String
     var members:MutableList<FriendsItem2> = mutableListOf()
     var promiseItems:MutableList<PromiseItem> = mutableListOf()
+    var userMarkers:MutableList<FriendsItem> = mutableListOf()
     var userLatLon:MutableList<LatLon> = mutableListOf()
     val userMarker:MutableList<MapPOIItem> = mutableListOf()
 
@@ -42,6 +49,10 @@ class GroupActivity : AppCompatActivity() {
         binding.tvTitle.text =groupName
         binding.iv.setOnClickListener { finish() }
 
+        Handler().postDelayed(Runnable {
+
+            mapLoad()
+        }, 1000) // 0.6초 정도 딜레이를 준 후 시작
 
 
 
@@ -60,12 +71,6 @@ class GroupActivity : AppCompatActivity() {
 
         friendLoad()
         promiseLoad()
-
-        Handler().postDelayed(Runnable {
-
-            mapLoad()
-        }, 1000) // 0.6초 정도 딜레이를 준 후 시작
-
 
 
 
@@ -204,8 +209,9 @@ class GroupActivity : AppCompatActivity() {
 
 
         val marker3 = MapPOIItem()
+        userMarkers.add(FriendsItem("중간위치","https://firebasestorage.googleapis.com/v0/b/promise-c6321.appspot.com/o/profile%2F2506781891%2F2506781891.png?alt=media&token=267e1dac-147e-4a6f-b395-368db2d92396","중간위치"))
         marker3.itemName = 0.toString()//midlatlon.userId
-        marker3.setTag(3);
+        marker3.setTag(userLatLon.size);
         marker3.mapPoint = MapPoint.mapPointWithGeoCoord(midlatlon.lat.toDouble(),midlatlon.lon.toDouble())
         marker3.markerType = MapPOIItem.MarkerType.RedPin // 기본으로 제공하는 BluePin 마커 모양.
 
@@ -245,6 +251,8 @@ class GroupActivity : AppCompatActivity() {
         userRef.document(userId).collection("groups").document(groupName).collection("members").get().addOnSuccessListener { result->
             members.clear()
             userLatLon.clear()
+            userMarkers.clear()
+
             for (doc in result){
                 var isJoin: Boolean = doc.get("isJoin") as Boolean
                 userRef.document(doc.id).get().addOnSuccessListener {
@@ -263,9 +271,12 @@ class GroupActivity : AppCompatActivity() {
                     var datas: MutableMap<String, String> = doc["data"] as MutableMap<String, String> // 해시맵
 
                     val item = FriendsItem2(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String,doc.get("isJoin") as Boolean)
+                    val item3 = FriendsItem(datas["userName"]as String,datas["userImgUrl"]as String,datas["userAddress"]as String)
                     val item2 = LatLon(datas["lat"]as String,datas["lon"]as String,datas["userId"] as String)
+
                     userLatLon.add(item2)
                     members.add(item)
+                    userMarkers.add(item3)
                 }
 
             }
@@ -274,7 +285,7 @@ class GroupActivity : AppCompatActivity() {
 
    }
 
-    // 커스텀 말풍선 클래스
+//     커스텀 말풍선 클래스
 //    inner class CustomCalloutBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
 //
 //        val mCalloutBalloon: View = inflater.inflate(R.layout.custom_callout_balloon, null)
@@ -308,13 +319,16 @@ class GroupActivity : AppCompatActivity() {
         val binding by lazy { CustomCalloutBalloonBinding.inflate(layoutInflater) }
 
         override fun getCalloutBalloon(poiItem: MapPOIItem): View {
+            var s = poiItem.tag
 
-            val item: FriendsItem2 = members[poiItem!!.itemName.toInt()]
+            val item: FriendsItem = userMarkers[0]
             binding.tvTitleCcb.text = item.name
             binding.tvAddrCcb.text = item.id
+//            Glide.with(this@GroupActivity).load(item.img).error(R.drawable.images).into(binding.civCcb)
 
 
-//            Glide.with(binding.root.context).load(R.drawable.bg_et).error(R.drawable.images).into(binding.civCcb)
+
+
 //            Glide.with(this@GroupActivity).load(item.img).error(R.drawable.images).into(binding.civCcb)
 
 
@@ -330,6 +344,36 @@ class GroupActivity : AppCompatActivity() {
 
 
     }
+
+
+//    inner class CustomCalloutBalloonAdapter : CalloutBalloonAdapter {
+//
+//        private val mCalloutBalloon: View
+//        override fun getCalloutBalloon(poiItem: MapPOIItem): View {
+//            var s = poiItem.tag
+//
+//            val item: FriendsItem = userMarkers[s]
+////
+////            if (poiItem.tag == 1) (mCalloutBalloon.findViewById<View>(R.id.civ_ccb) as ImageView).setImageResource(
+////                R.drawable.ic_baseline_notifications_24
+////            )
+////            if (poiItem.tag == 2) (mCalloutBalloon.findViewById<View>(R.id.civ_ccb) as ImageView).setImageResource(
+////                R.drawable.ic_baseline_notifications_active_24
+////            )
+//            Glide.with(this@GroupActivity).load(item.img).error(R.drawable.images).into(mCalloutBalloon.findViewById<View>(R.id.civ_ccb) as CircleImageView)
+//            (mCalloutBalloon.findViewById<View>(R.id.tv_title_ccb) as TextView).text = item.name
+//            (mCalloutBalloon.findViewById<View>(R.id.tv_addr_ccb) as TextView).text = item.id
+//            return mCalloutBalloon
+//        }
+//
+//        override fun getPressedCalloutBalloon(poiItem: MapPOIItem): View {
+//            return mCalloutBalloon
+//        }
+//
+//        init {
+//            mCalloutBalloon = layoutInflater.inflate(R.layout.custom_callout_balloon,null)
+//        }
+//    }
 
 
 }

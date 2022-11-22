@@ -10,7 +10,7 @@ data class FriendsItem constructor(var name:String, var img:String, var id:Strin
 data class FriendsItem2 constructor(var name:String, var img:String, var id:String, var isJoin:Boolean)
 data class GroupsItem constructor(var groupName:String)
 data class GroupsItem2 constructor(var groupName:String, var groupId:String)
-data class Memo constructor(var name:String, var img:String, var memo:String,var date:String, var groupName:String,var promiseName:String,var userId:String)
+data class Memo constructor(var name:String, var img:String, var memo:String,var date:String, var groupName:String,var promiseName:String,var userId:String ,var time:String)
 data class LatLon constructor(var lat:String, var lon:String,var userId:String)
 
 data class UserCheckStatus(val position: Int, var isChecked: Boolean)

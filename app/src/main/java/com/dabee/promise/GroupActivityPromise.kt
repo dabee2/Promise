@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dabee.promise.databinding.ActivityGroupPromiseBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import org.w3c.dom.Text
 import java.security.AccessController.getContext
 import java.text.SimpleDateFormat
@@ -40,6 +41,12 @@ class GroupActivityPromise : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val pref = getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        val userId:String= pref.getString("userId", null).toString()
+        intent =intent
+        var groupName = intent.getStringExtra("groupName")
+        var promiseName = intent.getStringExtra("promise")
+
 
         binding.iv.setOnClickListener { finish() }
         binding.linearMembers.setOnClickListener { showMembers() }
@@ -47,7 +54,10 @@ class GroupActivityPromise : AppCompatActivity() {
         binding.linearMemo.setOnClickListener { writeMemo() }
 
         dataSet()
-
+        userRef.document(userId).collection("groups").document(groupName!!).collection("promise").document(promiseName!!).collection("memo").orderBy("date", Query.Direction.DESCENDING)
+            .limit(1).addSnapshotListener{s,e ->
+            readMemo()
+        }
 
     }
 
@@ -94,10 +104,11 @@ class GroupActivityPromise : AppCompatActivity() {
 
 
         binding.rvMemo.adapter = RecyclerAdapterMemo(this,memoItem)
+
         userRef.document(userId).collection("groups").document(groupName!!).collection("promise").document(promiseName!!).collection("memo").get().addOnSuccessListener { result ->
             memoItem.clear()
             for(doc in result){
-                val item = Memo(doc.get("userName") as String,doc.get("userImgUrl") as String,doc.get("memo") as String,doc.get("date") as String,groupName,promiseName,doc.get("userId") as String)
+                val item = Memo(doc.get("userName") as String,doc.get("userImgUrl") as String,doc.get("memo") as String,doc.get("date") as String,groupName,promiseName,doc.get("userId") as String,doc.get("time") as String)
                 memoItem.add(item)
 
 
@@ -106,6 +117,9 @@ class GroupActivityPromise : AppCompatActivity() {
             }
             memoItem.sortWith(compareBy { it.date.toLong()})
             binding.rvMemo.adapter?.notifyDataSetChanged()
+            binding.rvMemo.scrollToPosition(memoItem.size-1)
+
+
         }
 
 
@@ -146,13 +160,22 @@ class GroupActivityPromise : AppCompatActivity() {
             var date = SimpleDateFormat("yyyyMMddHHmmSS").format(Date())
 
             userRef.document(userId).get().addOnSuccessListener {
+
+                // 타임스탬프를 한국 시간, 문자열로 바꿈
+                val sf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.KOREA)
+                sf.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+                val time = sf.format(Date())
+
+
                 var set: MutableMap<String, String> = java.util.HashMap()
                 set["userName"] = it["userName"] as String
                 set["userImgUrl"] = it["userImgUrl"] as String
                 set["memo"] = memo
                 set["userId"] = userId
-
+                set["time"] = time
                 set["date"] = date
+
+
 
                 userRef.document(userId).collection("groups").document(groupName!!).collection("members").get().addOnSuccessListener { result ->
                     for (doc in result){
