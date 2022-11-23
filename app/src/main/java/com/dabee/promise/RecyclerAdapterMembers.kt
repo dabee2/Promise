@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.dabee.promise.databinding.RecyclerItemMembersBinding
 import com.dabee.promise.databinding.RecyclerItemMembershipBinding
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -18,7 +19,7 @@ class RecyclerAdapterMembers constructor(val context:Context, var items:MutableL
 
     inner class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        val binding:RecyclerItemMembershipBinding = RecyclerItemMembershipBinding.bind(itemView)
+        val binding:RecyclerItemMembersBinding = RecyclerItemMembersBinding.bind(itemView)
 
     }
 

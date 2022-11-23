@@ -2,6 +2,7 @@ package com.dabee.promise
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,9 +47,16 @@ class RecyclerAdapterMini constructor(val context:Context, var items:MutableList
 
         var dday2 = SimpleDateFormat("yyyyMMdd").format(Date())
         var dday3 = (dday2.toInt() - dday.toInt()).toString()
-        if (dday3.toInt() == 0) dday3 = "Today"
-        else if (dday3.toInt() > 0) dday3 = "D+$dday3"
-        else dday3 = "D$dday3"
+        if (dday3.toInt() == 0){
+            dday3 = "Today"
+            holder.binding.tvDDay.setTextColor(Color.parseColor("#FFFF0000"))
+        }else if (dday3.toInt() > 0){
+            dday3 = "D+$dday3"
+            holder.binding.tvDDay.setTextColor(Color.parseColor("#FF000000"))
+        } else {
+            dday3 = "D$dday3"
+            holder.binding.tvDDay.setTextColor(Color.parseColor("##FF000000"))
+        }
 
 
 

@@ -12,6 +12,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dabee.promise.databinding.ActivityMainBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +32,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        // Retrofit을 이용하여 HTTP 통신 시작
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl("https://apis.data.go.kr")
+            .addConverterFactory(ScalarsConverterFactory.create())  // 순서 중요 Scalars 먼저!
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
 
 
         Handler().postDelayed(Runnable {
@@ -44,7 +54,8 @@ class MainActivity : AppCompatActivity() {
         val myAnim :Animation = AnimationUtils.loadAnimation(this, R.anim.rotate_open);
         supportFragmentManager.beginTransaction().add(R.id.fragment, MyFragment(promiseItems,memoryItems)).commit()
 
-
+        val servicekey = "Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D"
+        val ss = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=$servicekey&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211230600"
 
         bnv_main.setOnItemSelectedListener { item ->
 
@@ -119,7 +130,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun promiseLoad(){
-        var today = SimpleDateFormat("yyyyMMddhhmm").format(Date())
+        var today = SimpleDateFormat("yyyyMMddHHmm").format(Date())
 
         val pref = getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
         val userId:String= pref.getString("userId", null).toString()

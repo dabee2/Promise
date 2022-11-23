@@ -31,7 +31,7 @@
             android:layout_marginVertical="8dp"
             android:layout_marginLeft="10dp"
             android:layout_toLeftOf="@+id/Rlativlay2"
-            android:background="@drawable/paperclip1" />
+            android:background="@drawable/paperclip2" />
 
 
         <TextView

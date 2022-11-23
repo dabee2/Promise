@@ -2,25 +2,17 @@ package com.dabee.promise
 
 import android.app.Activity
 import android.content.Intent
+import android.location.Geocoder
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
+import androidx.core.graphics.scaleMatrix
 import com.dabee.promise.databinding.ActivityGroupBinding
-import com.dabee.promise.databinding.ActivityGroupBinding.inflate
-import com.dabee.promise.databinding.ActivityJoinGroupBinding.inflate
 import com.dabee.promise.databinding.CustomCalloutBalloonBinding
 import com.google.firebase.firestore.FirebaseFirestore
-import de.hdodenhof.circleimageview.CircleImageView
-import net.daum.mf.map.api.CalloutBalloonAdapter
-import net.daum.mf.map.api.MapPOIItem
-import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapView
+import net.daum.mf.map.api.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -50,9 +42,9 @@ class GroupActivity : AppCompatActivity() {
         binding.iv.setOnClickListener { finish() }
 
         Handler().postDelayed(Runnable {
-
             mapLoad()
-        }, 1000) // 0.6초 정도 딜레이를 준 후 시작
+
+        }, 1200) // 0.6초 정도 딜레이를 준 후 시작
 
 
 
@@ -61,6 +53,8 @@ class GroupActivity : AppCompatActivity() {
             intent2.putExtra("groupName",groupName)
             intentActivityResultLauncher.launch(intent2)
         }
+
+
 
 
 
@@ -75,6 +69,7 @@ class GroupActivity : AppCompatActivity() {
 
 
     }
+
 
     private fun promiseLoad(){
 
@@ -134,14 +129,7 @@ class GroupActivity : AppCompatActivity() {
         }
     }
 
-//    var mp = midPoint(LatLng(-43.95139, -176.56111), LatLng(-36.397816, 174.663496))
-//    fun midPoint(SW: LatLng?, NE: LatLng?): LatLng {
-//        var bounds = LatLngBounds(SW, NE)
-//        Log.d("BAD!", bounds.toString().toString() + " CENTRE: " + bounds.getCenter().toString())
-//        bounds = LatLngBounds.builder().include(SW).include(NE).build()
-//        Log.d("GOOD", bounds.toString().toString() + " CENTRE: " + bounds.getCenter().toString())
-//        return bounds.getCenter()
-//    }
+
 
     fun midPoint(lat1: Double, lon1: Double, lat2: Double, lon2: Double): LatLon {
         var lat1 = lat1
@@ -167,19 +155,41 @@ class GroupActivity : AppCompatActivity() {
 //        println(Math.toDegrees(lat3).toString() + " " + Math.toDegrees(lon3))
 
     }
+    //위도 경도로 주소 구하는 Reverse-GeoCoding
+    private fun getAddress(position: LatLon): String {
+        val geoCoder = Geocoder(this, Locale.KOREA)
+        var addr = "주소 오류"
+
+        //GRPC 오류? try catch 문으로 오류 대처
+        try {
+            addr = geoCoder.getFromLocation(position.lat.toDouble(), position.lon.toDouble(), 1).first().getAddressLine(0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return addr
+    }
 
 
 
     private fun mapLoad(){
+
+        var midPoint = LatLon(userLatLon[0].lat,userLatLon[0].lon,"midPoint")
+
+
+
 
         val mapView = MapView(this)
 
         val mapViewContainer = binding.mapView
         mapViewContainer.addView(mapView)
 
-        var midlatlon = midPoint(userLatLon[0].lat.toDouble(),userLatLon[0].lon.toDouble(),userLatLon[1].lat.toDouble(),userLatLon[1].lon.toDouble())
 
-        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(midlatlon.lat.toDouble(),midlatlon.lon.toDouble()), 8, true)
+
+
+
+//        var midlatlon = midPoint(userLatLon[0].lat.toDouble(),userLatLon[0].lon.toDouble(),userLatLon[1].lat.toDouble(),userLatLon[1].lon.toDouble())
+
+        mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(midPoint.lat.toDouble(),midPoint.lon.toDouble()), 8, true)
         mapView.setCalloutBalloonAdapter(CustomCalloutBalloonAdapter())
         userMarker.clear()
 
@@ -194,7 +204,7 @@ class GroupActivity : AppCompatActivity() {
             userMarker[i].mapPoint = MapPoint.mapPointWithGeoCoord(userLatLon[i].lat.toDouble(),userLatLon[i].lon.toDouble())
             userMarker[i].markerType = MapPOIItem.MarkerType.RedPin // 기본으로 제공하는 BluePin 마커 모양.
 
-            userMarker[i].selectedMarkerType = MapPOIItem.MarkerType.BluePin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+            userMarker[i].selectedMarkerType = MapPOIItem.MarkerType.YellowPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
             userMarker[i].isCustomImageAutoscale = false
             userMarker[i].setCustomImageAnchor(0.5f, 1.0f)
@@ -205,19 +215,28 @@ class GroupActivity : AppCompatActivity() {
         }
 
 
-
-
+        for (i in 0..userLatLon.size-1){
+            midPoint = midPoint(midPoint.lat.toDouble(),midPoint.lon.toDouble(),userLatLon[i].lat.toDouble(),userLatLon[i].lon.toDouble())
+        }
+        var midAddr = getAddress(midPoint)
+        binding.tvMidAddr.text = midAddr
 
         val marker3 = MapPOIItem()
-        userMarkers.add(FriendsItem("중간위치","https://firebasestorage.googleapis.com/v0/b/promise-c6321.appspot.com/o/profile%2F2506781891%2F2506781891.png?alt=media&token=267e1dac-147e-4a6f-b395-368db2d92396","중간위치"))
-        marker3.itemName = 0.toString()//midlatlon.userId
+        marker3.apply {
+            customImageResourceId = R.drawable.noun_my_location_red
+            customSelectedImageResourceId = R.drawable.noun_my_location_blue
+            isCustomImageAutoscale = true
+        }
+        userMarkers.add(FriendsItem("중간위치","","$midAddr"))
+        marker3.itemName = "중간위치"
         marker3.setTag(userLatLon.size);
-        marker3.mapPoint = MapPoint.mapPointWithGeoCoord(midlatlon.lat.toDouble(),midlatlon.lon.toDouble())
-        marker3.markerType = MapPOIItem.MarkerType.RedPin // 기본으로 제공하는 BluePin 마커 모양.
+        marker3.mapPoint = MapPoint.mapPointWithGeoCoord(midPoint.lat.toDouble(),midPoint.lon.toDouble())
+        marker3.markerType = MapPOIItem.MarkerType.CustomImage // 기본으로 제공하는 BluePin 마커 모양.
 
-        marker3.selectedMarkerType = MapPOIItem.MarkerType.BluePin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
 
-        marker3.isCustomImageAutoscale = false
+        marker3.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+
         marker3.setCustomImageAnchor(0.5f, 1.0f)
 
 
@@ -262,21 +281,23 @@ class GroupActivity : AppCompatActivity() {
                         userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).set(it)
                         userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).update(isJoin as Map<String, Any>)
 
-//                        userLatLon.add(LatLon(it.get("lat") as String,it.get("lon") as String,it.get("userId") as String))
+                        if(it.get("userAddress") != null){
+                            userMarkers.add(FriendsItem(it.get("userName") as String,it.get("userImgUrl") as String,it.get("userAddress") as String))
+                            userLatLon.add(LatLon(it.get("lat") as String,it.get("lon") as String,it.get("userId") as String))
+                        }
+
 
                     }
 
                 }
+
                 if(isJoin){
                     var datas: MutableMap<String, String> = doc["data"] as MutableMap<String, String> // 해시맵
 
                     val item = FriendsItem2(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String,doc.get("isJoin") as Boolean)
-                    val item3 = FriendsItem(datas["userName"]as String,datas["userImgUrl"]as String,datas["userAddress"]as String)
-                    val item2 = LatLon(datas["lat"]as String,datas["lon"]as String,datas["userId"] as String)
 
-                    userLatLon.add(item2)
                     members.add(item)
-                    userMarkers.add(item3)
+
                 }
 
             }
@@ -285,33 +306,6 @@ class GroupActivity : AppCompatActivity() {
 
    }
 
-//     커스텀 말풍선 클래스
-//    inner class CustomCalloutBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
-//
-//        val mCalloutBalloon: View = inflater.inflate(R.layout.custom_callout_balloon, null)
-//        val title: TextView = mCalloutBalloon.findViewById(R.id.tv_title_ccb)
-//        val address: TextView = mCalloutBalloon.findViewById(R.id.tv_addr_ccb)
-//        val civ: CircleImageView = mCalloutBalloon.findViewById(R.id.civ_ccb)
-//
-//        override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
-//            // 마커 클릭 시 나오는 말풍선
-//            val item: FriendsItem2 = members[poiItem!!.itemName.toInt()]
-//            title.text = item.name
-//            address.text = item.id
-//            Glide.with(this@GroupActivity).load(item.img).error(R.drawable.images).into(civ)
-//
-//
-//
-//
-//            return mCalloutBalloon
-//        }
-//
-//        override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
-//            // 말풍선 클릭 시
-//            address.text = "getPressedCalloutBalloon"
-//            return mCalloutBalloon
-//        }
-//    }
 
 
     inner class CustomCalloutBalloonAdapter() : CalloutBalloonAdapter {
@@ -319,25 +313,19 @@ class GroupActivity : AppCompatActivity() {
         val binding by lazy { CustomCalloutBalloonBinding.inflate(layoutInflater) }
 
         override fun getCalloutBalloon(poiItem: MapPOIItem): View {
-            var s = poiItem.tag
 
-            val item: FriendsItem = userMarkers[0]
+            val item: FriendsItem = userMarkers[poiItem.tag]
             binding.tvTitleCcb.text = item.name
-            binding.tvAddrCcb.text = item.id
-//            Glide.with(this@GroupActivity).load(item.img).error(R.drawable.images).into(binding.civCcb)
-
-
-
-
-//            Glide.with(this@GroupActivity).load(item.img).error(R.drawable.images).into(binding.civCcb)
+            binding.tvAddrCcb.text = ""
 
 
             return binding.root
         }
 
         override fun getPressedCalloutBalloon(poiItem: MapPOIItem): View {
-
-
+            val item: FriendsItem = userMarkers[poiItem.tag]
+            binding.tvTitleCcb.text = ""
+            binding.tvAddrCcb.text = item.id
 
             return binding.root
         }
@@ -346,34 +334,6 @@ class GroupActivity : AppCompatActivity() {
     }
 
 
-//    inner class CustomCalloutBalloonAdapter : CalloutBalloonAdapter {
-//
-//        private val mCalloutBalloon: View
-//        override fun getCalloutBalloon(poiItem: MapPOIItem): View {
-//            var s = poiItem.tag
-//
-//            val item: FriendsItem = userMarkers[s]
-////
-////            if (poiItem.tag == 1) (mCalloutBalloon.findViewById<View>(R.id.civ_ccb) as ImageView).setImageResource(
-////                R.drawable.ic_baseline_notifications_24
-////            )
-////            if (poiItem.tag == 2) (mCalloutBalloon.findViewById<View>(R.id.civ_ccb) as ImageView).setImageResource(
-////                R.drawable.ic_baseline_notifications_active_24
-////            )
-//            Glide.with(this@GroupActivity).load(item.img).error(R.drawable.images).into(mCalloutBalloon.findViewById<View>(R.id.civ_ccb) as CircleImageView)
-//            (mCalloutBalloon.findViewById<View>(R.id.tv_title_ccb) as TextView).text = item.name
-//            (mCalloutBalloon.findViewById<View>(R.id.tv_addr_ccb) as TextView).text = item.id
-//            return mCalloutBalloon
-//        }
-//
-//        override fun getPressedCalloutBalloon(poiItem: MapPOIItem): View {
-//            return mCalloutBalloon
-//        }
-//
-//        init {
-//            mCalloutBalloon = layoutInflater.inflate(R.layout.custom_callout_balloon,null)
-//        }
-//    }
 
 
 }

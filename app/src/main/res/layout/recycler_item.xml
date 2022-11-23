@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
-            android:background="@drawable/paperclip1"
+            android:background="@drawable/paperclip2"
             android:scaleType="centerInside" />
 
         <TextView
@@ -31,56 +31,72 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_group2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Group : "
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/black"
+            android:layout_marginBottom="10dp"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+        <TextView
             android:id="@+id/tv_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@+id/tv_group2"
             android:layout_marginTop="15dp"
             android:fontFamily="@font/binggrae"
             android:text="Group"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_group2"
+            android:text="일정 제목 : "
+            android:layout_marginLeft="12dp"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginBottom="10dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/tv_place"
-            android:layout_below="@id/tv_group"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/binggrae"
+            android:layout_toRightOf="@id/tv_title2"
+            android:layout_below="@id/tv_group2"
             android:gravity="center"
             android:text="일정"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="12dp"
-            android:fontFamily="@font/binggrae"
-            android:paddingTop="10dp"
-            android:text="만나는장소 : "
+            android:layout_marginLeft="12dp"
+            android:layout_below="@id/tv_title2"
+            android:text="만나는 장소 : "
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_place2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_below="@id/tv_title2"
             android:layout_marginEnd="16dp"
             android:layout_toRightOf="@+id/tv_place"
-            android:paddingTop="10dp"
-            android:fontFamily="@font/binggrae"
             android:text="서울시 성북구 00대로 0길 00"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView

@@ -3,55 +3,48 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardBackgroundColor="#EDD9E2FF"
-    app:cardCornerRadius="8dp">
+    app:cardBackgroundColor="@color/my_color"
+    app:cardCornerRadius="25dp">
 
 
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="20dp">
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:padding="5dp">
 
-    <RelativeLayout
-        android:layout_width="150dp"
-        android:layout_height="60dp"
-        android:padding="8dp">
 
+            <TextView
+                android:id="@+id/tv_title_ccb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:text="Name"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/civ_ccb"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/images"
-            android:layout_marginRight="8dp"
-            android:layout_centerVertical="true"/>
-
-        <TextView
-            android:id="@+id/tv_title_ccb"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/civ_ccb"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:maxLines="2"
-            android:text="Name"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_addr_ccb"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tv_title_ccb"
-            android:layout_marginTop="4dp"
-            android:layout_toRightOf="@id/civ_ccb"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="2"
-            android:text="주소"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_addr_ccb"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:maxLines="2"
+                android:text=""
+                android:textSize="12sp" />
 
 
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
 
 </androidx.cardview.widget.CardView>

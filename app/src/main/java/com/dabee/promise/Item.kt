@@ -14,3 +14,19 @@ data class Memo constructor(var name:String, var img:String, var memo:String,var
 data class LatLon constructor(var lat:String, var lon:String,var userId:String)
 
 data class UserCheckStatus(val position: Int, var isChecked: Boolean)
+
+
+data class Weather constructor(
+    var wf3Am:String,
+    var wf3Pm:String,
+    var wf4Am:String,
+    var wf4Pm:String,
+    var wf5Am:String,
+    var wf5Pm:String,
+    var wf6Am:String,
+    var wf6Pm:String,
+    var wf7Am:String,
+    var wf7Pm:String,
+    var wf8:String,
+    var wf9:String,
+)

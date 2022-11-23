@@ -1,10 +1,12 @@
 package com.dabee.promise
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,15 +17,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.marginTop
 import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.dabee.promise.databinding.FragmentMembershipBinding
 import com.google.firebase.firestore.*
-import com.google.type.LatLng
 import java.io.IOException
 import java.util.*
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,7 +48,7 @@ class MembershipFragment : Fragment() {
     val firebaseFirestore = FirebaseFirestore.getInstance()
     val userRef = firebaseFirestore.collection("users")
 
-    lateinit var binding: FragmentMembershipBinding
+    val binding by lazy { FragmentMembershipBinding.inflate(layoutInflater) }
     lateinit var userAddr:String
     lateinit var lat:String
     lateinit var lon:String
@@ -68,9 +71,10 @@ class MembershipFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding= FragmentMembershipBinding.inflate(inflater,container,false)
+
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -134,10 +138,23 @@ class MembershipFragment : Fragment() {
             val userName=it.get("userName")
             val userImg =it.get("userImgUrl")
             binding.tvNickname2.text = userName.toString()
+            binding.tvId2.text = it.get("userId").toString()
             Glide.with(this).load(userImg).error(R.drawable.images).into(binding.civProfile)
         }
 
-        friendLoad()
+
+        binding.civProfile.setOnClickListener {
+            val clipboardManager: ClipboardManager? = requireContext().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager?
+            val clipData = ClipData.newPlainText("CODE",binding.tvId2.getText().toString().trim()
+            ) //클립보드에 ID라는 이름표로 id 값을 복사하여 저장
+
+            clipboardManager?.setPrimaryClip(clipData)
+
+            //복사가 되었다면 토스트메시지 노출
+
+            //복사가 되었다면 토스트메시지 노출
+            Toast.makeText(binding.root.context, "ID 가 복사되었습니다.",Toast.LENGTH_SHORT).show()
+        }
 
 
 
@@ -147,6 +164,9 @@ class MembershipFragment : Fragment() {
 
         // 친구추가 버튼 다이알로그
         binding.ivAdd.setOnClickListener {
+
+
+
             val builder = AlertDialog.Builder(binding.root.context)
             val tvCode = TextView(binding.root.context)
             tvCode.text = ""
@@ -154,11 +174,11 @@ class MembershipFragment : Fragment() {
             val etCode = EditText(binding.root.context)
             etCode.hint = " 친구 코드를 입력해 주세요"
             etCode.isSingleLine = true
+            tvCode.marginTop
             val mLayout = LinearLayout(binding.root.context)
             mLayout.orientation = LinearLayout.VERTICAL
             mLayout.setPadding(80)
             mLayout.addView(tvCode)
-            tvCode.marginTop
             mLayout.addView(etCode)
             builder.setView(mLayout)
             builder.setTitle("친구 추가")
@@ -201,7 +221,8 @@ class MembershipFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        binding.recycler.adapter?.notifyDataSetChanged()
+
+        friendLoad()
 
 
 
@@ -240,38 +261,10 @@ class MembershipFragment : Fragment() {
     }
 
 
-//    //주소로 위도,경도 구하는 GeoCoding
-//    private fun getLatLng(address:String) : LatLng {
-//        val geoCoder = Geocoder(context, Locale.KOREA)   // Geocoder 로 자기 나라에 맞게 설정
-//        val list = geoCoder.getFromLocationName(address, 3)
-//
-//        var location:LatLng = LatLng(37.554891, 126.970814)     //임시 서울역
-//
-//        if(list != null){
-//            if (list.size ==0){
-//                Log.d("GeoCoding", "해당 주소로 찾는 위도 경도가 없습니다. 올바른 주소를 입력해주세요.")
-//            }else{
-//                val addressLatLng = list[0]
-//                location = LatLng(addressLatLng.latitude, addressLatLng.longitude)
-//                return location
-//            }
-//        }
-//
-//        return location
-//    }
 
-    //위도 경도로 주소 구하는 Reverse-GeoCoding
-    private fun getAddress(position: LatLng): String {
-        val geoCoder = Geocoder(context, Locale.KOREA)
-        var addr = "주소 오류"
-
-        //GRPC 오류? try catch 문으로 오류 대처
-        try {
-            addr = geoCoder.getFromLocation(position.latitude, position.longitude, 1).first().getAddressLine(0)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return addr
+    private fun hideKeyBoard() {
+        val imm:InputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE )as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.etAddr2.windowToken,0)
     }
 
 
@@ -297,12 +290,9 @@ class MembershipFragment : Fragment() {
         binding.tvAddr2.text = binding.etAddr2.text
         userAddr = binding.etAddr2.text.toString()
 
+
     }
 
-    private fun hideKeyBoard() {
-        val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
-    }
 
 
 
