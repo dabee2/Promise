@@ -10,6 +10,7 @@
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_baseline_add_alert_24.xml" value="0.1375" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_baseline_arrow_back_24.xml" value="0.2085" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_baseline_close_24.xml" value="0.1375" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_baseline_groups_24.xml" value="0.1835" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.1375" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_baseline_notifications_active_24.xml" value="0.1375" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/drawable/ic_baseline_person_add_alt_1_24.xml" value="0.1375" />
@@ -24,6 +25,8 @@
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_main2.xml" value="0.3614583333333333" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/activity_my.xml" value="0.1" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/bs_members.xml" value="0.31666666666666665" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/custom_callout_balloon.xml" value="0.31666666666666665" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/fragment_group.xml" value="0.35064935064935066" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/fragment_membership.xml" value="0.25" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/fragment_my.xml" value="0.2571428571428571" />
@@ -34,12 +37,15 @@
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group2.xml" value="0.3162162162162162" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group_add.xml" value="0.35038363171355497" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_group_child.xml" value="0.31666666666666665" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_members.xml" value="0.31666666666666665" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_membership.xml" value="0.3619791666666667" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_memo.xml" value="0.22747747747747749" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/layout/recycler_item_mini.xml" value="0.23198198198198197" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/menu/bnv.xml" value="0.3564102564102564" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/mipmap-anydpi-v26/ic_icon.xml" value="0.12" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/mipmap-anydpi-v26/ic_icon3.xml" value="0.12" />
         <entry key="..\:/Android/Projects/Promise/app/src/main/res/mipmap-anydpi-v26/ic_icon3_round.xml" value="0.12" />
+        <entry key="..\:/Android/Projects/Promise/app/src/main/res/mipmap-anydpi-v26/ic_icon5.xml" value="0.1835" />
         <entry key="..\:/android/Promise2/app/src/main/res/drawable/bg_et.xml" value="0.3135" />
         <entry key="..\:/android/Promise2/app/src/main/res/drawable/bg_et2.xml" value="0.3135" />
         <entry key="..\:/android/Promise2/app/src/main/res/drawable/bg_et3.xml" value="0.3135" />
@@ -48,14 +54,12 @@
         <entry key="..\:/android/Promise2/app/src/main/res/drawable/ic_baseline_notifications_24.xml" value="0.3135" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_add_group.xml" value="0.5453125" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_group.xml" value="0.47162162162162163" />
-        <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_group_promise.xml" value="0.4653333333333333" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_group_promise_add.xml" value="0.47162162162162163" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_join_group.xml" value="0.47477477477477475" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_login.xml" value="0.40370370370370373" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/activity_main.xml" value="0.5453125" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/bs_calendar.xml" value="0.47162162162162163" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/bs_calendar2.xml" value="0.2662162162162162" />
-        <entry key="..\:/android/Promise2/app/src/main/res/layout/bs_members.xml" value="0.3662162162162162" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/bs_time.xml" value="0.47477477477477475" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/custom_callout_balloon.xml" value="0.47162162162162163" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/fragment_group.xml" value="0.40370370370370373" />
@@ -67,7 +71,6 @@
         <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_group.xml" value="0.4653333333333333" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_group_add.xml" value="0.47477477477477475" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_group_child.xml" value="0.5453125" />
-        <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_members.xml" value="0.4653333333333333" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_membership.xml" value="0.47477477477477475" />
         <entry key="..\:/android/Promise2/app/src/main/res/layout/recycler_item_mini.xml" value="0.47162162162162163" />
       </map>

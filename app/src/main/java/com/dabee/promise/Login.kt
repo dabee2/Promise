@@ -2,7 +2,6 @@ package com.dabee.promise
 
 import android.content.ContentValues.TAG
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -13,21 +12,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.Target
 import com.dabee.promise.databinding.ActivityLoginBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.kakao.sdk.auth.AuthApiClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
-import com.kakao.sdk.common.model.ClientError
-import com.kakao.sdk.common.model.ClientErrorCause
-import com.kakao.sdk.common.model.KakaoSdkError
 import com.kakao.sdk.user.UserApiClient
-import com.kakao.util.maps.helper.Utility
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class Login : AppCompatActivity() {
 
@@ -81,6 +76,7 @@ class Login : AppCompatActivity() {
 
             saveData()
             friendLoad()
+            getFCMToken()
             val intent = Intent(this,MainActivity::class.java)
             startActivity(intent)
             finish()
@@ -285,78 +281,29 @@ class Login : AppCompatActivity() {
 
     }
 
-//    fun login(){
-//
-//        // 이메일 로그인 콜백
-//        val mCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-//            if (error != null) {
-//                Log.e(TAG, "로그인 실패 $error")
-//            } else if (token != null) {
-//                Log.e(TAG, "로그인 성공 ${token.accessToken}")
-//            }
-//        }
-//
-//
-//
-//        // 카카오톡 설치 확인
-//        if (UserApiClient.instance.isKakaoTalkLoginAvailable(this)) {
-//            // 카카오톡 로그인
-//            UserApiClient.instance.loginWithKakaoTalk(this) { token, error ->
-//                // 로그인 실패 부분
-//                if (error != null) {
-//                    Log.e(TAG, "로그인 실패 $error")
-//                    // 사용자가 취소
-//                    if (error is ClientError && error.reason == ClientErrorCause.Cancelled ) {
-//                        return@loginWithKakaoTalk
-//                    }
-//                    // 다른 오류
-//                    else {
-//                        UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
-//                    }
-//                }// 로그인 성공 부분
-//                else if (token != null) {
-//                    Log.e(TAG, "로그인 성공 ${token.accessToken}")
-//                }
-//            }
-//        } else {
-//            UserApiClient.instance.loginWithKakaoAccount(this, callback = mCallback) // 카카오 이메일 로그인
-//        }
-//        if (AuthApiClient.instance.hasToken()) {
-//            UserApiClient.instance.accessTokenInfo { _, error ->
-//                if (error != null) {
-//                    if (error is KakaoSdkError && error.isInvalidTokenError() == true) {
-//                        //로그인 필요
-//                    }
-//                    else {
-//                        //기타 에러
-//                    }
-//                }
-//                else {
-//                    //토큰 유효성 체크 성공(필요 시 토큰 갱신됨)
-//                }
-//            }
-//        }
-//        else {
-//            //로그인 필요
-//
-//        }
-//        UserApiClient.instance.me { user, error ->
-//            if (error != null) {
-//                Log.e(TAG, "사용자 정보 요청 실패 $error")
-//            } else if (user != null) {
-//                Log.e(TAG, "사용자 정보 요청 성공 : $user")
-//                binding.tvNickname.setText(user.kakaoAccount?.profile?.nickname)
-//                Glide.with(this).load(user.kakaoAccount?.profile?.profileImageUrl).error(R.drawable.images).into(binding.civProfile)
-//                userEmail = user.kakaoAccount?.email.toString()
-//
-//
-//                imgUrl = user.kakaoAccount?.profile?.profileImageUrl.toString()
-//                isKaKaologin=true
-//                binding.btn.visibility =View.VISIBLE
-//            }
-//        }
-//    }
-//
+    fun getFCMToken() {
+        val firebaseFirestore = FirebaseFirestore.getInstance()
+        val userRef = firebaseFirestore.collection("users")
+        val pref = this.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        val userId:String= pref.getString("userId", null).toString()
+
+
+        //FCM 서버의 등록된 ID 토큰 값 받기
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+//                토큰 내놔
+                val token = task.result
+//                토크값 확인 - 실무에서는 웹서버에 이 토큰값을 전송.
+                Log.i("TOKEN", token)
+                userRef.document(userId).get().addOnSuccessListener {
+                    val token:HashMap<String,String> = hashMapOf()
+                    token["FCMToken"] = task.result
+                    userRef.document(userId).update(token as MutableMap<String, Any>)
+                }
+            }
+        }
+    }
+
 
 
 

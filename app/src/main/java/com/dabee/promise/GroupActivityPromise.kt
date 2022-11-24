@@ -113,7 +113,6 @@ class GroupActivityPromise : AppCompatActivity() {
 
 
 
-
             }
             memoItem.sortWith(compareBy { it.date.toLong()})
             binding.rvMemo.adapter?.notifyDataSetChanged()

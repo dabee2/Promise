@@ -19,6 +19,7 @@
         android:theme="@style/Theme.Promise"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
         <activity
             android:name=".GroupActivityPromise"
             android:exported="false"
@@ -68,6 +69,27 @@
                     android:scheme="kakaoa885b205f3f68ff7b70039992bb3ba34" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".FCMService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/noun_promise_3148328" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/my_color" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/app_name" />
+
+
     </application>
 
 </manifest>
