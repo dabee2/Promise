@@ -12,6 +12,7 @@ import androidx.core.graphics.scaleMatrix
 import com.dabee.promise.databinding.ActivityGroupBinding
 import com.dabee.promise.databinding.CustomCalloutBalloonBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import net.daum.mf.map.api.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -54,8 +55,14 @@ class GroupActivity : AppCompatActivity() {
             intentActivityResultLauncher.launch(intent2)
         }
 
+        val pref = getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        val userId:String= pref.getString("userId", null).toString()
 
 
+
+        userRef.document(userId).collection("groups").document(groupName).collection("promise").orderBy("setLineup", Query.Direction.DESCENDING).limit(1).addSnapshotListener{s,e ->
+            promiseLoad()
+        }
 
 
     }
@@ -65,8 +72,6 @@ class GroupActivity : AppCompatActivity() {
 
         friendLoad()
         promiseLoad()
-
-
 
     }
 
@@ -91,29 +96,12 @@ class GroupActivity : AppCompatActivity() {
 
             }
             promiseItems.sortWith(compareBy { it.setLineup.toLong() })
-
-            Handler().postDelayed(Runnable {
-                //딜레이 후 시작할 코드 작성
-
-                binding.rvPromis.adapter?.notifyDataSetChanged()
-            }, 500) //0.5초 후 시작
-            Handler().postDelayed(Runnable {
-                //딜레이 후 시작할 코드 작성
-
-                binding.rvPromis.adapter?.notifyDataSetChanged()
-            }, 1000) //1초 후 시작
-
-
-            Handler().postDelayed(Runnable {
-                //딜레이 후 시작할 코드 작성
-
-                binding.rvPromis.adapter?.notifyDataSetChanged()
-            }, 1500) //1.5초 후 시작
-
+            binding.rvPromis.adapter?.notifyDataSetChanged()
 
         }
 
     }
+
 
     // 액티비티를 실행시켜주는 객체 생성- 멤버변수 위치.
     var intentActivityResultLauncher = registerForActivityResult(
@@ -152,9 +140,8 @@ class GroupActivity : AppCompatActivity() {
         val midLatLon = LatLon(Math.toDegrees(lat3).toString(),Math.toDegrees(lon3).toString(),"midPoint")
         return midLatLon
 
-//        println(Math.toDegrees(lat3).toString() + " " + Math.toDegrees(lon3))
-
     }
+
     //위도 경도로 주소 구하는 Reverse-GeoCoding
     private fun getAddress(position: LatLon): String {
         val geoCoder = Geocoder(this, Locale.KOREA)
@@ -185,9 +172,6 @@ class GroupActivity : AppCompatActivity() {
 
 
 
-
-
-//        var midlatlon = midPoint(userLatLon[0].lat.toDouble(),userLatLon[0].lon.toDouble(),userLatLon[1].lat.toDouble(),userLatLon[1].lon.toDouble())
 
         mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(midPoint.lat.toDouble(),midPoint.lon.toDouble()), 8, true)
         mapView.setCalloutBalloonAdapter(CustomCalloutBalloonAdapter())
@@ -242,14 +226,6 @@ class GroupActivity : AppCompatActivity() {
 
         mapView.addPOIItem(marker3)
         mapView.selectPOIItem(marker3, false)
-
-
-
-
-
-
-
-
 
 
 

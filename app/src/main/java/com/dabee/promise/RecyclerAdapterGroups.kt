@@ -127,9 +127,6 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
 
     override fun onViewRecycled(holder: VH) {
         super.onViewRecycled(holder)
-//        holder.binding.rycyclerRycycler.adapter = RecyclerAdapterGroupChild(context,friends)
-//        friends.clear()
-//        holder.binding.rycyclerRycycler.adapter?.notifyDataSetChanged()
 
     }
 

@@ -2,6 +2,7 @@ package com.dabee.promise
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -27,7 +28,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MyFragmentChild1.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MyFragmentChild1 constructor(var items:MutableList<Item>) : Fragment() {
+class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -66,9 +67,17 @@ class MyFragmentChild1 constructor(var items:MutableList<Item>) : Fragment() {
 
         if(items.size==0){
             binding.tv.visibility = View.VISIBLE
+
+            Handler().postDelayed(Runnable {
+                items.sortWith(compareBy { it.setLineup.toLong()})
+                binding.recycler.adapter = RecyclerAdapter(binding.root.context,items)
+                onResume()
+            }, 300)
+
         }else{
             items.sortWith(compareBy { it.setLineup.toLong()})
             binding.recycler.adapter = RecyclerAdapter(binding.root.context,items)
+            binding.tv.visibility = View.INVISIBLE
         }
 
 

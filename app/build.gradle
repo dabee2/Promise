@@ -54,7 +54,9 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     // 둥근이미지
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    implementation 'com.google.firebase:firebase-firestore:21.4.0'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.10'
+    implementation 'com.squareup.retrofit2:retrofit:(insert latest version)'
+    implementation 'com.squareup.retrofit2:converter-gson:(insert latest version)'
 
 
     testImplementation 'junit:junit:4.13.2'
@@ -82,7 +84,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx'
-
+    implementation 'com.google.firebase:firebase-firestore:21.4.0'
     implementation 'com.google.firebase:firebase-messaging-ktx'  //Firebase Cloud Message SDK
 
 

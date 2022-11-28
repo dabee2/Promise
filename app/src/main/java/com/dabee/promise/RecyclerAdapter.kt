@@ -19,7 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 
-class RecyclerAdapter constructor(val context:Context, var items:MutableList<Item>): RecyclerView.Adapter<RecyclerAdapter.VH>(){
+class RecyclerAdapter constructor(val context:Context, var items:MutableList<Item8>): RecyclerView.Adapter<RecyclerAdapter.VH>(){
 
     inner class VH constructor(itemView: View) : RecyclerView.ViewHolder(itemView){
         val binding:RecyclerItemBinding = RecyclerItemBinding.bind(itemView)
@@ -40,7 +40,7 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
         val pref = context.getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
         val userId:String= pref.getString("userId", null).toString()
 
-        val item:Item = items.get(position)
+        val item:Item8 = items.get(position)
 
         var dday =  item.setLineup.substring(0,8)
 
@@ -54,7 +54,6 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
             holder.binding.tvDDay.setTextColor(Color.parseColor("#FF000000"))
         } else {
             dday3 = "D$dday3"
-            holder.binding.tvDDay.setTextColor(Color.parseColor("##FF000000"))
         }
 
 

@@ -84,6 +84,8 @@ class MembershipFragment : Fragment() {
         //SharedPreference에 저장되어 있는 userId 얻어오기
         val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
         val userId:String= pref.getString("userId", null).toString()
+        val userImg:String= pref.getString("userImgUrl", null).toString()
+        val userName:String= pref.getString("userName", null).toString()
         userRef.document(userId).get().addOnSuccessListener {
             userAddr = it.get("userAddress").toString()
             if(userAddr.equals("null")){
@@ -96,6 +98,9 @@ class MembershipFragment : Fragment() {
         }
 
 
+        binding.tvNickname2.text = userName
+        binding.tvId2.text = userId
+        Glide.with(this).load(userImg).error(R.drawable.images).into(binding.civProfile)
 
 
 
@@ -129,18 +134,10 @@ class MembershipFragment : Fragment() {
 
 
 
-        // 데이터베이스에서 내정보 불러오기
-        val firebaseFirestore = FirebaseFirestore.getInstance()
-        val userRef = firebaseFirestore.collection("users")
 
 
-        userRef.document(userId).get().addOnSuccessListener {
-            val userName=it.get("userName")
-            val userImg =it.get("userImgUrl")
-            binding.tvNickname2.text = userName.toString()
-            binding.tvId2.text = it.get("userId").toString()
-            Glide.with(this).load(userImg).error(R.drawable.images).into(binding.civProfile)
-        }
+
+
 
 
         binding.civProfile.setOnClickListener {

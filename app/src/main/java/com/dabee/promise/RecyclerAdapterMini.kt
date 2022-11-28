@@ -55,7 +55,6 @@ class RecyclerAdapterMini constructor(val context:Context, var items:MutableList
             holder.binding.tvDDay.setTextColor(Color.parseColor("#FF000000"))
         } else {
             dday3 = "D$dday3"
-            holder.binding.tvDDay.setTextColor(Color.parseColor("##FF000000"))
         }
 
 

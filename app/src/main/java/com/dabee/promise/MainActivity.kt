@@ -1,28 +1,35 @@
 package com.dabee.promise
 
 import android.content.res.ColorStateList
-import android.location.Geocoder
-import android.location.LocationProvider
 import android.os.Bundle
-import android.os.Handler
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dabee.promise.databinding.ActivityMainBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import okhttp3.OkHttpClient
+
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     val binding by lazy { ActivityMainBinding.inflate(layoutInflater)}
-    var promiseItems:MutableList<Item> = mutableListOf()
-    var memoryItems:MutableList<Item> = mutableListOf()
+    var promiseItems:MutableList<Item8> = mutableListOf()
+    var memoryItems:MutableList<Item8> = mutableListOf()
     val firebaseFirestore = FirebaseFirestore.getInstance()
     val userRef = firebaseFirestore.collection("users")
 
@@ -32,30 +39,50 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        // Retrofit을 이용하여 HTTP 통신 시작
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://apis.data.go.kr")
-            .addConverterFactory(ScalarsConverterFactory.create())  // 순서 중요 Scalars 먼저!
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
 
-
-
-        Handler().postDelayed(Runnable {
-            //딜레이 후 시작할 코드 작성
-            changeFragment(
-                MyFragment(promiseItems,memoryItems)
-            )
-
-        }, 1000) // 0.6초 정도 딜레이를 준 후 시작
 
 
         val bnv_main = binding.bnv
         val myAnim :Animation = AnimationUtils.loadAnimation(this, R.anim.rotate_open);
         supportFragmentManager.beginTransaction().add(R.id.fragment, MyFragment(promiseItems,memoryItems)).commit()
 
-        val servicekey = "Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D"
-        val ss = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=$servicekey&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211230600"
+        val gson : Gson = GsonBuilder()
+            .setLenient()
+            .create()
+
+        val ss = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211230600"
+
+        // Retrofit을 이용하여 HTTP 통신 시작
+        val retrofit:Retrofit = Retrofit.Builder()
+            .baseUrl("http://apis.data.go.kr/1360000/MidFcstInfoService/")
+            .addConverterFactory(ScalarsConverterFactory.create())  // 순서 중요 Scalars 먼저!
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val retrofitService = retrofit.create(RetrofitService::class.java)
+        val serviceKey = "Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D"
+        val regId = "11B00000"
+        val dataType= "JSON"
+        var tmFc = "202211270600"
+        retrofitService.searchData().enqueue(object : Callback<WeatherItem> {
+            override fun onResponse(
+                call: Call<WeatherItem>,
+                response: Response<WeatherItem>
+            ) {
+                val apiResponse: WeatherItem? = response.body()
+
+                Toast.makeText(this@MainActivity, "${apiResponse}", Toast.LENGTH_SHORT).show()
+
+            }
+
+            override fun onFailure(call: Call<WeatherItem>, t: Throwable) {
+                Toast.makeText(this@MainActivity, "error : ${t.message}", Toast.LENGTH_SHORT).show()
+                AlertDialog.Builder(this@MainActivity).setMessage("error : ${t.message}").show()
+            }
+
+        })
+
+
 
         bnv_main.setOnItemSelectedListener { item ->
 
@@ -122,11 +149,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
         promiseLoad()
-
-
     }
+
 
 
     private fun promiseLoad(){
@@ -147,10 +172,10 @@ class MainActivity : AppCompatActivity() {
 
                         // 계획된 약속
                         if(today.toLong()<date.toLong()){
-                            val item= Item(doc2.get("title")as String,doc2.get("place")as String,"${doc2.get("date")as String} ${doc2.get("time")as String}",doc.id,doc2.get("setLineup")as String)
+                            val item= Item8(doc2.get("title")as String,doc2.get("place")as String,"${doc2.get("date")as String} ${doc2.get("time")as String}",doc.id,doc2.get("setLineup")as String)
                             promiseItems.add(item)
                         }else{  // 지난 약속
-                            val item= Item(doc2.get("title")as String,doc2.get("place")as String,"${doc2.get("date")as String} ${doc2.get("time")as String}",doc.id,doc2.get("setLineup")as String)
+                            val item= Item8(doc2.get("title")as String,doc2.get("place")as String,"${doc2.get("date")as String} ${doc2.get("time")as String}",doc.id,doc2.get("setLineup")as String)
                             memoryItems.add(item)
 
                         }
@@ -182,5 +207,7 @@ class MainActivity : AppCompatActivity() {
 
 
 }
+
+
 
 

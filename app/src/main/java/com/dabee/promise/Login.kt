@@ -20,6 +20,7 @@ import com.google.firebase.storage.StorageReference
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
+import com.kakao.util.maps.helper.Utility
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -28,7 +29,7 @@ class Login : AppCompatActivity() {
 
 //    val binding by lazy { ActivityLoginBinding.inflate(layoutInflater)}
     lateinit var binding: ActivityLoginBinding
-    var items:MutableList<Item> = mutableListOf()
+    var items:MutableList<Item8> = mutableListOf()
 
     var isData:Boolean= false
     var isKaKaologin:Boolean= false
@@ -51,7 +52,7 @@ class Login : AppCompatActivity() {
         setContentView(binding.root)
 
 
-//        Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
+        Log.d(TAG, "keyhash : ${Utility.getKeyHash(this)}")
         KakaoSdk.init(this, "a885b205f3f68ff7b70039992bb3ba34")
 
 
@@ -64,9 +65,6 @@ class Login : AppCompatActivity() {
             // 로그인버튼 비활성
             binding.btn.visibility =View.INVISIBLE
         }
-
-
-
 
 
 
@@ -122,12 +120,6 @@ class Login : AppCompatActivity() {
         // 'profiles' 라는 이름의 Collection 참조객체 (없으면 생성, 있으면 참조)
         val userRef = firebaseFirestore.collection("users")
 
-        // 유저 고유 ID 생성
-//        if(!isData) userId = userRef.document().id
-
-
-        //우선 이미지 파일 Firebase Storage(저장소)에 업로드부터 해야함.
-        //서버에 저장될 파일명이 중복되지 않도록 날짜를 이용하기
 
         //우선 이미지 파일 Firebase Storage(저장소)에 업로드부터 해야함.
         //서버에 저장될 파일명이 중복되지 않도록 날짜를 이용하기
