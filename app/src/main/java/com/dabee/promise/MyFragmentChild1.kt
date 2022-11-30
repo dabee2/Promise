@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.dabee.promise.databinding.FragmentMyChild1Binding
 import com.google.firebase.FirebaseException
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -57,6 +58,10 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (items.size == 0){
+            binding.tv.visibility = View.VISIBLE
+        }else binding.tv.visibility = View.INVISIBLE
 
 
 

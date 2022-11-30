@@ -45,6 +45,8 @@ class RecyclerAdapterMini constructor(val context:Context, var items:MutableList
 
         var dday =  item.setLineup.substring(0,8)
 
+        20221130
+        20221203
         var dday2 = SimpleDateFormat("yyyyMMdd").format(Date())
         var dday3 = (dday2.toInt() - dday.toInt()).toString()
         if (dday3.toInt() == 0){

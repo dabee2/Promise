@@ -78,7 +78,7 @@ class GroupActivity : AppCompatActivity() {
 
     private fun promiseLoad(){
 
-        var today = SimpleDateFormat("yyyyMMddhhmm").format(Date())
+        var today = SimpleDateFormat("yyyyMMddHHmm").format(Date())
 
         binding.rvPromis.adapter = RecyclerAdapterMini(this,promiseItems)
 
@@ -95,6 +95,9 @@ class GroupActivity : AppCompatActivity() {
                 }
 
             }
+            if (promiseItems.size==0) binding.tvPromise2.visibility = View.VISIBLE
+            else binding.tvPromise2.visibility = View.INVISIBLE
+
             promiseItems.sortWith(compareBy { it.setLineup.toLong() })
             binding.rvPromis.adapter?.notifyDataSetChanged()
 
@@ -110,7 +113,7 @@ class GroupActivity : AppCompatActivity() {
 
         // 돌려보낸 결과가 OK인지 .. 확인
         if (result.resultCode == Activity.RESULT_OK) {
-            onResume()
+
 
         } else {
 

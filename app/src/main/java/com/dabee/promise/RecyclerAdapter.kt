@@ -78,7 +78,7 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
 
 
         holder.itemView.setOnLongClickListener {
-            Toast.makeText(holder.binding.root.context, "$dday\n$dday2", Toast.LENGTH_SHORT).show()
+
             AlertDialog.Builder(context).setTitle("일정 삭제").setMessage("\n${item.title} 을(를) 삭제하시겠습니까?").setNegativeButton("취소"){ dialog, v->}.setPositiveButton("삭제"){ dialog, d->
 
                 userRef.document(userId).collection("groups").document(item.groupName).collection("promise").document("${item.title}${item.setLineup}").delete().addOnSuccessListener {

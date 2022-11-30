@@ -192,11 +192,6 @@ class GroupActivityPromise : AppCompatActivity() {
 
             Toast.makeText(this, "메모 작성 완료", Toast.LENGTH_SHORT).show()
 
-            Handler().postDelayed(Runnable {
-                //딜레이 후 시작할 코드 작성
-                onResume()
-            }, 1000) // 0.6초 정도 딜레이를 준 후 시작
-
 
         }
         builder.setNegativeButton("취소") { dialog, which ->
