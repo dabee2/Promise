@@ -60,7 +60,7 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         if (items.size == 0){
-            binding.tv.visibility = View.VISIBLE
+            onResume()
         }else binding.tv.visibility = View.INVISIBLE
 
 

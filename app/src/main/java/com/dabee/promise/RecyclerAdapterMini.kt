@@ -44,11 +44,17 @@ class RecyclerAdapterMini constructor(val context:Context, var items:MutableList
         val item:PromiseItem = items.get(position)
 
         var dday =  item.setLineup.substring(0,8)
+        val dateFormat = SimpleDateFormat("yyyyMMdd")
+        val endDate = dateFormat.parse(dday).time
+        val today = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time.time
 
-        20221130
-        20221203
-        var dday2 = SimpleDateFormat("yyyyMMdd").format(Date())
-        var dday3 = (dday2.toInt() - dday.toInt()).toString()
+        var dday3= "${(today - endDate) / (24 * 60 * 60 * 1000)}"
+
         if (dday3.toInt() == 0){
             dday3 = "Today"
             holder.binding.tvDDay.setTextColor(Color.parseColor("#FFFF0000"))

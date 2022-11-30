@@ -61,7 +61,12 @@ class GroupActivity : AppCompatActivity() {
 
 
         userRef.document(userId).collection("groups").document(groupName).collection("promise").orderBy("setLineup", Query.Direction.DESCENDING).limit(1).addSnapshotListener{s,e ->
-            promiseLoad()
+            Handler().postDelayed(Runnable {
+                promiseLoad()
+
+            }, 300) //
+
+
         }
 
 

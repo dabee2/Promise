@@ -2,18 +2,13 @@ package com.dabee.promise
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.dabee.promise.databinding.RecyclerItemBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -43,9 +38,17 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
         val item:Item8 = items.get(position)
 
         var dday =  item.setLineup.substring(0,8)
+        val dateFormat = SimpleDateFormat("yyyyMMdd")
+        val endDate = dateFormat.parse(dday).time
+        val today = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time.time
 
-        var dday2 = SimpleDateFormat("yyyyMMdd").format(Date())
-        var dday3 = (dday2.toInt() - dday.toInt()).toString()
+        var dday3= "${(today - endDate) / (24 * 60 * 60 * 1000)}"
+
         if (dday3.toInt() == 0){
             dday3 = "Today"
             holder.binding.tvDDay.setTextColor(Color.parseColor("#FFFF0000"))
@@ -55,6 +58,9 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
         } else {
             dday3 = "D$dday3"
         }
+
+
+
 
 
         holder.binding.tvTitle.text = item.title
@@ -87,6 +93,7 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
                 }
                 items.remove(item)
                 notifyItemRemoved(position)
+
 
             }.show()
 

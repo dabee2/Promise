@@ -19,10 +19,6 @@ data class LatLon constructor(var lat:String, var lon:String,var userId:String)
 data class UserCheckStatus(val position: Int, var isChecked: Boolean)
 
 data class WeatherItem constructor(
-    val item:List<items>
-)
-
-data class items constructor(
     var wf3Am:String,
     var wf3Pm:String,
     var wf4Am:String,
@@ -37,3 +33,5 @@ data class items constructor(
     var wf9:String,
     var wf10:String
 )
+
+

@@ -13,17 +13,19 @@ import com.dabee.promise.databinding.ActivityMainBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.kakao.sdk.auth.network.AccessTokenInterceptor
 import okhttp3.OkHttpClient
-
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
         val bnv_main = binding.bnv
         val myAnim :Animation = AnimationUtils.loadAnimation(this, R.anim.rotate_open);
         supportFragmentManager.beginTransaction().add(R.id.fragment, MyFragment(promiseItems,memoryItems)).commit()
@@ -50,21 +53,35 @@ class MainActivity : AppCompatActivity() {
             .setLenient()
             .create()
 
-        val ss = "https://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211230600"
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        //여기까지
+
+        //여기까지
+        val client = OkHttpClient.Builder()
+            .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .connectTimeout(5000, TimeUnit.MILLISECONDS)
+            .addNetworkInterceptor(AccessTokenInterceptor()) //추가부분(매우중요)
+            .addInterceptor(interceptor) //여기까지
+            .build()
+
+        val ss = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu+bKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5/FuVfwFpls8uns2Q==&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211300600"
 
         // Retrofit을 이용하여 HTTP 통신 시작
         val retrofit:Retrofit = Retrofit.Builder()
+            .client(client)
             .baseUrl("http://apis.data.go.kr/1360000/MidFcstInfoService/")
             .addConverterFactory(ScalarsConverterFactory.create())  // 순서 중요 Scalars 먼저!
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
         val retrofitService = retrofit.create(RetrofitService::class.java)
-        val serviceKey = "Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D"
+        val serviceKey = "Zb2rfa2mmu+bKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5/FuVfwFpls8uns2Q=="
         val regId = "11B00000"
         val dataType= "JSON"
-        var tmFc = "202211270600"
-        retrofitService.searchData().enqueue(object : Callback<WeatherItem> {
+        var tmFc = "202211301800"
+
+        retrofitService.searchData(serviceKey, dataType, regId, tmFc).enqueue(object : Callback<WeatherItem> {
             override fun onResponse(
                 call: Call<WeatherItem>,
                 response: Response<WeatherItem>
@@ -151,6 +168,9 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         promiseLoad()
     }
+
+
+
 
 
 
