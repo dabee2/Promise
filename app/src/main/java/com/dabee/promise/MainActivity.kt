@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
             .addInterceptor(interceptor) //여기까지
             .build()
 
-        val ss = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu+bKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5/FuVfwFpls8uns2Q==&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211300600"
+        val ss = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211300600"
 
         // Retrofit을 이용하여 HTTP 통신 시작
         val retrofit:Retrofit = Retrofit.Builder()
@@ -75,24 +75,32 @@ class MainActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
 
+
+//        // Retrofit을 이용하여 HTTP 통신 시작
+//        val retrofit:Retrofit = Retrofit.Builder()
+//            .baseUrl("http://apis.data.go.kr/1360000/MidFcstInfoService/")
+//            .addConverterFactory(ScalarsConverterFactory.create())  // 순서 중요 Scalars 먼저!
+//            .build()
+
         val retrofitService = retrofit.create(RetrofitService::class.java)
-        val serviceKey = "Zb2rfa2mmu+bKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5/FuVfwFpls8uns2Q=="
+//        val serviceKey = "Zb2rfa2mmu+bKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5/FuVfwFpls8uns2Q=="
+        val serviceKey = "Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D"
         val regId = "11B00000"
         val dataType= "JSON"
-        var tmFc = "202211301800"
+        var tmFc = "202212011800"
 
-        retrofitService.searchData(serviceKey, dataType, regId, tmFc).enqueue(object : Callback<WeatherItem> {
+        retrofitService.searchData(serviceKey, dataType, regId, tmFc).enqueue(object : Callback<String> {
             override fun onResponse(
-                call: Call<WeatherItem>,
-                response: Response<WeatherItem>
+                call: Call<String>,
+                response: Response<String>
             ) {
-                val apiResponse: WeatherItem? = response.body()
+                val apiResponse: String? = response.body()
 
                 Toast.makeText(this@MainActivity, "${apiResponse}", Toast.LENGTH_SHORT).show()
 
             }
 
-            override fun onFailure(call: Call<WeatherItem>, t: Throwable) {
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 Toast.makeText(this@MainActivity, "error : ${t.message}", Toast.LENGTH_SHORT).show()
                 AlertDialog.Builder(this@MainActivity).setMessage("error : ${t.message}").show()
             }
