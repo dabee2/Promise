@@ -38,8 +38,8 @@
             android:text="Group : "
             android:layout_marginLeft="12dp"
             android:textColor="@color/black"
-            android:layout_marginBottom="10dp"
-            android:textSize="16sp"
+            android:layout_marginBottom="16dp"
+            android:textSize="20sp"
             android:textStyle="bold" />
         <TextView
             android:id="@+id/tv_group"
@@ -52,16 +52,17 @@
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tv_title2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_group2"
-            android:text="일정 제목 : "
             android:layout_marginLeft="12dp"
+            android:layout_marginBottom="10dp"
+            android:text="일정 제목 : "
             android:textColor="@color/black"
             android:textSize="14sp"
-            android:layout_marginBottom="10dp"
             android:textStyle="bold" />
 
         <TextView
