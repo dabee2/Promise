@@ -74,13 +74,13 @@ class MainActivity : AppCompatActivity() {
             ) {
                 val apiResponse: String? = response.body()
 
-                Toast.makeText(this@MainActivity, "${apiResponse}", Toast.LENGTH_SHORT).show()
-                AlertDialog.Builder(this@MainActivity).setMessage("${apiResponse}").show()
+//                Toast.makeText(this@MainActivity, "${apiResponse}", Toast.LENGTH_SHORT).show()
+
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "error : ${t.message}", Toast.LENGTH_SHORT).show()
-                AlertDialog.Builder(this@MainActivity).setMessage("error : ${t.message}").show()
+//                Toast.makeText(this@MainActivity, "error : ${t.message}", Toast.LENGTH_SHORT).show()
+
             }
 
         })
