@@ -89,6 +89,7 @@ class RecyclerAdapterMini constructor(val context:Context, var items:MutableList
 
             return@setOnLongClickListener true
         }
+        holder.binding.tvMemo.setOnClickListener { holder.itemView.callOnClick() }
 
         holder.itemView.setOnClickListener {
 

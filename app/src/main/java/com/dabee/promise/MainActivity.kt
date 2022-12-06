@@ -104,8 +104,6 @@ class MainActivity : AppCompatActivity() {
                     R.id.menu_bnv_my -> {
                         binding.fab.supportBackgroundTintList = ColorStateList.valueOf(ContextCompat.getColor(this@MainActivity,R.color.my_color3))
                         binding.fab.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this@MainActivity,R.color.my_color3))
-//                        bnv_main.itemIconTintList = ContextCompat.getColorStateList(this, R.color.nav_item)
-//                        bnv_main.itemTextColor = ContextCompat.getColorStateList(this, R.color.nav_item)
                         MyFragment(promiseItems,memoryItems)
 
 
@@ -119,8 +117,6 @@ class MainActivity : AppCompatActivity() {
 
                     }
                     else -> {
-//                        bnv_main.itemIconTintList = ContextCompat.getColorStateList(this, R.color.nav_item)
-//                        bnv_main.itemTextColor = ContextCompat.getColorStateList(this, R.color.nav_item)
                         MyFragment(promiseItems,memoryItems)
 
                     }
