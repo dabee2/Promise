@@ -184,6 +184,10 @@ class MembershipFragment : Fragment() {
             builder.setPositiveButton("추가") { dialog, which ->
 
                 var code:String = etCode.text.toString()
+                if (code == userId) {
+                    Toast.makeText(context, "본인을 친구로 등록할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
                 if (code.length < 1) code= " "
 
                 userRef.document(code).get().addOnSuccessListener {
@@ -191,13 +195,22 @@ class MembershipFragment : Fragment() {
                     var id:String? = it.get("userId") as String?
                     if(id == code ){
                         val frName = it.get("userName")as String?
-                        Toast.makeText(context, "$frName 님이 친구 추가 되었습니다", Toast.LENGTH_SHORT).show()
-                        // DB 친구 저장
-                        userRef.document(userId).collection("friends").document(it.get("userId") as String).set(it)
-                        userRef.document(userId).get().addOnSuccessListener {
-                            userRef.document(code).collection("friends").document(it.get("userId") as String).set(it)
+                        userRef.document(userId).collection("friends").document(code).get().addOnSuccessListener { it2 ->
+                            if (code == it2.get("id").toString()) {
+                                Toast.makeText(context, "이미 등록된 친구입니다.", Toast.LENGTH_SHORT).show()
+                            }else Toast.makeText(context, "$frName 님이 친구 추가 되었습니다", Toast.LENGTH_SHORT).show()
+
+                            // DB 친구 저장
+                            userRef.document(userId).collection("friends").document(it.get("userId") as String).set(it)
+                            userRef.document(userId).get().addOnSuccessListener {
+                                userRef.document(code).collection("friends").document(it.get("userId") as String).set(it)
+                            }
+                            friendLoad()
+
                         }
-                        friendLoad()
+
+
+
 
                     }else Toast.makeText(context, "잘못된 코드번호입니다", Toast.LENGTH_SHORT).show()
 
