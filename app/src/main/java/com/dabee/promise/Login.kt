@@ -27,8 +27,7 @@ import kotlin.collections.HashMap
 
 class Login : AppCompatActivity() {
 
-//    val binding by lazy { ActivityLoginBinding.inflate(layoutInflater)}
-    lateinit var binding: ActivityLoginBinding
+    val binding by lazy { ActivityLoginBinding.inflate(layoutInflater)}
     var items:MutableList<Item8> = mutableListOf()
 
     var isData:Boolean= false
@@ -39,8 +38,8 @@ class Login : AppCompatActivity() {
     lateinit var imgUri:Uri
     lateinit var imgUrl:String
     lateinit var userId:String
+    lateinit var guestId:String
     lateinit var userName:String
-    lateinit var userEmail:String
 
 
 
@@ -48,7 +47,6 @@ class Login : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // 다크모드제거
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
@@ -71,6 +69,10 @@ class Login : AppCompatActivity() {
 
         // 최종 로그인 버튼 리스너
         binding.btn.setOnClickListener {
+            if (0==binding.tvNickname.text.length){
+                Toast.makeText(this, "닉네임을 입력해 주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             saveData()
             friendLoad()
@@ -81,7 +83,10 @@ class Login : AppCompatActivity() {
         }
 
         // 카카오 로그인 리스너
-        binding.ivKakao.setOnClickListener {  login()   }
+        binding.ivKakao.setOnClickListener {  kakaoLogin()   }
+
+        // 게스트 로그인
+        binding.btnGuest.setOnClickListener { guestLogin() }
 
         // 프로필이미지 클릭리스너
         binding.civProfile.setOnClickListener{
@@ -106,7 +111,7 @@ class Login : AppCompatActivity() {
         userName= pref.getString("userName", null).toString()
         imgUrl = pref.getString("userImgUrl", null).toString()
         userId = pref.getString("userId", null).toString()
-        userEmail = pref.getString("userEmail", null).toString()
+        guestId = pref.getString("guestId", null).toString()
         isData= pref.getBoolean("isData",false)
     }
 
@@ -134,17 +139,19 @@ class Login : AppCompatActivity() {
 
 
 
+
         fun saveUserData(){
             //유저 정보 DB저장
             var profile: MutableMap<String, String> = HashMap()
             profile["userName"] = userName
             profile["userImgUrl"] = imgUrl
             profile["userId"] = userId
-            profile["userEmail"] =userEmail
             userRef.document(userId).update(profile as MutableMap<String, Any>)
-//            if(!isData){
-//                userRef.document(userId).set(profile)
-//            }else
+            userRef.document(userId).get().addOnSuccessListener {
+                if(it.get("userId").toString() == "null"){
+                    userRef.document(userId).set(profile)
+                }
+            }
 
 
             // 앱을 처음 실행할때 한번만 닉네임과 사진을 입력하도록 phone 에 닉네임과 프로필 url을 저장
@@ -154,7 +161,7 @@ class Login : AppCompatActivity() {
             editor.putString("userName", userName)
             editor.putString("userImgUrl", imgUrl)
             editor.putString("userId", userId)
-            editor.putString("userEmail", userEmail)
+            editor.putString("guestId", guestId)
             editor.putBoolean("isData",true)
             editor.commit()
 
@@ -197,8 +204,32 @@ class Login : AppCompatActivity() {
             }
         }
 
+    fun guestLogin(){
 
-    fun login(){
+        val firebaseFirestore = FirebaseFirestore.getInstance()
+        val userRef = firebaseFirestore.collection("users")
+
+        if (guestId=="null"){
+            guestId= userRef.document().id
+            binding.tvNickname.setText("")
+            Glide.with(this).load(R.drawable.images).into(binding.civProfile)
+        }else{
+            userRef.document(guestId).get().addOnSuccessListener {
+                imgUrl=it.get("userImgUrl").toString()
+                userName=it.get("userName").toString()
+                if (userName == "null") userName = ""
+                binding.tvNickname.setText(userName)
+                Glide.with(this).load(imgUrl).error(R.drawable.images).into(binding.civProfile)
+            }
+        }
+
+        userId=guestId
+
+        isKaKaologin=true
+        binding.btn.visibility =View.VISIBLE
+    }
+
+    fun kakaoLogin(){
 
         // 권장 : 카카오톡 로그인을 먼저 시도하고 불가능할 경우 카카오계정 로그인을 시도.
 
@@ -233,7 +264,6 @@ class Login : AppCompatActivity() {
                 Log.e(TAG, "사용자 정보 요청 성공 : $user")
                 binding.tvNickname.setText(user.kakaoAccount?.profile?.nickname)
                 Glide.with(this).load(user.kakaoAccount?.profile?.profileImageUrl).error(R.drawable.images).into(binding.civProfile)
-                userEmail = user.kakaoAccount?.email.toString()
 
                 userId= user.id.toString()
 

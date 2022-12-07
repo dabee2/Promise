@@ -26,6 +26,15 @@
             app:civ_border_color="@color/my_color4"
             app:civ_border_width="2dp" />
 
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/civ_profile"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="ID 복사"
+            android:textSize="12sp" />
+
         <Button
             android:id="@+id/btn"
             android:layout_width="60dp"
@@ -52,7 +61,7 @@
             android:id="@+id/tv_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/civ_profile"
             android:fontFamily="@font/binggrae_bold"
             android:text="ID : "
@@ -78,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_id"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_toRightOf="@id/civ_profile"
             android:fontFamily="@font/binggrae_bold"
             android:text="이름 : "
@@ -103,7 +112,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_nickname"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_toRightOf="@id/civ_profile"
             android:fontFamily="@font/binggrae_bold"
             android:text="주소 : "

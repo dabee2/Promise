@@ -48,6 +48,18 @@
             android:layout_marginTop="60dp"/>
 
         <Button
+            android:id="@+id/btn_guest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/iv_kakao"
+            android:layout_alignLeft="@id/iv_kakao"
+            android:layout_alignRight="@id/iv_kakao"
+            android:text="Guest Login"
+            android:padding="10dp"
+            android:layout_marginTop="30dp"/>
+
+        <Button
             android:id="@+id/btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
