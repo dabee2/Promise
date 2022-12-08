@@ -179,10 +179,7 @@ class GroupActivity : AppCompatActivity() {
         val mapViewContainer = binding.mapView
         mapViewContainer.addView(mapView)
         if (userLatLon.size==0){
-
             return
-
-
         }
 
 
