@@ -87,8 +87,7 @@ class GroupAddActivity : AppCompatActivity() {
                 }
             }
         }
-////////////////요기
-        Toast.makeText(binding.root.context, "$isturn", Toast.LENGTH_SHORT).show()
+
         if (isturn == "중복") {
             Toast.makeText(binding.root.context, "그룹명 중복", Toast.LENGTH_SHORT).show()
             return

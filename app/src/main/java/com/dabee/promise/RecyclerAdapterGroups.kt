@@ -69,6 +69,12 @@ class RecyclerAdapterGroups constructor(val context:Context, var items:MutableLi
                     }
                     var datas: MutableMap<String, String> = doc["data"] as MutableMap<String, String> // 해시맵
 
+
+                    if(doc.get("isJoin") == null ) {
+                        var isJoin: MutableMap<String, Boolean> = HashMap()
+                        isJoin["isJoin"] = true
+                        userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).update(isJoin as Map<String, Any>)
+                    }
                     val item = FriendsItem2(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String,doc.get("isJoin") as Boolean)
 
                     friends.add(item)
