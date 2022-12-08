@@ -41,23 +41,28 @@
         <ImageView
             android:id="@+id/iv_kakao"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/kakao_login_medium_narrow"
-            android:layout_centerHorizontal="true"
+            android:layout_height="45dp"
             android:layout_below="@id/tv_nickname"
-            android:layout_marginTop="60dp"/>
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            android:src="@drawable/kakao_login_medium_narrow" />
 
         <Button
             android:id="@+id/btn_guest"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_height="55dp"
             android:layout_below="@+id/iv_kakao"
             android:layout_alignLeft="@id/iv_kakao"
             android:layout_alignRight="@id/iv_kakao"
-            android:text="Guest Login"
-            android:padding="10dp"
-            android:layout_marginTop="30dp"/>
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:textStyle="bold"
+            android:drawableLeft="@drawable/btn_my_location"
+            android:drawablePadding="100dp"
+            android:textColor="@color/white"
+            android:drawableTint="@color/white"
+            android:textSize="14sp"
+            android:text="Guest Login" />
 
         <Button
             android:id="@+id/btn"

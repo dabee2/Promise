@@ -227,6 +227,7 @@ class Login : AppCompatActivity() {
 
         isKaKaologin=true
         binding.btn.visibility =View.VISIBLE
+        Toast.makeText(this, "게스트 로그인", Toast.LENGTH_SHORT).show()
     }
 
     fun kakaoLogin(){
@@ -236,7 +237,7 @@ class Login : AppCompatActivity() {
         // 로그인 요청결과에 반응하는 콜백함수
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if(token != null){
-//                Toast.makeText(this, "로그인 성공", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "카카오 로그인", Toast.LENGTH_SHORT).show()
                 loadUserInfo() //사용자 정보 읽어오기
             }
         }
