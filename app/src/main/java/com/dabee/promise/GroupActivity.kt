@@ -168,7 +168,8 @@ class GroupActivity : AppCompatActivity() {
 
     private fun mapLoad(){
 
-        var midPoint = LatLon(userLatLon[0].lat,userLatLon[0].lon,"midPoint")
+
+
 
 
 
@@ -177,13 +178,21 @@ class GroupActivity : AppCompatActivity() {
 
         val mapViewContainer = binding.mapView
         mapViewContainer.addView(mapView)
+        if (userLatLon.size==0){
+
+            return
 
 
+        }
 
+
+        var midPoint = LatLon(userLatLon[0].lat,userLatLon[0].lon,"midPoint")
 
         mapView.setMapCenterPointAndZoomLevel(MapPoint.mapPointWithGeoCoord(midPoint.lat.toDouble(),midPoint.lon.toDouble()), 8, true)
         mapView.setCalloutBalloonAdapter(CustomCalloutBalloonAdapter())
         userMarker.clear()
+
+
 
         for (i in 0..userLatLon.size-1){
 
@@ -265,9 +274,9 @@ class GroupActivity : AppCompatActivity() {
                         userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).set(it)
                         userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).update(isJoin as Map<String, Any>)
                         var isAddr:String = it.get("userAddress") as String
-                        if(isAddr != "null" || isAddr!=""){
+                        if(isAddr != "null" && isAddr!=""){
                             userMarkers.add(FriendsItem(it.get("userName") as String,it.get("userImgUrl") as String,it.get("userAddress") as String))
-                            userLatLon.add(LatLon(it.get("lat") as String,it.get("lon") as String,it.get("userId") as String))
+                            userLatLon.add(LatLon(it.get("lat") as String ?: "",it.get("lon") as String ?: "",it.get("userId") as String))
                         }
 
 

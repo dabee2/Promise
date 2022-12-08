@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "142677311034-6mnadr17ju4btj7ik5bi7qt5do62lsfo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dabee.promise",
+            "certificate_hash": "7dad24f00363f25cb853c24868029ecaec9d04ba"
+          }
+        },
+        {
+          "client_id": "142677311034-a85j8l4qs3ps7tp3q5jojnfo91o6hmgl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dabee.promise",
+            "certificate_hash": "c6558e9fefa08cdc412b411fec2c4b16418a50c4"
+          }
+        },
+        {
           "client_id": "142677311034-ovof1b2k2sgiqqmte1t7h4epfgntjn0o.apps.googleusercontent.com",
           "client_type": 3
         }
