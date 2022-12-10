@@ -114,6 +114,7 @@ class GroupActivityPromise : AppCompatActivity() {
 
 
             }
+
             memoItem.sortWith(compareBy { it.date.toLong()})
             binding.rvMemo.adapter?.notifyDataSetChanged()
             binding.rvMemo.scrollToPosition(memoItem.size-1)
@@ -156,7 +157,7 @@ class GroupActivityPromise : AppCompatActivity() {
             var memo:String = etMemo.text.toString()
             if (memo.length < 1) memo= " "
 
-            var date = SimpleDateFormat("yyyyMMddHHmmSS").format(Date())
+            var date = SimpleDateFormat("yyyyMMddHHmmss").format(Date())
 
             userRef.document(userId).get().addOnSuccessListener {
 
