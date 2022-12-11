@@ -86,8 +86,8 @@ class MainActivity : AppCompatActivity() {
                 response: Response<String>
             ) {
                 val apiResponse: String? = response.body()
-                AlertDialog.Builder(this@MainActivity).setMessage(apiResponse).show()
-                Toast.makeText(this@MainActivity, "${tmFc}", Toast.LENGTH_SHORT).show()
+//                AlertDialog.Builder(this@MainActivity).setMessage(apiResponse).show()
+//                Toast.makeText(this@MainActivity, "${tmFc}", Toast.LENGTH_SHORT).show()
 
             }
 
