@@ -77,13 +77,12 @@
             android:windowSoftInputMode="adjustResize">
 
 
-
             <RelativeLayout
                 android:id="@+id/rl_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_et"
-                android:padding="5dp">
+                android:padding="10dp">
 
 
                 <TextView
@@ -94,86 +93,99 @@
                     android:text="일정 제목 : "
                     android:textColor="@color/black"
                     android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tv_title"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@+id/tv1"
-                    android:text="일정1"
-                    android:layout_toRightOf="@+id/tv1"/>
+                    android:layout_toLeftOf="@id/tv_dday"
+                    android:layout_toRightOf="@+id/tv1"
+                    android:text="일정1" />
+
+                <TextView
+                    android:id="@+id/tv_dday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/tv1"
+                    android:layout_alignParentRight="true"
+                    android:text=""
+                    android:textStyle="bold"/>
 
 
                 <TextView
                     android:id="@+id/tv2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv1"
                     android:layout_marginVertical="5dp"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
                     android:text="만나는 장소 : "
-                    android:layout_below="@+id/tv1"/>
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tv_place"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/tv2"
-                    android:text="장소1"
-                    android:layout_toRightOf="@+id/tv2"/>
+                    android:layout_toRightOf="@+id/tv2"
+                    android:text="장소1" />
 
                 <TextView
                     android:id="@+id/tv3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv2"
+                    android:layout_marginVertical="5dp"
                     android:text="약속 날자 : "
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:layout_marginVertical="5dp"
-                    android:layout_below="@+id/tv2"/>
+                    android:textStyle="bold" />
+
                 <TextView
                     android:id="@+id/tv_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/tv3"
-                    android:text="0000년 00월 00일"
-                    android:layout_toRightOf="@+id/tv3"/>
+                    android:layout_toRightOf="@+id/tv3"
+                    android:text="0000년 00월 00일" />
+
                 <TextView
                     android:id="@+id/tv4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv3"
+                    android:layout_marginVertical="5dp"
                     android:text="약속 시간 : "
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:layout_marginVertical="5dp"
-                    android:layout_below="@+id/tv3"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignBottom="@id/tv4"
-                    android:text="오후 00시 00분"
-                    android:layout_toRightOf="@+id/tv4"/>
+                    android:layout_toRightOf="@+id/tv4"
+                    android:text="오후 00시 00분" />
 
                 <TextView
                     android:id="@+id/tv5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv4"
+                    android:layout_marginVertical="5dp"
                     android:text="노트 : "
                     android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:layout_marginVertical="5dp"
-                    android:layout_below="@+id/tv4"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_note"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@id/tv5"
-                    android:padding="5dp"
                     android:layout_toRightOf="@+id/tv5"
                     android:background="@drawable/bg_et2"
-                    android:lines="3" />
-
+                    android:lines="3"
+                    android:padding="5dp" />
 
 
             </RelativeLayout>

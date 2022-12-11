@@ -1,6 +1,7 @@
 package com.dabee.promise
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.os.Handler
@@ -46,6 +47,13 @@ class GroupActivityPromise : AppCompatActivity() {
         intent =intent
         var groupName = intent.getStringExtra("groupName")
         var promiseName = intent.getStringExtra("promise")
+        var dday = intent.getStringExtra("dday")
+        if (dday == "Today"){
+            binding.tvDday.setTextColor(Color.parseColor("#FFFF0000"))
+        }else {
+            binding.tvDday.setTextColor(Color.parseColor("#FF000000"))
+        }
+        binding.tvDday.text = dday
 
 
         binding.iv.setOnClickListener { finish() }

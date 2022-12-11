@@ -217,10 +217,10 @@ class GroupActivity : AppCompatActivity() {
             midPoint = midPoint(midPoint.lat.toDouble(),midPoint.lon.toDouble(),userLatLon[i].lat.toDouble(),userLatLon[i].lon.toDouble())
         }
         var midAddr = getAddress(midPoint)
-        binding.tvMidAddr.text = midAddr
+
 
         if(userLatLon.size > 1){
-
+            binding.tvMidAddr.text = midAddr
             val marker3 = MapPOIItem()
             marker3.apply {
                 customImageResourceId = R.drawable.noun_my_location_red
@@ -241,7 +241,7 @@ class GroupActivity : AppCompatActivity() {
 
 
             mapView.addPOIItem(marker3)
-            mapView.selectPOIItem(marker3, false)
+            mapView.selectPOIItem(marker3, true)
 
         }
 
