@@ -274,7 +274,7 @@ class GroupActivity : AppCompatActivity() {
                         isJoin["isJoin"] = true
                         userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).set(it)
                         userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).update(isJoin as Map<String, Any>)
-                        var isAddr:String = it.get("userAddress") as String
+                        var isAddr:String = it.get("userAddress") as String ?:""
                         if(isAddr != "null" && isAddr!=""){
                             userMarkers.add(FriendsItem(it.get("userName") as String,it.get("userImgUrl") as String,it.get("userAddress") as String))
                             userLatLon.add(LatLon(it.get("lat") as String ?: "",it.get("lon") as String ?: "",it.get("userId") as String))
