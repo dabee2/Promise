@@ -42,8 +42,6 @@ class MyFragment constructor(var promiseItems:MutableList<Item8>,var memoryItems
 
 
 
-    var myFragmentChild1 = MyFragmentChild1(promiseItems)
-    var myFragmentChild2 = MyFragmentChild2(memoryItems)
     val binding by lazy {  FragmentMyBinding.inflate(layoutInflater)}
     val firebaseFirestore = FirebaseFirestore.getInstance()
     val userRef = firebaseFirestore.collection("users")

@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-        val ss = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211300600"
+//        val ss = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211300600"
 
 
 
@@ -65,7 +65,20 @@ class MainActivity : AppCompatActivity() {
         val serviceKey = "Zb2rfa2mmu+bKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5/FuVfwFpls8uns2Q=="
         val regId = "11B00000"
         val dataType= "JSON"
-        var tmFc = "202212020600"
+//        var tmFc = "202212020600"
+        var tmFc = SimpleDateFormat("yyyyMMdd").format(Date()).toString()
+        var time = SimpleDateFormat("HHmm").format(Date()).toString()
+
+
+        if(time.toInt() < 600){
+            tmFc = (tmFc.toLong() - 1).toString()
+            tmFc += "1800"
+        }else if(time.toInt() >= 600 && time.toInt() <1800){
+            tmFc += "0600"
+        }else if(time.toInt() >= 1800){
+            tmFc += "1800"
+        }
+
 
         retrofitService.searchData(serviceKey, dataType, regId, tmFc).enqueue(object : Callback<String> {
             override fun onResponse(
@@ -73,8 +86,8 @@ class MainActivity : AppCompatActivity() {
                 response: Response<String>
             ) {
                 val apiResponse: String? = response.body()
-
-//                Toast.makeText(this@MainActivity, "${apiResponse}", Toast.LENGTH_SHORT).show()
+//                AlertDialog.Builder(this@MainActivity).setMessage(apiResponse).show()
+//                Toast.makeText(this@MainActivity, "${tmFc}", Toast.LENGTH_SHORT).show()
 
             }
 

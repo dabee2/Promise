@@ -1,6 +1,7 @@
 package com.dabee.promise
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Point
 import android.os.Bundle
 import android.os.Handler
@@ -46,6 +47,13 @@ class GroupActivityPromise : AppCompatActivity() {
         intent =intent
         var groupName = intent.getStringExtra("groupName")
         var promiseName = intent.getStringExtra("promise")
+        var dday = intent.getStringExtra("dday")
+        if (dday == "Today"){
+            binding.tvDday.setTextColor(Color.parseColor("#FFFF0000"))
+        }else {
+            binding.tvDday.setTextColor(Color.parseColor("#FF000000"))
+        }
+        binding.tvDday.text = dday
 
 
         binding.iv.setOnClickListener { finish() }
@@ -114,6 +122,7 @@ class GroupActivityPromise : AppCompatActivity() {
 
 
             }
+
             memoItem.sortWith(compareBy { it.date.toLong()})
             binding.rvMemo.adapter?.notifyDataSetChanged()
             binding.rvMemo.scrollToPosition(memoItem.size-1)
@@ -156,7 +165,7 @@ class GroupActivityPromise : AppCompatActivity() {
             var memo:String = etMemo.text.toString()
             if (memo.length < 1) memo= " "
 
-            var date = SimpleDateFormat("yyyyMMddHHmmSS").format(Date())
+            var date = SimpleDateFormat("yyyyMMddHHmmss").format(Date())
 
             userRef.document(userId).get().addOnSuccessListener {
 

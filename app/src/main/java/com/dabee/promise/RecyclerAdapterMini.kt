@@ -96,6 +96,7 @@ class RecyclerAdapterMini constructor(val context:Context, var items:MutableList
             var intent = Intent(context,GroupActivityPromise::class.java)
             intent.putExtra("groupName",item.groupName)
             intent.putExtra("promise","${item.title}${item.setLineup}")
+            intent.putExtra("dday",dday3)
             context.startActivity(intent)
 
 

@@ -217,29 +217,33 @@ class GroupActivity : AppCompatActivity() {
             midPoint = midPoint(midPoint.lat.toDouble(),midPoint.lon.toDouble(),userLatLon[i].lat.toDouble(),userLatLon[i].lon.toDouble())
         }
         var midAddr = getAddress(midPoint)
-        binding.tvMidAddr.text = midAddr
 
-        val marker3 = MapPOIItem()
-        marker3.apply {
-            customImageResourceId = R.drawable.noun_my_location_red
-            customSelectedImageResourceId = R.drawable.noun_my_location_blue
-            isCustomImageAutoscale = true
+
+        if(userLatLon.size > 1){
+            binding.tvMidAddr.text = midAddr
+            val marker3 = MapPOIItem()
+            marker3.apply {
+                customImageResourceId = R.drawable.noun_my_location_red
+                customSelectedImageResourceId = R.drawable.noun_my_location_blue
+                isCustomImageAutoscale = true
+            }
+            userMarkers.add(FriendsItem("중간위치","","$midAddr"))
+            marker3.itemName = "중간위치"
+            marker3.setTag(userLatLon.size);
+            marker3.mapPoint = MapPoint.mapPointWithGeoCoord(midPoint.lat.toDouble(),midPoint.lon.toDouble())
+            marker3.markerType = MapPOIItem.MarkerType.CustomImage // 기본으로 제공하는 BluePin 마커 모양.
+
+
+            marker3.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+
+            marker3.setCustomImageAnchor(0.5f, 1.0f)
+
+
+            mapView.addPOIItem(marker3)
+            mapView.selectPOIItem(marker3, true)
+
         }
-        userMarkers.add(FriendsItem("중간위치","","$midAddr"))
-        marker3.itemName = "중간위치"
-        marker3.setTag(userLatLon.size);
-        marker3.mapPoint = MapPoint.mapPointWithGeoCoord(midPoint.lat.toDouble(),midPoint.lon.toDouble())
-        marker3.markerType = MapPOIItem.MarkerType.CustomImage // 기본으로 제공하는 BluePin 마커 모양.
-
-
-        marker3.selectedMarkerType = MapPOIItem.MarkerType.CustomImage // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
-
-
-        marker3.setCustomImageAnchor(0.5f, 1.0f)
-
-
-        mapView.addPOIItem(marker3)
-        mapView.selectPOIItem(marker3, false)
 
 
 
@@ -270,7 +274,7 @@ class GroupActivity : AppCompatActivity() {
                         isJoin["isJoin"] = true
                         userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).set(it)
                         userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).update(isJoin as Map<String, Any>)
-                        var isAddr:String = it.get("userAddress") as String
+                        var isAddr:String = it.get("userAddress") as String ?:""
                         if(isAddr != "null" && isAddr!=""){
                             userMarkers.add(FriendsItem(it.get("userName") as String,it.get("userImgUrl") as String,it.get("userAddress") as String))
                             userLatLon.add(LatLon(it.get("lat") as String ?: "",it.get("lon") as String ?: "",it.get("userId") as String))
