@@ -41,6 +41,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        val pref = getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
+        val userId:String= pref.getString("userId", null).toString()
+        userRef.document(userId).get().addOnSuccessListener {
+           var userAddr = it.get("userAddress").toString()
+            if(userAddr.equals("null")){
+                var addr: MutableMap<String, String> = HashMap()
+                addr["userAddress"] = ""
+                userRef.document(userId).update(addr as MutableMap<String, Any>)
+            }
+
+        }
 
 
 

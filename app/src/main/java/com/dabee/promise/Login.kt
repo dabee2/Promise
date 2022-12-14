@@ -146,6 +146,7 @@ class Login : AppCompatActivity() {
             profile["userName"] = userName
             profile["userImgUrl"] = imgUrl
             profile["userId"] = userId
+            profile["userAddress"]=""
             userRef.document(userId).update(profile as MutableMap<String, Any>)
             userRef.document(userId).get().addOnSuccessListener {
                 if(it.get("userId").toString() == "null"){
