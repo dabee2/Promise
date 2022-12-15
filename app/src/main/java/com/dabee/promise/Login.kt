@@ -1,6 +1,10 @@
 package com.dabee.promise
 
+import android.app.AlarmManager
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,9 +25,10 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.user.UserApiClient
 import com.kakao.util.maps.helper.Utility
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.HashMap
+
 
 class Login : AppCompatActivity() {
 
@@ -327,6 +332,8 @@ class Login : AppCompatActivity() {
             }
         }
     }
+
+
 
 
 

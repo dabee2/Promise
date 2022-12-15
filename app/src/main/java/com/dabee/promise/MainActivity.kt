@@ -1,30 +1,27 @@
 package com.dabee.promise
 
+import android.app.AlarmManager
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dabee.promise.databinding.ActivityMainBinding
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.kakao.sdk.auth.network.AccessTokenInterceptor
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -188,6 +185,7 @@ class MainActivity : AppCompatActivity() {
 
 
         userRef.document(userId).collection("groups").get().addOnSuccessListener { result->
+            var num = 0
             promiseItems.clear()
             memoryItems.clear()
             for (doc in result){
@@ -198,6 +196,7 @@ class MainActivity : AppCompatActivity() {
 
                         // 계획된 약속
                         if(today.toLong()<date.toLong()){
+                            num++
                             val item= Item8(doc2.get("title")as String,doc2.get("place")as String,"${doc2.get("date")as String} ${doc2.get("time")as String}",doc.id,doc2.get("setLineup")as String)
                             promiseItems.add(item)
                         }else{  // 지난 약속
@@ -227,6 +226,8 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragment, fragment)
             .commit()
     }
+
+
 
 
 

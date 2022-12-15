@@ -1,6 +1,13 @@
 package com.dabee.promise
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_ONE_SHOT
+import android.app.PendingIntent.FLAG_UPDATE_CURRENT
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -8,6 +15,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.dabee.promise.databinding.FragmentMyChild1Binding
 import com.google.firebase.FirebaseException
@@ -18,6 +26,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.time.Duration.Companion.days
+import kotlin.time.Duration.Companion.hours
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,11 +96,98 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
             items.sortWith(compareBy { it.setLineup.toLong()})
             binding.recycler.adapter = RecyclerAdapter(binding.root.context,items)
             binding.tv.visibility = View.INVISIBLE
+            alarm()
         }
 
 
+    }
+    private fun alarm(){
+        for (i in 0..items.size-1){
 
 
+            val dateFormat2 = SimpleDateFormat("yyyyMMddHHmm")
+            val endDate = items[i].setLineup.toLong()
+            val today = dateFormat2.format(Date())
+            val today2 = dateFormat2.parse(endDate.toString()).time
+            val today3 = dateFormat2.parse(today.toString()).time
+
+            var dday= "${(today2 - today3)/ (24 * 60 * 60 * 1000)}"
+            if (dday != "0"){
+                setAlarm(items[i],i)
+            }
+
+
+        }
+
+
+//        var dday3= "${(today - endDate) / (24 * 60 * 60 * 1000)}"
+
+
+
+
+
+//        var from = "${items[0].setLineup}00"
+//
+//        //날짜 포맷을 바꿔주는 소스코드
+//
+//        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//        val newDtFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+//        var datetime: Date? = null
+//        try {
+//            val strFormat = SimpleDateFormat("yyyyMMddHHmmss")
+//            val formatDate: Date = strFormat.parse(from)
+//            val strNewDtFormat: String = newDtFormat.format(formatDate)
+//            datetime = dateFormat.parse(strNewDtFormat)
+//
+//        } catch (e: ParseException) {
+//            e.printStackTrace()
+//        }
+//
+//        val calendar = Calendar.getInstance()
+//        calendar.time = datetime
+//        calendar.add(Calendar.DATE, -1)
+    }
+
+    private fun setAlarm(item:Item8,num:Int) {
+
+        var notificationManager = requireActivity().getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
+
+        var alarmManager = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        var mCalender = GregorianCalendar()
+        //AlarmReceiver에 값 전달
+        val receiverIntent = Intent(context, AlarmRecevier::class.java)
+        receiverIntent.putExtra("title",item.title)
+        receiverIntent.putExtra("place",item.place)
+        receiverIntent.putExtra("group",item.groupName)
+        receiverIntent.putExtra("date",item.time)
+        receiverIntent.putExtra("setLineup",item.setLineup)
+        receiverIntent.putExtra("num",num)
+        val pendingIntent = PendingIntent.getBroadcast(context, num, receiverIntent, FLAG_UPDATE_CURRENT)
+        var from = item.setLineup
+            from = "${item.setLineup}00"
+
+        //날짜 포맷을 바꿔주는 소스코드
+
+//        val strFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(from).toString()
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        val newDtFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        var datetime: Date? = null
+        try {
+            val strFormat = SimpleDateFormat("yyyyMMddHHmmss")
+            val formatDate: Date = strFormat.parse(from)
+            val strNewDtFormat: String = newDtFormat.format(formatDate)
+            datetime = dateFormat.parse(strNewDtFormat)
+
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+        val calendar = Calendar.getInstance()
+        calendar.time = datetime
+        calendar.add(Calendar.DATE, -1)
+        calendar.add(Calendar.MINUTE, 1)
+        alarmManager.set(AlarmManager.RTC, calendar.timeInMillis, pendingIntent)
     }
 
 
