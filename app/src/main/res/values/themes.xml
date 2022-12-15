@@ -20,7 +20,7 @@
     </style>
 
 
-    <style name="MyTimePickerTheme" parent="android:Widget.Material.Light.TimePicker">
+    <style name="MyTimePickerTheme" parent="Widget.Material3.MaterialTimePicker">
         <item name="android:timePickerMode">spinner</item>
 
     </style>

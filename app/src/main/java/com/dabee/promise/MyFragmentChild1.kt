@@ -107,11 +107,16 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
 
             val dateFormat2 = SimpleDateFormat("yyyyMMddHHmm")
             val endDate = items[i].setLineup.toLong()
-            val today = dateFormat2.format(Date())
-            val today2 = dateFormat2.parse(endDate.toString()).time
-            val today3 = dateFormat2.parse(today.toString()).time
+            val pDate = dateFormat2.parse(endDate.toString()).time
 
-            var dday= "${(today2 - today3)/ (24 * 60 * 60 * 1000)}"
+
+            val calendar = Calendar.getInstance()
+            calendar.time = Date()
+            calendar.add(Calendar.MINUTE, 1)
+            val today = dateFormat2.format(calendar.time)
+            val today2 = dateFormat2.parse(today).time
+            var dday= "${(pDate - today2)/ (24 * 60 * 60 * 1000)}"
+
             if (dday != "0"){
                 setAlarm(items[i],i)
             }
@@ -120,32 +125,6 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
         }
 
 
-//        var dday3= "${(today - endDate) / (24 * 60 * 60 * 1000)}"
-
-
-
-
-
-//        var from = "${items[0].setLineup}00"
-//
-//        //날짜 포맷을 바꿔주는 소스코드
-//
-//        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-//        val newDtFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-//        var datetime: Date? = null
-//        try {
-//            val strFormat = SimpleDateFormat("yyyyMMddHHmmss")
-//            val formatDate: Date = strFormat.parse(from)
-//            val strNewDtFormat: String = newDtFormat.format(formatDate)
-//            datetime = dateFormat.parse(strNewDtFormat)
-//
-//        } catch (e: ParseException) {
-//            e.printStackTrace()
-//        }
-//
-//        val calendar = Calendar.getInstance()
-//        calendar.time = datetime
-//        calendar.add(Calendar.DATE, -1)
     }
 
     private fun setAlarm(item:Item8,num:Int) {
@@ -186,7 +165,6 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
         val calendar = Calendar.getInstance()
         calendar.time = datetime
         calendar.add(Calendar.DATE, -1)
-        calendar.add(Calendar.MINUTE, 1)
         alarmManager.set(AlarmManager.RTC, calendar.timeInMillis, pendingIntent)
     }
 

@@ -65,11 +65,13 @@ class AlarmRecevier : BroadcastReceiver() {
         intent2.putExtra("groupName",group)
         intent2.putExtra("promise","${title}${setLineup}")
         intent2.putExtra("dday",dday3)
+
         val pendingIntent = PendingIntent.getActivity(context, 101, intent2, PendingIntent.FLAG_UPDATE_CURRENT)
 
+        var pTime =  date!!.substring(13)
         //알림창 제목
-        builder!!.setContentTitle("${group}의 Promise")
-        builder!!.setContentText("일정 제목 : $title 만나는 장소 : $place 약속시간 : $date")
+        builder!!.setContentTitle("${group}의 ${title}일정")
+        builder!!.setContentText("$place 내일$pTime")
         //알림창 아이콘
         builder!!.setSmallIcon(R.drawable.ic_icon5_playstore)
         //알림창 터치시 자동 삭제
