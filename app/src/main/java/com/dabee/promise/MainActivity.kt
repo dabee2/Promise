@@ -9,11 +9,14 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.dabee.promise.databinding.ActivityMainBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,6 +25,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class MainActivity : AppCompatActivity() {
@@ -58,53 +62,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().add(R.id.fragment, MyFragment(promiseItems,memoryItems)).commit()
 
 
-
-//        val ss = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211300600"
-
-
-
-        // Retrofit을 이용하여 HTTP 통신 시작
-        val retrofit:Retrofit = Retrofit.Builder()
-            .baseUrl("http://apis.data.go.kr/1360000/MidFcstInfoService/")
-            .addConverterFactory(ScalarsConverterFactory.create())  // 순서 중요 Scalars 먼저!
-            .build()
-
-        val retrofitService = retrofit.create(RetrofitService::class.java)
-        val serviceKey = "Zb2rfa2mmu+bKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5/FuVfwFpls8uns2Q=="
-        val regId = "11B00000"
-        val dataType= "JSON"
-//        var tmFc = "202212020600"
-        var tmFc = SimpleDateFormat("yyyyMMdd").format(Date()).toString()
-        var time = SimpleDateFormat("HHmm").format(Date()).toString()
-
-
-        if(time.toInt() < 600){
-            tmFc = (tmFc.toLong() - 1).toString()
-            tmFc += "1800"
-        }else if(time.toInt() >= 600 && time.toInt() <1800){
-            tmFc += "0600"
-        }else if(time.toInt() >= 1800){
-            tmFc += "1800"
-        }
-
-
-        retrofitService.searchData(serviceKey, dataType, regId, tmFc).enqueue(object : Callback<String> {
-            override fun onResponse(
-                call: Call<String>,
-                response: Response<String>
-            ) {
-                val apiResponse: String? = response.body()
-//                AlertDialog.Builder(this@MainActivity).setMessage(apiResponse).show()
-//                Toast.makeText(this@MainActivity, "${tmFc}", Toast.LENGTH_SHORT).show()
-
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-//                Toast.makeText(this@MainActivity, "error : ${t.message}", Toast.LENGTH_SHORT).show()
-
-            }
-
-        })
 
 
 
@@ -193,6 +150,8 @@ class MainActivity : AppCompatActivity() {
                     for (doc2 in result2.result){
 
                         var date = doc2.get("setLineup")as String
+
+
 
                         // 계획된 약속
                         if(today.toLong()<date.toLong()){

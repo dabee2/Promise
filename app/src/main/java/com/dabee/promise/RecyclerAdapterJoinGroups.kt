@@ -109,15 +109,26 @@ class RecyclerAdapterJoinGroups constructor(val context:Context, var items:Mutab
                     var isJoin: MutableMap<String, Boolean> = HashMap()
                     isJoin["isJoin"] = true
                     userRef.document(item.groupId).collection("groups").document(item.groupName).collection("members").document(userId).update(isJoin as Map<String, Boolean>)
+
                     userRef.document(item.groupId).collection("groups").document(item.groupName).collection("members").get().addOnSuccessListener { result ->
                         for (doc in result){
+                            var isJoin: Boolean = doc.get("isJoin") as Boolean
+
+                            if (isJoin){
+                                var isJoin2: MutableMap<String, Boolean> = HashMap()
+                                isJoin2["isJoin"] = true
+                                userRef.document(doc.id).collection("groups").document(item.groupName).collection("members").document(userId).update(isJoin2 as Map<String , Boolean>)
+                            }
+
                             userRef.document(doc.id).get().addOnSuccessListener {
-                                var isJoin: Boolean = doc.get("isJoin") as Boolean
+
                                 if (isJoin) {
                                     var isJoin: MutableMap<String, Boolean> = HashMap()
                                     isJoin["isJoin"] = true
+
                                     userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).set(it)
                                     userRef.document(userId).collection("groups").document(item.groupName).collection("members").document(doc.id).update(isJoin as Map<String, Boolean>)
+
                                 }else if(!isJoin){
                                     var isJoin: MutableMap<String, Boolean> = HashMap()
                                     isJoin["isJoin"] = false
@@ -135,7 +146,7 @@ class RecyclerAdapterJoinGroups constructor(val context:Context, var items:Mutab
                 notifyItemRemoved(position)
             }.show()
 
-//            return@setOnClickListener
+
         }
 
 

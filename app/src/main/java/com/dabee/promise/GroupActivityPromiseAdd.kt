@@ -138,7 +138,10 @@ class GroupActivityPromiseAdd : AppCompatActivity() {
 
             userRef.document(userId).collection("groups").document(groupName!!).collection("members").get().addOnSuccessListener { result->
                 for (doc in result){
-                    userRef.document(doc.id).collection("groups").document(groupName!!).collection("promise").document("$title$setLineup").set(promise)
+                    var isJoin = doc.get("isJoin") as Boolean
+                    if (isJoin){
+                        userRef.document(doc.id).collection("groups").document(groupName!!).collection("promise").document("$title$setLineup").set(promise)
+                    }
                 }
             }
             val intent = intent

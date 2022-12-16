@@ -267,48 +267,26 @@ class GroupActivity : AppCompatActivity() {
             userMarkers.clear()
 
             for (doc in result){
-                userRef.document(doc.id).collection("groups").document(groupName).collection("members").document(doc.id).get().addOnSuccessListener { result2->
-
-                    var isJoin: Boolean = result2.get("isJoin") as Boolean
-
-                    if (isJoin){
+                var isJoin: Boolean = doc.get("isJoin") as Boolean
+                if (isJoin){
+                    userRef.document(doc.id).get().addOnSuccessListener {
                         var isJoin: MutableMap<String, Boolean> = HashMap()
                         isJoin["isJoin"] = true
+                        userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).set(it)
                         userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).update(isJoin as Map<String, Boolean>)
-                    }
-                    userRef.document(doc.id).get().addOnSuccessListener {
-                        if (isJoin) {
-                            var isJoin: MutableMap<String, Boolean> = HashMap()
-                            isJoin["isJoin"] = true
-                            userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).set(it)
-                            userRef.document(userId).collection("groups").document(groupName).collection("members").document(doc.id).update(isJoin as Map<String, Boolean>)
-                            var isAddr:String = it.get("userAddress") as String
-                            if(isAddr != "null" && isAddr!=""){
-                                userMarkers.add(FriendsItem(it.get("userName") as String,it.get("userImgUrl") as String,it.get("userAddress") as String))
-                                userLatLon.add(LatLon(it.get("lat") as String ?: "",it.get("lon") as String ?: "",it.get("userId") as String))
-                            }
-
-
-
+                        var isAddr:String = it.get("userAddress") as String
+                        if(isAddr != "null" && isAddr!=""){
+                            userMarkers.add(FriendsItem(it.get("userName") as String,it.get("userImgUrl") as String,it.get("userAddress") as String))
+                            userLatLon.add(LatLon(it.get("lat") as String ?: "",it.get("lon") as String ?: "",it.get("userId") as String))
                         }
-
-
-
-
                     }
+                    var datas: MutableMap<String, String> = doc["data"] as MutableMap<String, String> // 해시맵
 
+                    val item = FriendsItem2(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String,doc.get("isJoin") as Boolean)
 
-
+                    members.add(item)
 
                 }
-
-                var datas: MutableMap<String, String> = doc["data"] as MutableMap<String, String> // 해시맵
-
-                val item = FriendsItem2(datas["userName"]as String,datas["userImgUrl"]as String,datas["userId"]as String,doc.get("isJoin") as Boolean)
-
-                members.add(item)
-
-
 
             }
             binding.rvMembers.adapter?.notifyDataSetChanged()

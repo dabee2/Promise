@@ -11,6 +11,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.dabee.promise.databinding.RecyclerItemBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -57,7 +62,21 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
             holder.binding.tvDDay.setTextColor(Color.parseColor("#FF000000"))
         } else {
             dday3 = "D$dday3"
+            holder.binding.tvDDay.setTextColor(Color.parseColor("#FF000000"))
         }
+
+        userRef.document(userId).collection("groups").document(item.groupName).collection("promise").document("${item.title}${item.setLineup}").get().addOnSuccessListener {
+            var weather = it.get("weather")
+            if (weather != null){
+                holder.binding.tvWeather.text = weather.toString()
+            }else{
+                holder.binding.tvWeather.text = ""
+            }
+
+
+        }
+
+
 
 
 
@@ -107,6 +126,10 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
 
     //함수의 return 코드 단순화 [ 할당 연산자 = ]
     override fun getItemCount(): Int = items.size
+
+
+
+
 
 
 }

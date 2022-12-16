@@ -18,6 +18,13 @@ data class LatLon constructor(var lat:String, var lon:String,var userId:String)
 
 data class UserCheckStatus(val position: Int, var isChecked: Boolean)
 
+data class getWether(var response:Response)
+
+data class Response(var header:getHeader,)
+data class getHeader(var resultCode:getResultCode)
+data class getResultCode(var resultCode:String)
+//data class getBody(var r)
+
 data class WeatherItem constructor(
     var wf3Am:String,
     var wf3Pm:String,
