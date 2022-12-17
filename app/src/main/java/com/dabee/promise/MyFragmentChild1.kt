@@ -35,6 +35,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.math.log
 import kotlin.time.Duration.Companion.days
 import kotlin.time.Duration.Companion.hours
 
@@ -103,14 +104,13 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
             binding.recycler.adapter = RecyclerAdapter(binding.root.context,items)
             binding.tv.visibility = View.INVISIBLE
             alarm()
-            getWether()
+            getWeather()
         }
 
 
     }
     private fun alarm(){
         for (i in 0..items.size-1){
-
 
             val dateFormat2 = SimpleDateFormat("yyyyMMddHHmm")
             val endDate = items[i].setLineup.toLong()
@@ -127,10 +127,7 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
             if (dday != "0"){
                 setAlarm(items[i],i)
             }
-
-
         }
-
 
     }
 
@@ -153,9 +150,8 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
         var from = item.setLineup
             from = "${item.setLineup}00"
 
-        //날짜 포맷을 바꿔주는 소스코드
 
-//        val strFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(from).toString()
+
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         val newDtFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         var datetime: Date? = null
@@ -175,7 +171,7 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
         alarmManager.set(AlarmManager.RTC, calendar.timeInMillis, pendingIntent)
     }
 
-    private fun getWether(){
+    private fun getWeather(){
         for (i in 0..items.size-1){
             val item:Item8 = items.get(i)
 
@@ -194,18 +190,20 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
             if (dday3.toInt()>=3 && dday3.toInt()<=10){
                 var sun = item.time.substring(14,16)
                 retrofit(i,dday3.toInt(),sun)
+
+
             }
 
 
         }
 
-        //        val ss = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211300600"
-
-
-
-
+        // "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?serviceKey=Zb2rfa2mmu%2BbKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5%2FFuVfwFpls8uns2Q%3D%3D&numOfRows=10&pageNo=1&dataType=JSON&regId=11B00000&tmFc=202211300600"
 
     }
+
+
+
+
 
     private fun retrofit(index:Int,dday:Int,sun:String){
         val pref = requireContext().getSharedPreferences("account", AppCompatActivity.MODE_PRIVATE)
@@ -220,10 +218,10 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
 
         val retrofitService = retrofit.create(RetrofitService::class.java)
         val serviceKey = "Zb2rfa2mmu+bKTIpNHoc4ao2gs09wedtsqFnGyAzTeFcRsbBPYaiLzCrVD6El0paOABWq5/FuVfwFpls8uns2Q=="
-        val regId = "11B00000"
+        val regIdTemp = "11B10101"
+        val regIdWeather = "11B00000"
         val dataType= "JSON"
-//        var tmFc = "202212020600"
-        var tmFc = SimpleDateFormat("yyyyMMdd").format(Date()).toString()
+        var tmFc = SimpleDateFormat("yyyyMMdd").format(Date()).toString()  // "202212020600"
         var time = SimpleDateFormat("HHmm").format(Date()).toString()
 
 
@@ -237,7 +235,70 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
         }
 
 
-        retrofitService.searchData(serviceKey, dataType, regId, tmFc).enqueue(object :
+
+        retrofitService.searchTemperature(serviceKey, dataType, regIdTemp, tmFc).enqueue(object :
+            Callback<String> {
+            override fun onResponse(
+                call: Call<String>,
+                response: Response<String>
+            ) {
+                val apiResponse: String? = response.body()
+                var index2 =0
+
+                var taMin3:String = apiResponse?.substring((apiResponse?.indexOf("taMin3")!!+8),(apiResponse?.indexOf("taMin3Low"))!!-2).toString()
+                var taMax3:String = apiResponse?.substring((apiResponse?.indexOf("taMax3")!!+8),(apiResponse?.indexOf("taMax3Low"))!!-2).toString()
+
+                var taMin4:String = apiResponse?.substring((apiResponse?.indexOf("taMin4")!!+8),(apiResponse?.indexOf("taMin4Low"))!!-2).toString()
+                var taMax4:String = apiResponse?.substring((apiResponse?.indexOf("taMax4")!!+8),(apiResponse?.indexOf("taMax4Low"))!!-2).toString()
+
+                var taMin5:String = apiResponse?.substring((apiResponse?.indexOf("taMin5")!!+8),(apiResponse?.indexOf("taMin5Low"))!!-2).toString()
+                var taMax5:String = apiResponse?.substring((apiResponse?.indexOf("taMax5")!!+8),(apiResponse?.indexOf("taMax5Low"))!!-2).toString()
+
+                var taMin6:String = apiResponse?.substring((apiResponse?.indexOf("taMin6")!!+8),(apiResponse?.indexOf("taMin6Low"))!!-2).toString()
+                var taMax6:String = apiResponse?.substring((apiResponse?.indexOf("taMax6")!!+8),(apiResponse?.indexOf("taMax6Low"))!!-2).toString()
+
+                var taMin7:String = apiResponse?.substring((apiResponse?.indexOf("taMin7")!!+8),(apiResponse?.indexOf("taMin7Low"))!!-2).toString()
+                var taMax7:String = apiResponse?.substring((apiResponse?.indexOf("taMax7")!!+8),(apiResponse?.indexOf("taMax7Low"))!!-2).toString()
+
+                var taMin8:String = apiResponse?.substring((apiResponse?.indexOf("taMin8")!!+8),(apiResponse?.indexOf("taMin8Low"))!!-2).toString()
+                var taMax8:String = apiResponse?.substring((apiResponse?.indexOf("taMax8")!!+8),(apiResponse?.indexOf("taMax8Low"))!!-2).toString()
+
+                var taMin9:String = apiResponse?.substring((apiResponse?.indexOf("taMin9")!!+8),(apiResponse?.indexOf("taMin9Low"))!!-2).toString()
+                var taMax9:String = apiResponse?.substring((apiResponse?.indexOf("taMax9")!!+8),(apiResponse?.indexOf("taMax9Low"))!!-2).toString()
+
+                var taMin10:String = apiResponse?.substring((apiResponse?.indexOf("taMin10")!!+9),(apiResponse?.indexOf("taMin10Low"))!!-2).toString()
+                var taMax10:String = apiResponse?.substring((apiResponse?.indexOf("taMax10")!!+9),(apiResponse?.indexOf("taMax10Low"))!!-2).toString()
+
+                Log.d("taMin","$taMin10,$taMax10")
+
+                var tempMap:MutableMap<String,String> = HashMap()
+                tempMap.clear()
+                if (dday==3) tempMap["temperature"] = "$taMin3˚/$taMax3˚"
+                if (dday==4) tempMap["temperature"] = "$taMin4˚/$taMax4˚"
+                if (dday==5) tempMap["temperature"] = "$taMin5˚/$taMax5˚"
+                if (dday==6) tempMap["temperature"] = "$taMin6˚/$taMax6˚"
+                if (dday==7) tempMap["temperature"] = "$taMin7˚/$taMax7˚"
+                if (dday==8) tempMap["temperature"] = "$taMin8˚/$taMax8˚"
+                if (dday==9) tempMap["temperature"] = "$taMin9˚/$taMax9˚"
+                if (dday==10) tempMap["temperature"] = "$taMin10˚/$taMax10˚"
+
+
+
+
+                userRef.document(userId).collection("groups").document(items[index].groupName).collection("promise").document("${items[index].title}${items[index].setLineup}").update(tempMap as MutableMap<String, Any>)
+
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Toast.makeText(context, "서버 오류 기온 정보를 불러오지 못하였습니다.", Toast.LENGTH_SHORT).show()
+
+            }
+
+        })
+
+
+
+        retrofitService.searchWeather(serviceKey, dataType, regIdWeather, tmFc).enqueue(object :
             Callback<String> {
             override fun onResponse(
                 call: Call<String>,
@@ -276,8 +337,6 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
                 if (dday<=7 && sun=="오후"){
                     index2 += 1
                 }
-
-
 
 
                 var weatherMap:MutableMap<String,String> = HashMap()

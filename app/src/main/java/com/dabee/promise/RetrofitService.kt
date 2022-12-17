@@ -13,6 +13,9 @@ interface RetrofitService {
 //    fun searchData(): Call<String>
 
     @GET("getMidLandFcst?")
-    fun searchData(@Query("serviceKey") serviceKey:String, @Query("dataType") dataType:String, @Query("regId") regId:String, @Query("tmFc") tmFc:String): Call<String>
+    fun searchWeather(@Query("serviceKey") serviceKey:String, @Query("dataType") dataType:String, @Query("regId") regId:String, @Query("tmFc") tmFc:String): Call<String>
+
+    @GET("getMidTa?")
+    fun searchTemperature(@Query("serviceKey") serviceKey:String, @Query("dataType") dataType:String, @Query("regId") regId:String, @Query("tmFc") tmFc:String): Call<String>
 
 }

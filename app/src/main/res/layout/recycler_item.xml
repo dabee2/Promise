@@ -27,6 +27,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
             android:text="Today"
+            android:textSize="14sp"
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -34,12 +35,13 @@
             android:id="@+id/tv_temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tv_D_day"
             android:layout_alignRight="@id/tv_D_day"
-            android:layout_below="@id/tv_group2"
+            android:layout_alignTop="@id/tv_title"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
@@ -47,30 +49,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/tv_D_day"
-            android:layout_alignBottom="@id/tv_place"
+            android:layout_below="@id/tv_temperature"
             android:gravity="center"
             android:text=""
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_group2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="Group : "
             android:layout_marginLeft="12dp"
-            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="16dp"
+            android:text="Group : "
+            android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />
+
         <TextView
             android:id="@+id/tv_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
+            android:layout_alignBottom="@id/tv_group2"
+            android:layout_alignTop="@id/tv_group2"
             android:layout_toRightOf="@+id/tv_group2"
-            android:layout_marginTop="15dp"
+            android:gravity="center_vertical"
             android:fontFamily="@font/binggrae"
             android:text="Group"
             android:textColor="@color/black"

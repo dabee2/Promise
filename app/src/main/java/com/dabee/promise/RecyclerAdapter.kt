@@ -67,10 +67,17 @@ class RecyclerAdapter constructor(val context:Context, var items:MutableList<Ite
 
         userRef.document(userId).collection("groups").document(item.groupName).collection("promise").document("${item.title}${item.setLineup}").get().addOnSuccessListener {
             var weather = it.get("weather")
+            var temperature = it.get("temperature")
             if (weather != null){
                 holder.binding.tvWeather.text = weather.toString()
             }else{
                 holder.binding.tvWeather.text = ""
+            }
+
+            if (temperature != null){
+                holder.binding.tvTemperature.text = temperature.toString()
+            }else{
+                holder.binding.tvTemperature.text = ""
             }
 
 
