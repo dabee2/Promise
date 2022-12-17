@@ -46,12 +46,6 @@ class MyFragmentChild2 constructor(var items:MutableList<Item8>): Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-
         if(items.size==0){
             binding.tv.visibility = View.VISIBLE
 
@@ -66,11 +60,18 @@ class MyFragmentChild2 constructor(var items:MutableList<Item8>): Fragment() {
             items.sortWith(compareBy { -it.setLineup.toLong()})
             binding.recycler.adapter = RecyclerAdapter(binding.root.context,items)
             binding.tv.visibility = View.INVISIBLE
+
         }
 
+    }
 
+    override fun onResume() {
+        super.onResume()
 
     }
+
+
+
 
 
 }

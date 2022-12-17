@@ -55,6 +55,25 @@ class GroupActivityPromise : AppCompatActivity() {
         }
         binding.tvDday.text = dday
 
+        userRef.document(userId).collection("groups").document("$groupName").collection("promise").document("$promiseName").get().addOnSuccessListener {
+            var weather = it.get("weather")
+            var temperature = it.get("temperature")
+            if (weather != null){
+                binding.tvWeather.text = weather.toString()
+            }else{
+                binding.tvWeather.text = ""
+            }
+
+            if (temperature != null){
+                binding.tvTemperature.text = temperature.toString()
+            }else{
+                binding.tvTemperature.text = ""
+            }
+
+
+        }
+
+
 
         binding.iv.setOnClickListener { finish() }
         binding.linearMembers.setOnClickListener { showMembers() }

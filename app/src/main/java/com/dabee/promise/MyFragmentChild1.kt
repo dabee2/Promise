@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import okhttp3.internal.notify
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -236,6 +237,8 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
 
 
 
+
+
         retrofitService.searchTemperature(serviceKey, dataType, regIdTemp, tmFc).enqueue(object :
             Callback<String> {
             override fun onResponse(
@@ -243,7 +246,7 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
                 response: Response<String>
             ) {
                 val apiResponse: String? = response.body()
-                var index2 =0
+
 
                 var taMin3:String = apiResponse?.substring((apiResponse?.indexOf("taMin3")!!+8),(apiResponse?.indexOf("taMin3Low"))!!-2).toString()
                 var taMax3:String = apiResponse?.substring((apiResponse?.indexOf("taMax3")!!+8),(apiResponse?.indexOf("taMax3Low"))!!-2).toString()
@@ -269,7 +272,6 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
                 var taMin10:String = apiResponse?.substring((apiResponse?.indexOf("taMin10")!!+9),(apiResponse?.indexOf("taMin10Low"))!!-2).toString()
                 var taMax10:String = apiResponse?.substring((apiResponse?.indexOf("taMax10")!!+9),(apiResponse?.indexOf("taMax10Low"))!!-2).toString()
 
-                Log.d("taMin","$taMin10,$taMax10")
 
                 var tempMap:MutableMap<String,String> = HashMap()
                 tempMap.clear()
@@ -283,9 +285,17 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
                 if (dday==10) tempMap["temperature"] = "$taMin10˚/$taMax10˚"
 
 
+                if(tempMap.size !=0 && items.size !=0){
+                    userRef.document(userId).collection("groups").document(items[index].groupName).collection("promise").document("${items[index].title}${items[index].setLineup}").update(tempMap as MutableMap<String, Any>)
+                }else {
+                    onResume()
+                    return
+                }
 
 
-                userRef.document(userId).collection("groups").document(items[index].groupName).collection("promise").document("${items[index].title}${items[index].setLineup}").update(tempMap as MutableMap<String, Any>)
+
+
+
 
             }
 
@@ -305,43 +315,52 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
                 response: Response<String>
             ) {
                 val apiResponse: String? = response.body()
-                var index2 =0
 
-                val str1 = apiResponse?.indexOf("wf3Am")
-                val str2 = apiResponse?.indexOf("pageNo")
-                var str3 = apiResponse?.substring((str1!!.toInt()-1),(str2!!.toInt()-5))
-                str3 = str3?.replace(":",",")
-                var map = str3?.split(",")
-                var weatherlist: MutableList<String> = mutableListOf()
-                if (dday==3) index2 = 0
-                weatherlist.add(map?.get(1).toString())
-                weatherlist.add(map?.get(3).toString())
-                if (dday==4) index2 = 2
-                weatherlist.add(map?.get(5).toString())
-                weatherlist.add(map?.get(7).toString())
-                if (dday==5) index2 = 4
-                weatherlist.add(map?.get(9).toString())
-                weatherlist.add(map?.get(11).toString())
-                if (dday==6) index2 = 6
-                weatherlist.add(map?.get(13).toString())
-                weatherlist.add(map?.get(15).toString())
-                if (dday==7) index2 = 8
-                weatherlist.add(map?.get(17).toString())
-                weatherlist.add(map?.get(19).toString())
-                if (dday==8) index2 = 10
-                weatherlist.add(map?.get(21).toString())
-                if (dday==9) index2 = 11
-                weatherlist.add(map?.get(23).toString())
-                if (dday==10) index2 = 12
-                weatherlist.add(map?.get(25).toString())
-                if (dday<=7 && sun=="오후"){
-                    index2 += 1
-                }
+
+                var wf3Am:String = apiResponse?.substring((apiResponse?.indexOf("wf3Am")!!+8),(apiResponse?.indexOf("wf3Pm"))!!-3).toString()
+                var wf3Pm:String = apiResponse?.substring((apiResponse?.indexOf("wf3Pm")!!+8),(apiResponse?.indexOf("wf4Am"))!!-3).toString()
+
+                var wf4Am:String = apiResponse?.substring((apiResponse?.indexOf("wf4Am")!!+8),(apiResponse?.indexOf("wf4Pm"))!!-3).toString()
+                var wf4Pm:String = apiResponse?.substring((apiResponse?.indexOf("wf4Pm")!!+8),(apiResponse?.indexOf("wf5Am"))!!-3).toString()
+
+                var wf5Am:String = apiResponse?.substring((apiResponse?.indexOf("wf5Am")!!+8),(apiResponse?.indexOf("wf5Pm"))!!-3).toString()
+                var wf5Pm:String = apiResponse?.substring((apiResponse?.indexOf("wf5Pm")!!+8),(apiResponse?.indexOf("wf6Am"))!!-3).toString()
+
+                var wf6Am:String = apiResponse?.substring((apiResponse?.indexOf("wf6Am")!!+8),(apiResponse?.indexOf("wf6Pm"))!!-3).toString()
+                var wf6Pm:String = apiResponse?.substring((apiResponse?.indexOf("wf6Pm")!!+8),(apiResponse?.indexOf("wf7Am"))!!-3).toString()
+
+                var wf7Am:String = apiResponse?.substring((apiResponse?.indexOf("wf7Am")!!+8),(apiResponse?.indexOf("wf7Pm"))!!-3).toString()
+                var wf7Pm:String = apiResponse?.substring((apiResponse?.indexOf("wf7Pm")!!+8),(apiResponse?.indexOf("wf8"))!!-3).toString()
+
+                var wf8:String = apiResponse?.substring((apiResponse?.indexOf("wf8")!!+6),(apiResponse?.indexOf("wf9"))!!-3).toString()
+                var wf9:String = apiResponse?.substring((apiResponse?.indexOf("wf9")!!+6),(apiResponse?.indexOf("wf10"))!!-3).toString()
+                var wf10:String = apiResponse?.substring((apiResponse?.indexOf("wf10")!!+7),(apiResponse?.indexOf("}]},\"pageNo"))!!-1).toString()
 
 
                 var weatherMap:MutableMap<String,String> = HashMap()
-                weatherMap["weather"] = weatherlist[index2].replace("\"","")
-                userRef.document(userId).collection("groups").document(items[index].groupName).collection("promise").document("${items[index].title}${items[index].setLineup}").update(weatherMap as MutableMap<String, Any>)
+                weatherMap.clear()
+                if (dday==3 && sun=="오전") weatherMap["weather"] = "$wf3Am"
+                if (dday==3 && sun=="오후") weatherMap["weather"] = "$wf3Pm"
+                if (dday==4 && sun=="오전") weatherMap["weather"] = "$wf4Am"
+                if (dday==4 && sun=="오후") weatherMap["weather"] = "$wf4Pm"
+                if (dday==5 && sun=="오전") weatherMap["weather"] = "$wf5Am"
+                if (dday==5 && sun=="오후") weatherMap["weather"] = "$wf5Pm"
+                if (dday==6 && sun=="오전") weatherMap["weather"] = "$wf6Am"
+                if (dday==6 && sun=="오후") weatherMap["weather"] = "$wf6Pm"
+                if (dday==7 && sun=="오전") weatherMap["weather"] = "$wf7Am"
+                if (dday==7 && sun=="오후") weatherMap["weather"] = "$wf7Pm"
+                if (dday==8) weatherMap["weather"] = "$wf8"
+                if (dday==9) weatherMap["weather"] = "$wf9"
+                if (dday==10) weatherMap["weather"] = "$wf10"
+
+                if (weatherMap.size != 0 && items.size !=0){
+                    userRef.document(userId).collection("groups").document(items[index].groupName).collection("promise").document("${items[index].title}${items[index].setLineup}").update(weatherMap as MutableMap<String, Any>)
+                }else {
+                    onResume()
+                    return
+                }
+
+
 
             }
 
