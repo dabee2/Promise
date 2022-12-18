@@ -70,7 +70,7 @@ class AlarmRecevier : BroadcastReceiver() {
 
         var pTime =  date!!.substring(13)
         //알림창 제목
-        builder!!.setContentTitle("${group}의 ${title}일정")
+        builder!!.setContentTitle("${group}의 ${title} 일정")
         builder!!.setContentText("$place 내일$pTime")
         //알림창 아이콘
         builder!!.setSmallIcon(R.drawable.ic_icon5_playstore)
