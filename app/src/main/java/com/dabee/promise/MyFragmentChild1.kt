@@ -104,7 +104,7 @@ class MyFragmentChild1 constructor(var items:MutableList<Item8>) : Fragment() {
             items.sortWith(compareBy { it.setLineup.toLong()})
             binding.recycler.adapter = RecyclerAdapter(binding.root.context,items)
             binding.tv.visibility = View.INVISIBLE
-            alarm()
+//            alarm()
             getWeather()
         }
 
