@@ -30,12 +30,12 @@ class AlarmRecevier : BroadcastReceiver() {
         builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager!!.createNotificationChannel(
                 NotificationChannel(
-                    "$group$title",
-                    "$group$title",
+                    "channel1",
+                    "channel1",
                     NotificationManager.IMPORTANCE_DEFAULT
                 )
             )
-            NotificationCompat.Builder(context, "$group$title")
+            NotificationCompat.Builder(context, "channel1")
         } else {
             NotificationCompat.Builder(context)
         }
