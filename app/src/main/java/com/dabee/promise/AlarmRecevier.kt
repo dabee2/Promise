@@ -30,12 +30,12 @@ class AlarmRecevier : BroadcastReceiver() {
         builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             manager!!.createNotificationChannel(
                 NotificationChannel(
-                    "channel1",
-                    "channel1",
+                    "channelPromise",
+                    "channelPromise",
                     NotificationManager.IMPORTANCE_DEFAULT
                 )
             )
-            NotificationCompat.Builder(context, "channel1")
+            NotificationCompat.Builder(context, "channelPromise")
         } else {
             NotificationCompat.Builder(context)
         }
@@ -83,7 +83,7 @@ class AlarmRecevier : BroadcastReceiver() {
 
     companion object {
         //오레오 이상은 반드시 채널을 설정해줘야 Notification이 작동함
-        private const val CHANNEL_ID = "channel1"
-        private const val CHANNEL_NAME = "Channel1"
+        private const val CHANNEL_ID = "channelPromise"
+        private const val CHANNEL_NAME = "channelPromise"
     }
 }
